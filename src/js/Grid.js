@@ -80,6 +80,15 @@ export default class Grid {
     this.changed = false;
   }
 
+  addRandomTile() {
+    const emptyCells = this.rows.map(row => row.filter(cell => cell.isEmpty())).flat();
+    if (emptyCells.length == 0) {
+      return;
+    }
+    const randCell = emptyCells[Math.floor(Math.random() * emptyCells.length)];
+    randCell.setNewTile();
+  }
+
   findMaxValue() {
     let max = 0;
     for (let i = 0; i < this.rows.length; i++) {
