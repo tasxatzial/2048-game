@@ -89,6 +89,18 @@ export default class Grid {
     randCell.setNewTile();
   }
 
+  hasTile(value) {
+    for (let i = 0; i < this.rows.length; i++) {
+      for (let j = 0; j < this.cols.length; j++) {
+        const cell = this.rows[i][j];
+        if (!cell.isEmpty() && cell.tile.value == value) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
   findMaxValue() {
     let max = 0;
     for (let i = 0; i < this.rows.length; i++) {
