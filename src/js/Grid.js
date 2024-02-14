@@ -71,6 +71,15 @@ export default class Grid {
     return this.rows.some(_canSlide) || this.cols.some(_canSlide);
   }
 
+  mergeTiles() {
+    for (let i = 0; i < this.rows.length; i++) {
+      for (let j = 0; j < this.cols.length; j++) {
+        this.rows[i][j].mergeTiles();
+      }
+    }
+    this.changed = false;
+  }
+
   findMaxValue() {
     let max = 0;
     for (let i = 0; i < this.rows.length; i++) {
