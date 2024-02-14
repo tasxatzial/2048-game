@@ -59,6 +59,18 @@ export default class Grid {
     this.cols.forEach(x => this._slideTilesToEnd(x));
   }
 
+  canSlide() {
+    function _canSlide(arr) {
+      for (let i = 0; i < arr.length - 1; i++) {
+        if (arr[i].isEmpty() || arr[i + 1].isEmpty() || arr[i].canMerge(arr[i + 1].getTile())) {
+          return true;
+        }
+      }
+      return false;
+    }
+    return this.rows.some(_canSlide) || this.cols.some(_canSlide);
+  }
+
   findMaxValue() {
     let max = 0;
     for (let i = 0; i < this.rows.length; i++) {
