@@ -12,7 +12,7 @@ export default class Grid {
     }
     this.rows = rows;
     this.cols = this.rows.map((_, i) => this.rows.map(row => row[i]));
-    this.changed = false;
+    this.changedAfterSlide = false;
   }
 
   _slideTilesToEnd(arr) {
@@ -25,18 +25,18 @@ export default class Grid {
           if (arr[j].canMerge(arr[i].getTile())) {
             arr[j].setMergeTile(arr[i].getTile());
             arr[i].clearTile();
-            this.changed = true;
+            this.changedAfterSlide = true;
           }
           else if (j-1 != i) {
             arr[j-1].setTile(arr[i].getTile());
             arr[i].clearTile();
-            this.changed = true;
+            this.changedAfterSlide = true;
           }
           break;
         } else if (j == arr.length - 1) {
             arr[j].setTile(arr[i].getTile());
             arr[i].clearTile();
-            this.changed = true;
+            this.changedAfterSlide = true;
             break;
         }
       }
@@ -44,18 +44,22 @@ export default class Grid {
   }
 
   slideRight() {
+    this.changedAfterSlide = false;
     this.rows.forEach(x => this._slideTilesToEnd(x));
   }
 
   slideLeft() {
+    this.changedAfterSlide = false;
     this.rows.forEach(x => this._slideTilesToEnd([...x].reverse()));
   }
 
   slideUp() {
+    this.changedAfterSlide = false;
     this.cols.forEach(x => this._slideTilesToEnd([...x].reverse()));
   }
 
   slideDown() {
+    this.changedAfterSlide = false;
     this.cols.forEach(x => this._slideTilesToEnd(x));
   }
 
@@ -77,7 +81,6 @@ export default class Grid {
         this.rows[i][j].mergeTiles();
       }
     }
-    this.changed = false;
   }
 
   addRandomTile() {
@@ -99,6 +102,10 @@ export default class Grid {
       }
     }
     return false;
+  }
+
+  hasChangedAfterSlide() {
+    return this.changedAfterSlide;
   }
 
   findMaxValue() {
