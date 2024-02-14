@@ -15,6 +15,50 @@ export default class Grid {
     this.changed = false;
   }
 
+  _slideTilesToEnd(arr) {
+    for (let i = arr.length - 1; i >= 0; i--) {
+      if (arr[i].isEmpty()) {
+        continue;
+      }
+      for (let j = i + 1; j < arr.length; j++) {
+        if (!arr[j].isEmpty()) {
+          if (arr[j].canMerge(arr[i].getTile())) {
+            arr[j].setMergeTile(arr[i].getTile());
+            arr[i].clearTile();
+            this.changed = true;
+          }
+          else if (j-1 != i) {
+            arr[j-1].setTile(arr[i].getTile());
+            arr[i].clearTile();
+            this.changed = true;
+          }
+          break;
+        } else if (j == arr.length - 1) {
+            arr[j].setTile(arr[i].getTile());
+            arr[i].clearTile();
+            this.changed = true;
+            break;
+        }
+      }
+    }
+  }
+
+  slideRight() {
+    this.rows.forEach(x => this._slideTilesToEnd(x));
+  }
+
+  slideLeft() {
+    this.rows.forEach(x => this._slideTilesToEnd([...x].reverse()));
+  }
+
+  slideUp() {
+    this.cols.forEach(x => this._slideTilesToEnd([...x].reverse()));
+  }
+
+  slideDown() {
+    this.cols.forEach(x => this._slideTilesToEnd(x));
+  }
+
   findMaxValue() {
     let max = 0;
     for (let i = 0; i < this.rows.length; i++) {
