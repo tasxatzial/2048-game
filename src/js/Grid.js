@@ -134,17 +134,21 @@ export default class Grid {
     return this.slideCount;
   }
 
-  findMaxValue() {
-    let max = 0;
+  _getMaxTileLength() {
+    let maxLength = 0;
     for (let i = 0; i < this.rows.length; i++) {
       for (let j = 0; j < this.cols.length; j++) {
         const cell = this.rows[i][j];
-        if (!cell.isEmpty() && cell.getTile().getValue() > max) {
-          max = cell.getTile().getValue();
+        if (cell.isEmpty()) {
+          continue;
+        }
+        const tileLength = cell.getTile().getValue().toString().length;
+        if (tileLength > maxLength) {
+          maxLength = tileLength;
         }
       }
     }
-    return max;
+    return maxLength;
   }
 
   toArray() {
@@ -166,15 +170,15 @@ export default class Grid {
 
   toString() {
     let result = '';
-    const maxDigits = this.findMaxValue().toString().length;
-    const pad = ' '.repeat(maxDigits);
+    const entryLength = this._getMaxTileLength();
+    const pad = ' '.repeat(entryLength);
     for (let i = 0; i < this.rows.length; i++) {
       for (let j = 0; j < this.cols.length; j++) {
         const cell = this.rows[i][j];
         if (cell.isEmpty()) {
-          result += (pad + '.').slice(-maxDigits);
+          result += (pad + '.').slice(-entryLength);
         } else {
-          result += (pad + cell.getTile().getValue()).slice(-maxDigits);
+          result += (pad + cell.getTile().getValue()).slice(-entryLength);
         }
         if (j != this.rows.length - 1) {
           result += ' ';
