@@ -3,7 +3,8 @@ import Grid from './Grid.js';
 export default function demo() {
   const options = {
     size: 4,
-    addTileFn: getNewTile
+    addTileFn: getNewTile,
+    mergeTilesFn: mergeTiles
   };
   
   console.log("Starting new game");
@@ -58,4 +59,8 @@ function getNewTile(gridArray) {
     column: randEl.column,
     value: value
   };
+}
+
+function mergeTiles(value1, value2) {
+  return value1 + value2;
 }

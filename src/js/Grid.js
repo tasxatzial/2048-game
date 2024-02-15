@@ -1,7 +1,7 @@
 import Cell from "./Cell.js";
 
 export default class Grid {
-  constructor({size, addTileFn}) {
+  constructor({size, addTileFn, mergeTilesFn}) {
     const rows = [];
     for (let i = 0; i < size; i++) {
       const row = [];
@@ -15,6 +15,7 @@ export default class Grid {
     this.changedAfterSlide = false;
     this.slideCount = 0;
     this.addTileFn = addTileFn;
+    this.mergeTilesFn = mergeTilesFn;
   }
 
   _slideTilesToEnd(arr) {
@@ -97,7 +98,7 @@ export default class Grid {
   mergeTiles() {
     for (let i = 0; i < this.rows.length; i++) {
       for (let j = 0; j < this.cols.length; j++) {
-        this.rows[i][j].mergeTiles();
+        this.rows[i][j].mergeTiles(this.mergeTilesFn);
       }
     }
   }

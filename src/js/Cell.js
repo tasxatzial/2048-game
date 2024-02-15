@@ -47,11 +47,11 @@ export default class Cell {
     return !this.mergeTile && (this.tile.getValue() == tile.getValue());
   }
 
-  mergeTiles() {
+  mergeTiles(mergeTilesFn) {
     if (!this.tile || !this.mergeTile) {
       return;
     }
-    this.tile.setValue(this.tile.getValue() + this.mergeTile.getValue());
+    this.tile.setValue(mergeTilesFn(this.tile.getValue(), this.mergeTile.getValue()));
     this.clearMergeTile();
   }
 
