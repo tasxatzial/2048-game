@@ -13,6 +13,7 @@ export default class Grid {
     this.rows = rows;
     this.cols = this.rows.map((_, i) => this.rows.map(row => row[i]));
     this.changedAfterSlide = false;
+    this.slideCount = 0;
   }
 
   _slideTilesToEnd(arr) {
@@ -43,24 +44,41 @@ export default class Grid {
     }
   }
 
-  slideRight() {
+  _slide(direction) {
     this.changedAfterSlide = false;
-    this.rows.forEach(x => this._slideTilesToEnd(x));
+    switch(direction) {
+      case 'up':
+        this.cols.forEach(x => this._slideTilesToEnd([...x].reverse()));
+        break;
+      case 'down':
+        this.cols.forEach(x => this._slideTilesToEnd(x));
+        break;
+      case 'left':
+        this.rows.forEach(x => this._slideTilesToEnd([...x].reverse()));
+        break;
+      case 'right':
+        this.rows.forEach(x => this._slideTilesToEnd(x));
+        break;
+    }
+    if (this.changedAfterSlide) {
+      this.slideCount++;
+    }
+  }
+
+  slideRight() {
+    this._slide('right');
   }
 
   slideLeft() {
-    this.changedAfterSlide = false;
-    this.rows.forEach(x => this._slideTilesToEnd([...x].reverse()));
+    this._slide('left');
   }
 
   slideUp() {
-    this.changedAfterSlide = false;
-    this.cols.forEach(x => this._slideTilesToEnd([...x].reverse()));
+    this._slide('up');
   }
 
   slideDown() {
-    this.changedAfterSlide = false;
-    this.cols.forEach(x => this._slideTilesToEnd(x));
+    this._slide('down');
   }
 
   canSlide() {
@@ -106,6 +124,10 @@ export default class Grid {
 
   hasChangedAfterSlide() {
     return this.changedAfterSlide;
+  }
+
+  getSlideCount() {
+    return this.slideCount;
   }
 
   findMaxValue() {
