@@ -1,8 +1,8 @@
 export default class Tile {
-  constructor(row, col) {
+  constructor(row, col, value) {
     this.row = row;
     this.col = col;
-    this.value = Math.random() > 0.9 ? 4 : 2;
+    this.value = value;
   }
 
   getValue() {

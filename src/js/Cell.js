@@ -55,10 +55,10 @@ export default class Cell {
     this.clearMergeTile();
   }
 
-  setNewTile() {
+  setNewTile(value) {
     if (this.tile) {
       throw new Error("cell already has a tile")
     }
-    this.tile = new Tile(this.row, this.col);
+    this.tile = new Tile(this.row, this.col, value);
   }
 }

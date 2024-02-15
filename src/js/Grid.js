@@ -1,7 +1,7 @@
 import Cell from "./Cell.js";
 
 export default class Grid {
-  constructor({size}) {
+  constructor({size, addTileFn}) {
     const rows = [];
     for (let i = 0; i < size; i++) {
       const row = [];
@@ -14,6 +14,7 @@ export default class Grid {
     this.cols = this.rows.map((_, i) => this.rows.map(row => row[i]));
     this.changedAfterSlide = false;
     this.slideCount = 0;
+    this.addTileFn = addTileFn;
   }
 
   _slideTilesToEnd(arr) {
@@ -101,20 +102,23 @@ export default class Grid {
     }
   }
 
-  addRandomTile() {
-    const emptyCells = this.rows.map(row => row.filter(cell => cell.isEmpty())).flat();
-    if (emptyCells.length == 0) {
+  addTile() {
+    const res = this.addTileFn(this.toArray());
+    if (!res) {
       return;
     }
-    const randCell = emptyCells[Math.floor(Math.random() * emptyCells.length)];
-    randCell.setNewTile();
+    const {row, column, value} = res;
+    if (!this.rows[row][column].isEmpty()) {
+      throw new Error("cell is not empty");
+    }
+    this.rows[row][column].setNewTile(value);
   }
 
   hasTile(value) {
     for (let i = 0; i < this.rows.length; i++) {
       for (let j = 0; j < this.cols.length; j++) {
         const cell = this.rows[i][j];
-        if (!cell.isEmpty() && cell.tile.value == value) {
+        if (!cell.isEmpty() && cell.getTile().getValue() == value) {
           return true;
         }
       }
@@ -141,6 +145,23 @@ export default class Grid {
       }
     }
     return max;
+  }
+
+  toArray() {
+    const arr = [];
+    for (let i = 0; i < this.rows.length; i++) {
+      const row = [];
+      for (let j = 0; j < this.cols.length; j++) {
+        const cell = this.rows[i][j];
+        row.push({
+          row: i,
+          column: j,
+          value: (cell.isEmpty() ? null : cell.getTile().getValue())
+        });
+      }
+      arr.push(row);
+    }
+    return arr;
   }
 
   toString() {

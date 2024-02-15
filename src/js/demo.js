@@ -3,16 +3,17 @@ import Grid from './Grid.js';
 export default function demo() {
   const options = {
     size: 4,
+    addTileFn: getNewTile
   };
   
   console.log("Starting new game");
   const grid = new Grid(options);
-  grid.addRandomTile();
-  grid.addRandomTile();
+  grid.addTile();
+  grid.addTile();
   console.log(grid.toString())
-  
+
   while(1) {
-    if (grid.hasTile(2048)) {
+    if (grid.hasTile(options.winTile)) {
       console.log(`Game is won after ${grid.getSlideCount()} moves. Here's the final board`);
       console.log(grid.toString())
       break;
@@ -39,8 +40,22 @@ export default function demo() {
     }
     if (grid.hasChangedAfterSlide()) {
       grid.mergeTiles();
-      grid.addRandomTile();
+      grid.addTile();
       console.log(grid.toString())
     }
   }
+}
+
+function getNewTile(gridArray) {
+  const emptyCells = gridArray.map(row => row.filter(el => !el.value)).flat();
+  if (emptyCells.length == 0) {
+    return null;
+  }
+  const randEl = emptyCells[Math.floor(Math.random() * emptyCells.length)];
+  const value = Math.floor(Math.random() > 0.9 ? 4 : 2);
+  return {
+    row: randEl.row,
+    column: randEl.column,
+    value: value
+  };
 }
