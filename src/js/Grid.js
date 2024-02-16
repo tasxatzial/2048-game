@@ -21,11 +21,11 @@ export default class Grid {
 
   _slideTilesToEnd(arr) {
     for (let i = arr.length - 1; i >= 0; i--) {
-      if (arr[i].isEmpty()) {
+      if (!arr[i].hasTile()) {
         continue;
       }
       for (let j = i + 1; j < arr.length; j++) {
-        if (!arr[j].isEmpty()) {
+        if (arr[j].hasTile()) {
           if (arr[j].canMerge(arr[i])) {
             arr[j].setMergeTileFrom(arr[i]);
             this.changedAfterSlide = true;
@@ -84,7 +84,7 @@ export default class Grid {
   canSlide() {
     function _canSlide(arr) {
       for (let i = 0; i < arr.length - 1; i++) {
-        if (arr[i].isEmpty() || arr[i + 1].isEmpty() || arr[i].canMerge(arr[i + 1])) {
+        if (!arr[i].hasTile() || !arr[i + 1].hasTile() || arr[i].canMerge(arr[i + 1])) {
           return true;
         }
       }
@@ -98,7 +98,7 @@ export default class Grid {
       for (let j = 0; j < this.cols.length; j++) {
         const cell = this.rows[i][j];
         if (cell.willMerge()) {
-          this.rows[i][j].mergeTiles(this.mergeResultFn);
+          cell.mergeTiles(this.mergeResultFn);
           this.mergedTilesSum += cell.getTile().getValue();
         }
       }
@@ -122,7 +122,7 @@ export default class Grid {
     for (let i = 0; i < this.rows.length; i++) {
       for (let j = 0; j < this.cols.length; j++) {
         const cell = this.rows[i][j];
-        if (!cell.isEmpty() && cell.getTile().getValue() == value) {
+        if (cell.hasTile() && cell.getTile().getValue() == value) {
           return true;
         }
       }
@@ -143,7 +143,7 @@ export default class Grid {
     for (let i = 0; i < this.rows.length; i++) {
       for (let j = 0; j < this.cols.length; j++) {
         const cell = this.rows[i][j];
-        if (cell.isEmpty()) {
+        if (!cell.hasTile()) {
           continue;
         }
         const tileLength = cell.getTile().getValue().toString().length;
@@ -161,11 +161,7 @@ export default class Grid {
       const row = [];
       for (let j = 0; j < this.cols.length; j++) {
         const cell = this.rows[i][j];
-        row.push({
-          row: i,
-          column: j,
-          value: (cell.isEmpty() ? null : cell.getTile().getValue())
-        });
+        row.push(cell.toObj());
       }
       arr.push(row);
     }
@@ -179,10 +175,10 @@ export default class Grid {
     for (let i = 0; i < this.rows.length; i++) {
       for (let j = 0; j < this.cols.length; j++) {
         const cell = this.rows[i][j];
-        if (cell.isEmpty()) {
-          result += (pad + '.').slice(-entryLength);
-        } else {
+        if (cell.hasTile()) {
           result += (pad + cell.getTile().getValue()).slice(-entryLength);
+        } else {
+          result += (pad + '.').slice(-entryLength);
         }
         if (j != this.rows.length - 1) {
           result += ' ';

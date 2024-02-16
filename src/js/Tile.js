@@ -20,4 +20,20 @@ export default class Tile {
   setColumn(col) {
     this.col = col;
   }
+
+  getRow() {
+    return this.row;
+  }
+
+  getColumn() {
+    return this.col;
+  }
+
+  toObj() {
+    return {
+      row: this.row,
+      column: this.col,
+      value: this.value
+    };
+  }
 }

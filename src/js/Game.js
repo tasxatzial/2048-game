@@ -60,7 +60,7 @@ export default class Game {
   }
 
   newTileFn(gridArray) {
-    const emptyTiles = gridArray.map(row => row.filter(el => !el.value)).flat();
+    const emptyTiles = gridArray.map(row => row.filter(el => !el.tile)).flat();
     if (emptyTiles.length == 0) {
       return null;
     }

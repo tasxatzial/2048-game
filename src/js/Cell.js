@@ -8,12 +8,20 @@ export default class Cell {
     this.mergeTile = null;
   }
 
-  isEmpty() {
-    return !this.tile;
+  hasTile() {
+    return !!this.tile;
+  }
+
+  hasMergeTile() {
+    return !!this.mergeTile;
   }
 
   getTile() {
     return this.tile;
+  }
+
+  getMergeTile() {
+    return this.mergeTile;
   }
 
   setTileFrom(cell) {
@@ -61,6 +69,15 @@ export default class Cell {
       this.tile.row = this.row;
       this.tile.col = this.col;
       this.clearMergeTile();
+    }
+  }
+
+  toObj() {
+    return {
+      row: this.row,
+      column: this.col,
+      tile: this.hasTile() ? this.tile.toObj() : null,
+      mergeTile: this.hasMergeTile() ? this.mergeTile.toObj() : null
     }
   }
 }
