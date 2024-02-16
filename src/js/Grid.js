@@ -1,7 +1,7 @@
 import Cell from "./Cell.js";
 
 export default class Grid {
-  constructor({size, addTileFn, mergeTilesFn}) {
+  constructor({size, newTileFn, mergeResultFn}) {
     const rows = [];
     for (let i = 0; i < size; i++) {
       const row = [];
@@ -14,8 +14,8 @@ export default class Grid {
     this.cols = this.rows.map((_, i) => this.rows.map(row => row[i]));
     this.changedAfterSlide = false;
     this.slideCount = 0;
-    this.addTileFn = addTileFn;
-    this.mergeTilesFn = mergeTilesFn;
+    this.newTileFn = newTileFn;
+    this.mergeResultFn = mergeResultFn;
   }
 
   _slideTilesToEnd(arr) {
@@ -26,18 +26,18 @@ export default class Grid {
       for (let j = i + 1; j < arr.length; j++) {
         if (!arr[j].isEmpty()) {
           if (arr[j].canMerge(arr[i].getTile())) {
-            arr[j].setMergeTile(arr[i].getTile());
+            arr[j].slideMergeTile(arr[i].getTile());
             arr[i].clearTile();
             this.changedAfterSlide = true;
           }
           else if (j-1 != i) {
-            arr[j-1].setTile(arr[i].getTile());
+            arr[j-1].slideTile(arr[i].getTile());
             arr[i].clearTile();
             this.changedAfterSlide = true;
           }
           break;
         } else if (j == arr.length - 1) {
-            arr[j].setTile(arr[i].getTile());
+            arr[j].slideTile(arr[i].getTile());
             arr[i].clearTile();
             this.changedAfterSlide = true;
             break;
@@ -98,21 +98,18 @@ export default class Grid {
   mergeTiles() {
     for (let i = 0; i < this.rows.length; i++) {
       for (let j = 0; j < this.cols.length; j++) {
-        this.rows[i][j].mergeTiles(this.mergeTilesFn);
+        this.rows[i][j].mergeTiles(this.mergeResultFn);
       }
     }
   }
 
   addTile() {
-    const res = this.addTileFn(this.toArray());
+    const res = this.newTileFn(this.toArray());
     if (!res) {
       return;
     }
     const {row, column, value} = res;
-    if (!this.rows[row][column].isEmpty()) {
-      throw new Error("cell is not empty");
-    }
-    this.rows[row][column].setNewTile(value);
+    this.rows[row][column].setTile(value);
   }
 
   hasTile(value) {

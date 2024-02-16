@@ -3,8 +3,8 @@ import Grid from './Grid.js';
 export default function demo() {
   const options = {
     size: 4,
-    addTileFn: getNewTile,
-    mergeTilesFn: mergeTiles
+    newTileFn: newTileFn,
+    mergeResultFn: mergeResultFn
   };
   
   console.log("Starting new game");
@@ -47,7 +47,7 @@ export default function demo() {
   }
 }
 
-function getNewTile(gridArray) {
+function newTileFn(gridArray) {
   const emptyCells = gridArray.map(row => row.filter(el => !el.value)).flat();
   if (emptyCells.length == 0) {
     return null;
@@ -61,6 +61,6 @@ function getNewTile(gridArray) {
   };
 }
 
-function mergeTiles(value1, value2) {
+function mergeResultFn(value1, value2) {
   return value1 + value2;
 }
