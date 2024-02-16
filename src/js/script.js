@@ -22,7 +22,7 @@ function keydownHandler(e) {
       break;
   }
   if (game.hasSlid()) {
-    //console.log("Score ", game.getScore());
+    console.log("Score ", game.getScore());
     console.log(game.printBoard());
     if (game.isWon()) {
       console.log("You won!");

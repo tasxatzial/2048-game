@@ -16,6 +16,7 @@ export default class Grid {
     this.slideCount = 0;
     this.newTileFn = newTileFn;
     this.mergeResultFn = mergeResultFn;
+    this.mergedTilesSum = 0;
   }
 
   _slideTilesToEnd(arr) {
@@ -95,9 +96,17 @@ export default class Grid {
   mergeTiles() {
     for (let i = 0; i < this.rows.length; i++) {
       for (let j = 0; j < this.cols.length; j++) {
-        this.rows[i][j].mergeTiles(this.mergeResultFn);
+        const cell = this.rows[i][j];
+        if (cell.willMerge()) {
+          this.rows[i][j].mergeTiles(this.mergeResultFn);
+          this.mergedTilesSum += cell.getTile().getValue();
+        }
       }
     }
+  }
+
+  getMergedTilesSum() {
+    return this.mergedTilesSum;
   }
 
   addTile() {

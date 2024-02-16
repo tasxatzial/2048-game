@@ -29,7 +29,7 @@ export default class Game {
   }
 
   getScore() {
-    return null;
+    return this.grid.getMergedTilesSum();
   }
 
   _postSlide() {
