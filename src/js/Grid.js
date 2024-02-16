@@ -25,20 +25,17 @@ export default class Grid {
       }
       for (let j = i + 1; j < arr.length; j++) {
         if (!arr[j].isEmpty()) {
-          if (arr[j].canMerge(arr[i].getTile())) {
-            arr[j].slideMergeTile(arr[i].getTile());
-            arr[i].clearTile();
+          if (arr[j].canMerge(arr[i])) {
+            arr[j].setMergeTileFrom(arr[i]);
             this.changedAfterSlide = true;
           }
           else if (j-1 != i) {
-            arr[j-1].slideTile(arr[i].getTile());
-            arr[i].clearTile();
+            arr[j-1].setTileFrom(arr[i]);
             this.changedAfterSlide = true;
           }
           break;
         } else if (j == arr.length - 1) {
-            arr[j].slideTile(arr[i].getTile());
-            arr[i].clearTile();
+            arr[j].setTileFrom(arr[i]);
             this.changedAfterSlide = true;
             break;
         }
@@ -86,7 +83,7 @@ export default class Grid {
   canSlide() {
     function _canSlide(arr) {
       for (let i = 0; i < arr.length - 1; i++) {
-        if (arr[i].isEmpty() || arr[i + 1].isEmpty() || arr[i].canMerge(arr[i + 1].getTile())) {
+        if (arr[i].isEmpty() || arr[i + 1].isEmpty() || arr[i].canMerge(arr[i + 1])) {
           return true;
         }
       }

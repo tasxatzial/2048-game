@@ -16,11 +16,12 @@ export default class Cell {
     return this.tile;
   }
 
-  slideTile(tile) { //change to cell?
+  setTileFrom(cell) {
     if (this.tile) {
-      throw new Error("cell already has a tile");
+      throw new Error("target cell already has a tile");
     }
-    this.tile = tile;
+    this.tile = cell.tile;
+    cell.tile = null;
   }
 
   setTile(value) {
@@ -30,11 +31,12 @@ export default class Cell {
     this.tile = new Tile(this.row, this.col, value);
   }
 
-  slideMergeTile(tile) { //change to cell?
+  setMergeTileFrom(cell) {
     if (this.mergeTile) {
-      throw new Error("cell already has a merge tile");
+      throw new Error("target cell already has a merge tile");
     }
-    this.mergeTile = tile;
+    this.mergeTile = cell.tile;
+    cell.tile = null;
   }
 
   clearTile() {
@@ -46,23 +48,19 @@ export default class Cell {
   }
 
   willMerge() {
-    return !this.tile && !this.mergeTile;
+    return this.tile && this.mergeTile;
   }
 
-  canMerge(tile) {
-    if (!this.tile) {
-      throw new Error("cell has no tile");
-    }
-    return !this.mergeTile && (this.tile.getValue() == tile.getValue());
+  canMerge(cell) {
+    return this.tile && !cell.mergeTile && !this.mergeTile && (this.tile.getValue() == cell.tile.getValue());
   }
 
   mergeTiles(mergeTilesFn) {
-    if (!this.tile || !this.mergeTile) {
-      return;
+    if (this.willMerge()) {
+      this.tile.setValue(mergeTilesFn(this.tile.getValue(), this.mergeTile.getValue()));
+      this.tile.row = this.row;
+      this.tile.col = this.col;
+      this.clearMergeTile();
     }
-    this.tile.setValue(mergeTilesFn(this.tile.getValue(), this.mergeTile.getValue()));
-    this.tile.row = this.row;
-    this.tile.col = this.col;
-    this.clearMergeTile();
   }
 }
