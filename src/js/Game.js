@@ -1,12 +1,14 @@
 import Grid from "./Grid.js";
 import GridGen from "./GridGen.js";
+import MergeResultGen from "./MergeResultGen.js";
+import NewTileGen from "./NewTileGen.js";
 
 export default class Game {
   constructor() {
     this.grid = new Grid({
       grid: GridGen.createFullRectangle(4, 4),
-      newTileFn: this.newTileFn,
-      mergeResultFn: this.mergeResultFn
+      newTileFn: NewTileGen.original2048,
+      mergeResultFn: MergeResultGen.original2048
     });
 
     this.grid.addTile();
@@ -58,22 +60,5 @@ export default class Game {
   slideDown() {
     this.grid.slideDown();
     this._postSlide();
-  }
-
-  newTileFn(emptyCells) {
-    if (emptyCells.length == 0) {
-      return null;
-    }
-    const randEl = emptyCells[Math.floor(Math.random() * emptyCells.length)];
-    const value = Math.floor(Math.random() > 0.9 ? 4 : 2);
-    return {
-      row: randEl.row,
-      column: randEl.column,
-      value: value
-    };
-  }
-  
-  mergeResultFn(value1, value2) {
-    return value1 + value2;
   }
 }
