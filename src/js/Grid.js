@@ -225,7 +225,7 @@ export default class Grid {
             result += (pad + '.').slice(-entryLength);
           }
         } else {
-          result += (pad + 'X').slice(-entryLength);
+          result += (pad + '◼').slice(-entryLength);
         }
         if (j != this.grid[0].length - 1) {
           result += ' ';
