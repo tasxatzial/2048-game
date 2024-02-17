@@ -1,9 +1,10 @@
 import Grid from "./Grid.js";
+import GridGen from "./GridGen.js";
 
 export default class Game {
   constructor() {
     this.grid = new Grid({
-      size: 4,
+      grid: GridGen.createFullRectangle(4, 4),
       newTileFn: this.newTileFn,
       mergeResultFn: this.mergeResultFn
     });
@@ -24,7 +25,7 @@ export default class Game {
     return !this.grid.canSlide();
   }
 
-  hasSlid() {
+  hasBoardChanged() {
     return this.grid.hasChangedAfterSlide();
   }
 
@@ -60,7 +61,7 @@ export default class Game {
   }
 
   newTileFn(gridArray) {
-    const emptyTiles = gridArray.map(row => row.filter(el => !el.tile)).flat();
+    const emptyTiles = gridArray.map(row => row.filter(el => el && !el.tile)).flat();
     if (emptyTiles.length == 0) {
       return null;
     }
