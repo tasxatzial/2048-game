@@ -2,7 +2,7 @@ import Game from "./Game.js";
 
 const game = new Game();
 console.log("Score ", game.getScore());
-console.log(game.printBoard())
+console.log(game.getBoard())
 if (game.isWon()) {
   console.log("You won!");
 }
@@ -32,7 +32,7 @@ function keydownHandler(e) {
   }
   if (game.hasBoardChanged()) {
     console.log("Score ", game.getScore());
-    console.log(game.printBoard());
+    console.log(game.getBoard());
     if (game.isWon()) {
       console.log("You won!");
       window.removeEventListener('keydown', keydownHandler);

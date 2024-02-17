@@ -15,7 +15,7 @@ export default class Game {
     this.grid.addTile();
   }
   
-  printBoard() {
+  getBoard() {
     return this.grid.toString();
   }
 
