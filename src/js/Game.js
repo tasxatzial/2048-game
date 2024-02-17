@@ -60,12 +60,11 @@ export default class Game {
     this._postSlide();
   }
 
-  newTileFn(gridArray) {
-    const emptyTiles = gridArray.map(row => row.filter(el => el && !el.tile)).flat();
-    if (emptyTiles.length == 0) {
+  newTileFn(emptyCells) {
+    if (emptyCells.length == 0) {
       return null;
     }
-    const randEl = emptyTiles[Math.floor(Math.random() * emptyTiles.length)];
+    const randEl = emptyCells[Math.floor(Math.random() * emptyCells.length)];
     const value = Math.floor(Math.random() > 0.9 ? 4 : 2);
     return {
       row: randEl.row,
