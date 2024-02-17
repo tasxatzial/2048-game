@@ -158,8 +158,7 @@ export default class Grid {
   }
 
   addTile() {
-    const emptyCells = this.toArray().map(row => row.filter(el => el && !el.tile)).flat();
-    const res = this.newTileFn(emptyCells);
+    const res = this.newTileFn(this.toArray());
     if (!res) {
       return;
     }
