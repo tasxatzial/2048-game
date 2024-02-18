@@ -1,13 +1,13 @@
 export default class GameView {
-  constructor(game, gridParent) {
+  constructor(gameObj, gridParent) {
     this.gridParent = gridParent;
-    this.game = game;
-    this.renderGrid(game.toJSON());
+    this.renderGrid(gameObj);
+    this.onKeydown = this.onKeydown.bind(this);
   }
 
   renderGrid(jsonArray) {
     const rows = jsonArray.length;
-    const columns = rows? jsonArray[0].length : 0;
+    const columns = rows ? jsonArray[0].length : 0;
     const grid = document.createElement('div');
     grid.classList.add('grid');
     grid.style.setProperty('--grid-rows', rows);
@@ -33,7 +33,37 @@ export default class GameView {
         grid.appendChild(cell);
       }
     }
-    this.gridParent.innerHtml = "";
+    this.gridParent.innerHTML = "";
     this.gridParent.appendChild(grid);
+  }
+
+  updateGrid(gameObj) {
+    this.renderGrid(gameObj);
+  }
+
+  bindKeydown(slideHandlers) {
+    this.slideHandlers = slideHandlers;
+    window.addEventListener('keydown', this.onKeydown)
+  }
+
+  onKeydown(e) {
+    if (e.repeat) {
+      return;
+    }
+    switch(e.code) {
+      case 'ArrowLeft':
+        this.slideHandlers.slideLeft();
+        break;
+      case 'ArrowUp':
+        this.slideHandlers.slideUp();
+        window.removeEventListener('keydown', this.f)
+        break;
+      case 'ArrowRight':
+        this.slideHandlers.slideRight();
+        break;
+      case 'ArrowDown':
+        this.slideHandlers.slideDown();
+        break;
+    }
   }
 }

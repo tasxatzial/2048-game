@@ -2,9 +2,11 @@ import Grid from "./Grid.js";
 import GridGen from "./GridGen.js";
 import MergeResultGen from "./MergeResultGen.js";
 import NewTileGen from "./NewTileGen.js";
+import Model from "./Model.js";
 
-export default class Game {
+export default class Game extends Model {
   constructor() {
+    super();
     this.grid = new Grid({
       grid: GridGen.createFullRectangle(4, 4),
       newTileFn: NewTileGen.original2048,
@@ -43,6 +45,7 @@ export default class Game {
     if (this.grid.hasChangedAfterSlide()) {
       this.grid.mergeTiles();
       this.grid.addTile();
+      this.raiseChange("gridUpdate");
     }
   }
 
