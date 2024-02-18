@@ -19,13 +19,13 @@ export default class GameView {
         if (cellObj) {
           cell.classList.add('cell');
           const tile = document.createElement('div');
-          tile.classList.add('tile');
+          tile.classList.add('inner-cell');
           tile.style.setProperty('--row', cellObj.row);
           tile.style.setProperty('--column', cellObj.column);
           if (cellObj.tile) {
             tile.textContent = cellObj.tile.value;
             tile.style.setProperty('--merge-count', cellObj.tile.mergeCount);
-            tile.classList.add('filled-tile');
+            tile.classList.add('tile');
           }
           cell.appendChild(tile);
         }
