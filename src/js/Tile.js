@@ -3,6 +3,7 @@ export default class Tile {
     this.row = row;
     this.col = col;
     this.value = value;
+    this.mergeCount = 0;
   }
 
   getValue() {
@@ -29,11 +30,16 @@ export default class Tile {
     return this.col;
   }
 
+  updateMergeCount() {
+    this.mergeCount++;
+  }
+
   toObj() {
     return {
       row: this.row,
       column: this.col,
-      value: this.value
+      value: this.value,
+      mergeCount: this.mergeCount
     };
   }
 }

@@ -66,8 +66,9 @@ export default class Cell {
   mergeTiles(mergeTilesFn) {
     if (this.willMerge()) {
       this.tile.setValue(mergeTilesFn(this.tile.getValue(), this.mergeTile.getValue()));
-      this.tile.row = this.row;
-      this.tile.col = this.col;
+      this.tile.setRow(this.row);
+      this.tile.setColumn(this.col);
+      this.tile.updateMergeCount();
       this.clearMergeTile();
     }
   }
@@ -77,7 +78,7 @@ export default class Cell {
       row: this.row,
       column: this.col,
       tile: this.hasTile() ? this.tile.toObj() : null,
-      mergeTile: this.hasMergeTile() ? this.mergeTile.toObj() : null
+      mergeTile: this.hasMergeTile() ? this.mergeTile.toObj() : null,
     }
   }
 }

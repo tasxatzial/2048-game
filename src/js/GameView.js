@@ -24,6 +24,7 @@ export default class GameView {
           tile.style.setProperty('--column', cellObj.column);
           if (cellObj.tile) {
             tile.textContent = cellObj.tile.value;
+            tile.style.setProperty('--merge-count', cellObj.tile.mergeCount);
             tile.classList.add('filled-tile');
           }
           cell.appendChild(tile);
