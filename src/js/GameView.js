@@ -24,6 +24,7 @@ export default class GameView {
           tile.style.setProperty('--column', cellObj.column);
           if (cellObj.tile) {
             tile.textContent = cellObj.tile.value;
+            tile.classList.add('filled-tile');
           }
           cell.appendChild(tile);
         }
