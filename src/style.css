@@ -1,0 +1,36 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+.grid {
+  --cell-gap: 1rem;
+  --cell-size: 5rem;
+  --padding: var(--cell-gap);
+  display: grid;
+  grid-template-columns: repeat(var(--grid-rows), var(--cell-size));
+  grid-template-rows: repeat(var(--grid-rows), var(--cell-size));
+  gap: var(--cell-gap);
+  position: relative;
+  padding: var(--padding);
+}
+
+.cell {
+  width: var(--cell-size);
+  height: var(--cell-size);
+  border: 1px solid black;
+}
+
+.tile {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  width: var(--cell-size);
+  height: var(--cell-size);
+  top: calc(var(--row) * (var(--cell-size) + var(--cell-gap)) + var(--padding));
+  left: calc(var(--column) * (var(--cell-size) + var(--cell-gap)) + var(--padding));
+}

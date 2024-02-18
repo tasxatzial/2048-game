@@ -15,6 +15,10 @@ export default class Game {
     this.grid.addTile();
   }
   
+  toJSON() {
+    return this.grid.toArray();
+  }
+
   getBoard() {
     return this.grid.toString();
   }
