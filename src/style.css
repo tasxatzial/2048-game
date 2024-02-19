@@ -11,7 +11,7 @@ body {
 }
 
 .grid {
-  --cell-gap: 0.7rem;
+  --cell-gap: 0.25rem;
   --cell-size: 5rem;
   --padding: var(--cell-gap);
   display: grid;
@@ -20,17 +20,18 @@ body {
   gap: var(--cell-gap);
   position: relative;
   padding: var(--padding);
-  background-color: #bababa;
+  background-color: black;
 }
 
 .cell {
   width: var(--cell-size);
   height: var(--cell-size);
-  background-color: #dbdbdb;
+  background-color: #505050;
 }
 
 .missing-cell {
   background-color: transparent;
+  border: 2px solid white;
 }
 
 .inner-cell {
@@ -42,13 +43,14 @@ body {
   height: var(--cell-size);
   top: calc(var(--row) * (var(--cell-size) + var(--cell-gap)) + var(--padding));
   left: calc(var(--column) * (var(--cell-size) + var(--cell-gap)) + var(--padding));
-  
 }
 
 .tile {
   z-index: 100;
-  background-color: #DADFF7;
-  box-shadow: 0px 0px 2px 2px rgba(0,0,0,0.1);
+  font-size: var(--font-size, 1rem);
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-weight: bold;
+  
 }
 
 .grid,
@@ -56,4 +58,171 @@ body {
 .tile,
 .inner-cell {
   border-radius: 0.25rem;
+}
+
+.tile-x0 {
+  color: black;
+  background-color: white;
+}
+
+.tile-x1 {
+  color: black;
+  background-color: hsl(0, 79%, 72%);
+}
+
+
+.tile-x2 {
+  color: black;
+  background-color: hsl(28, 96%, 73%);
+}
+
+.tile-x3 {
+  color: black;
+  background-color: hsl(39, 100%, 50%);
+}
+
+.tile-x4 {
+  color: black;
+  background-color: hsl(54, 77%, 75%);
+}
+
+.tile-x5 {
+  color: black;
+  background-color: hsl(60, 100%, 50%);
+}
+
+.tile-x6 {
+  color: black;
+  background-color: hsl(80, 61%, 50%);
+}
+
+.tile-x7 {
+  color: black;
+  background-color: hsl(90, 100%, 49%);
+}
+
+.tile-x8 {
+  color: black;
+  background-color: hsl(120, 25%, 65%);
+}
+
+.tile-x9 {
+  color: black;
+  background-color: hsl(120, 73%, 75%);
+}
+
+.tile-x10 {
+  color: black;
+  background-color: hsl(150, 100%, 50%);
+}
+
+.tile-x11 {
+  color: black;
+  background-color: hsl(180, 100%, 50%);
+}
+
+.tile-x12 {
+  color: black;
+  background-color: hsl(195, 100%, 50%);
+}
+
+.tile-x13 {
+  color: black;
+  background-color: hsl(195, 53%, 79%);
+}
+
+.tile-x14 {
+  color: black;
+  background-color: hsl(302, 59%, 65%);
+}
+
+.tile-x15 {
+  color: white;
+  background-color: hsl(0, 0%, 50%);
+}
+
+.tile-x16 {
+  color: white;
+  background-color: hsl(16, 100%, 50%);
+}
+
+.tile-x17 {
+  color: white;
+  background-color: hsl(25, 76%, 31%);
+}
+
+.tile-x18 {
+  color: white;
+  background-color: hsl(60, 100%, 25%);
+}
+
+.tile-x19 {
+  color: white;
+  background-color: hsl(120, 61%, 34%);
+}
+
+.tile-x20 {
+  color: white;
+  background-color: hsl(180, 100%, 27%);
+}
+
+.tile-x21 {
+  color: white;
+  background-color: hsl(210, 100%, 56%);
+}
+
+.tile-x22 {
+  color: white;
+  background-color: hsl(240, 100%, 27%);
+}
+
+.tile-x23 {
+  color: white;
+  background-color: hsl(240, 100%, 50%);
+}
+
+.tile-x24 {
+  color: white;
+  background-color: hsl(248, 39%, 39%);
+}
+
+.tile-x25 {
+  color: white;
+  background-color: hsl(249, 80%, 67%);
+}
+
+.tile-x26 {
+  color: white;
+  background-color: hsl(271, 76%, 53%);
+}
+
+.tile-x27 {
+  color: white;
+  background-color: hsl(300, 100%, 25%);
+}
+
+.tile-x28 {
+  color: white;
+  background-color: hsl(300, 100%, 50%);
+}
+
+.tile-x29 {
+  color: white;
+  background-color: hsl(328, 100%, 54%);
+}
+
+.tile-x30 {
+  color: white;
+  background-color: hsl(338, 57%, 44%);
+}
+
+.tile-x31 {
+  color: white;
+  background-color: hsl(348, 83%, 47%);
+}
+
+.tile-x32 {
+  color: black;
+  background-color: white;
+  border: 2px solid white;
 }

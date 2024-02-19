@@ -25,7 +25,7 @@ export default class GameView {
           if (cellObj.tile) {
             tile.textContent = cellObj.tile.value;
             tile.style.setProperty('--merge-count', cellObj.tile.mergeCount);
-            tile.classList.add('tile');
+            tile.classList.add('tile', `tile-x${cellObj.tile.mergeCount}`);
           }
           cell.appendChild(tile);
         }
@@ -58,7 +58,6 @@ export default class GameView {
         break;
       case 'ArrowUp':
         this.slideHandlers.slideUp();
-        window.removeEventListener('keydown', this.f)
         break;
       case 'ArrowRight':
         this.slideHandlers.slideRight();

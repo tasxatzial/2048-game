@@ -30,8 +30,12 @@ export default class Tile {
     return this.col;
   }
 
-  updateMergeCount() {
-    this.mergeCount++;
+  getMergeCount() {
+    return this.mergeCount;
+  }
+
+  setMergeCount(value) {
+    this.mergeCount = value;
   }
 
   toObj() {

@@ -68,7 +68,7 @@ export default class Cell {
       this.tile.setValue(mergeTilesFn(this.tile.getValue(), this.mergeTile.getValue()));
       this.tile.setRow(this.row);
       this.tile.setColumn(this.col);
-      this.tile.updateMergeCount();
+      this.tile.setMergeCount(Math.max(this.tile.getMergeCount(), this.mergeTile.getMergeCount()) + 1);
       this.clearMergeTile();
     }
   }
