@@ -34,7 +34,7 @@ body {
   border: 2px solid white;
 }
 
-.inner-cell {
+.tile {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -43,20 +43,14 @@ body {
   height: var(--cell-size);
   top: calc(var(--row) * (var(--cell-size) + var(--cell-gap)) + var(--padding));
   left: calc(var(--column) * (var(--cell-size) + var(--cell-gap)) + var(--padding));
-}
-
-.tile {
-  z-index: 100;
   font-size: var(--font-size, 1rem);
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   font-weight: bold;
-  
 }
 
 .grid,
 .cell,
-.tile,
-.inner-cell {
+.tile {
   border-radius: 0.25rem;
 }
 

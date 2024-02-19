@@ -19,7 +19,6 @@ export default class GameView {
         if (cellObj) {
           cell.classList.add('cell');
           const tile = document.createElement('div');
-          tile.classList.add('inner-cell');
           tile.style.setProperty('--row', cellObj.row);
           tile.style.setProperty('--column', cellObj.column);
           if (cellObj.tile) {
