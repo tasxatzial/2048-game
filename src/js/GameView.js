@@ -5,9 +5,9 @@ export default class GameView {
     this.onKeydown = this.onKeydown.bind(this);
   }
 
-  renderGrid(jsonArray) {
-    const rows = jsonArray.length;
-    const columns = rows ? jsonArray[0].length : 0;
+  renderGrid({gridObj}) {
+    const rows = gridObj.length;
+    const columns = rows ? gridObj[0].length : 0;
     const grid = document.createElement('div');
     grid.classList.add('grid');
     grid.style.setProperty('--grid-rows', rows);
@@ -15,7 +15,7 @@ export default class GameView {
     for (let i = 0; i < rows; i++) {
       for (let j = 0; j < columns; j++) {
         const cell = document.createElement('div');
-        const cellObj = jsonArray[i][j];
+        const cellObj = gridObj[i][j];
         if (cellObj) {
           cell.classList.add('cell');
           const tile = document.createElement('div');
@@ -39,8 +39,8 @@ export default class GameView {
     this.gridParent.appendChild(grid);
   }
 
-  updateGrid(gameObj) {
-    this.renderGrid(gameObj);
+  updateGrid({gridObj}) {
+    this.renderGrid({gridObj});
   }
 
   bindKeydown(slideHandlers) {

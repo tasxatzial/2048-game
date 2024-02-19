@@ -1,24 +1,17 @@
 import Grid from "./Grid.js";
-import GridGen from "./GridGen.js";
-import MergeResultGen from "./MergeResultGen.js";
-import NewTileGen from "./NewTileGen.js";
 import Model from "./Model.js";
 
 export default class Game extends Model {
-  constructor() {
+  constructor(options) {
     super();
-    this.grid = new Grid({
-      grid: GridGen.createFullRectangle(4, 4),
-      newTileFn: NewTileGen.original2048,
-      mergeResultFn: MergeResultGen.original2048
-    });
-
+    const {gridArray, gridStateObj, newTileFnName, mergeResultFnName} = options;
+    this.grid = new Grid({gridArray, gridStateObj, newTileFnName, mergeResultFnName});
     this.grid.addTile();
     this.grid.addTile();
   }
-  
+
   toJSON() {
-    return this.grid.toArray();
+    return this.grid.toStateObj();
   }
 
   getBoard() {

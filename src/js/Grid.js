@@ -1,16 +1,36 @@
 import Cell from "./Cell.js";
+import MergeResultGen from "./MergeResultGen.js";
+import NewTileGen from "./NewTileGen.js";
 
 export default class Grid {
-  constructor({grid, newTileFn, mergeResultFn}) {
-    this.cells = this._createCells(grid);
-    this.rows = this._createRows(grid);
-    this.cols = this._createColumns(grid);
-    this.grid = grid;
+  constructor({gridArray, gridStateObj, newTileFnName, mergeResultFnName}) {
+    if (gridStateObj) {
+
+    } else {
+      this.gridArray = gridArray;
+      this.cells = this._createCells(gridArray);
+      this.rows = this._createRows(gridArray);
+      this.cols = this._createColumns(gridArray);
+      this.slideCount = 0;
+      this.mergedTilesSum = 0;
+    }
+    if (newTileFnName) {
+      this.newTileFn = NewTileGen[newTileFnName];
+      this.newTileFnName = newTileFnName;
+    }
+    else {
+      this.newTileFn = NewTileGen.original2048;
+      this.newTileFnName = "original2048";
+    }
+    if (mergeResultFnName) {
+      this.mergeResultFn = MergeResultGen[mergeResultFnName];
+      this.mergeResultFnName = mergeResultFnName;
+    }
+    else {
+      this.mergeResultFn = MergeResultGen.original2048;
+      this.mergeResultFnName = "original2048";
+    }
     this.changedAfterSlide = false;
-    this.slideCount = 0;
-    this.newTileFn = newTileFn;
-    this.mergeResultFn = mergeResultFn;
-    this.mergedTilesSum = 0;
   }
 
   _createRows(grid) {
@@ -158,12 +178,10 @@ export default class Grid {
   }
 
   addTile() {
-    const res = this.newTileFn(this.toArray());
-    if (!res) {
-      return;
+    const {row, column, value} = this.newTileFn(this.toStateObj().gridObj);
+    if (row != undefined) {
+      this.cells[row * this.gridArray[0].length + column].setTile(value);
     }
-    const {row, column, value} = res;
-    this.cells[row * this.grid[0].length + column].setTile(value);
   }
 
   hasTile(value) {
@@ -193,13 +211,13 @@ export default class Grid {
     return maxLength;
   }
 
-  toArray() {
+  toStateObj() {
     const arr = [];
-    for (let i = 0; i < this.grid.length; i++) {
+    for (let i = 0; i < this.gridArray.length; i++) {
       const row = [];
-      for (let j = 0; j < this.grid[0].length; j++) {
-        if (this.grid[i][j] == 1) {
-          const cell = this.cells[i * this.grid[0].length + j];
+      for (let j = 0; j < this.gridArray[0].length; j++) {
+        if (this.gridArray[i][j] == 1) {
+          const cell = this.cells[i * this.gridArray[0].length + j];
           row.push(cell.toObj());
         } else {
           row.push(null);
@@ -207,17 +225,27 @@ export default class Grid {
       }
       arr.push(row);
     }
-    return arr;
+    return {
+      gridObj: arr,
+      slideCount: this.slideCount,
+      mergedTilesSum: this.mergedTilesSum,
+      newTileFn: this.newTileFnName,
+      mergeResultFnName: this.mergeResultFnName
+    };
+  }
+
+  fromStateObj(stateObj) {
+
   }
 
   toString() {
     let result = '';
     const entryLength = this.getMaxTileLength();
     const pad = ' '.repeat(entryLength);
-    for (let i = 0; i < this.grid.length; i++) {
-      for (let j = 0; j < this.grid[0].length; j++) {
-        if (this.grid[i][j] == 1) {
-          const cell = this.cells[i * this.grid[0].length + j];
+    for (let i = 0; i < this.gridArray.length; i++) {
+      for (let j = 0; j < this.gridArray[0].length; j++) {
+        if (this.gridArray[i][j] == 1) {
+          const cell = this.cells[i * this.gridArray[0].length + j];
           if (cell.hasTile()) {
             result += (pad + cell.getTile().getValue()).slice(-entryLength);
           } else {
@@ -226,7 +254,7 @@ export default class Grid {
         } else {
           result += (pad + '◼').slice(-entryLength);
         }
-        if (j != this.grid[0].length - 1) {
+        if (j != this.gridArray[0].length - 1) {
           result += ' ';
         }
       }

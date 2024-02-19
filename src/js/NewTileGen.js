@@ -1,9 +1,8 @@
 export default class NewTileGen {
   constructor() {}
 
-  static original2048(board) {
-    const emptyCells = board.map(row => row.filter(el => el && !el.tile)).flat();
-    console.log(emptyCells.length)
+  static original2048(gridObj) {
+    const emptyCells = gridObj.map(row => row.filter(el => el && !el.tile)).flat();
     if (emptyCells.length == 0) {
       return null;
     }
