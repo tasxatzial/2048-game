@@ -20,7 +20,7 @@ body {
   --_cell-gap: var(--cell-gap, 0.25rem);
   --padding: var(--_cell-gap);
   display: grid;
-  grid-template-columns: repeat(var(--grid-rows), var(--_cell-size));
+  grid-template-columns: repeat(var(--grid-columns), var(--_cell-size));
   grid-template-rows: repeat(var(--grid-rows), var(--_cell-size));
   gap: var(--_cell-gap);
   position: relative;

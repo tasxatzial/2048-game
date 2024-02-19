@@ -3,6 +3,7 @@ export default class NewTileGen {
 
   static original2048(board) {
     const emptyCells = board.map(row => row.filter(el => el && !el.tile)).flat();
+    console.log(emptyCells.length)
     if (emptyCells.length == 0) {
       return null;
     }
