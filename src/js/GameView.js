@@ -24,7 +24,8 @@ export default class GameView {
           if (cellObj.tile) {
             tile.textContent = cellObj.tile.value;
             tile.style.setProperty('--merge-count', cellObj.tile.mergeCount);
-            tile.classList.add('tile', `tile-x${cellObj.tile.mergeCount}`);
+            tile.classList.add('tile', `tile-merge-${cellObj.tile.mergeCount}`);
+            tile.classList.add(`tile-font-size-${cellObj.tile.value.toString().length}`);
           }
           cell.appendChild(tile);
         }

@@ -2,6 +2,11 @@
   box-sizing: border-box;
 }
 
+:root {
+  --cell-gap: 0.25rem;
+  --cell-size: 5rem;
+}
+
 body {
   display: flex;
   justify-content: center;
@@ -11,22 +16,20 @@ body {
 }
 
 .grid {
-  --cell-gap: 0.25rem;
-  --cell-size: 5rem;
-  --padding: var(--cell-gap);
+  --_cell-size: var(--cell-size, 5rem);
+  --_cell-gap: var(--cell-gap, 0.25rem);
+  --padding: var(--_cell-gap);
   display: grid;
-  grid-template-columns: repeat(var(--grid-rows), var(--cell-size));
-  grid-template-rows: repeat(var(--grid-rows), var(--cell-size));
-  gap: var(--cell-gap);
+  grid-template-columns: repeat(var(--grid-rows), var(--_cell-size));
+  grid-template-rows: repeat(var(--grid-rows), var(--_cell-size));
+  gap: var(--_cell-gap);
   position: relative;
   padding: var(--padding);
   background-color: black;
 }
 
 .cell {
-  width: var(--cell-size);
-  height: var(--cell-size);
-  background-color: #505050;
+  background-color: #595959;
 }
 
 .missing-cell {
@@ -35,16 +38,17 @@ body {
 }
 
 .tile {
+  --font-size: calc(var(--_cell-size) / 2.6);
   display: flex;
   justify-content: center;
   align-items: center;
   position: absolute;
-  width: var(--cell-size);
-  height: var(--cell-size);
-  top: calc(var(--row) * (var(--cell-size) + var(--cell-gap)) + var(--padding));
-  left: calc(var(--column) * (var(--cell-size) + var(--cell-gap)) + var(--padding));
-  font-size: var(--font-size, 1rem);
+  width: var(--_cell-size);
+  height: var(--_cell-size);
+  top: calc(var(--row) * (var(--_cell-size) + var(--_cell-gap)) + var(--padding));
+  left: calc(var(--column) * (var(--_cell-size) + var(--_cell-gap)) + var(--padding));
   font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: calc(var(--font-size) / var(--font-scale-factor));
   font-weight: bold;
 }
 
@@ -54,168 +58,207 @@ body {
   border-radius: 0.25rem;
 }
 
-.tile-x0 {
+.tile-font-size-1 {
+  --font-scale-factor: 1;
+}
+
+.tile-font-size-2 {
+  --font-scale-factor: 1;
+}
+
+.tile-font-size-3 {
+  --font-scale-factor: 1;
+}
+
+.tile-font-size-4 {
+  --font-scale-factor: 1.3;
+}
+
+.tile-font-size-5 {
+  --font-scale-factor: 1.55;
+}
+
+.tile-font-size-6 {
+  --font-scale-factor: 1.85;
+}
+
+.tile-font-size-7 {
+  --font-scale-factor: 2.2;
+}
+
+.tile-font-size-8 {
+  --font-scale-factor: 2.5;
+}
+
+.tile-font-size-9 {
+  --font-scale-factor: 2.95;
+}
+
+.tile-font-size-10 {
+  --font-scale-factor: 3.45;
+}
+
+.tile-merge-0 {
   color: black;
   background-color: white;
 }
 
-.tile-x1 {
+.tile-merge-1 {
   color: black;
   background-color: hsl(0, 79%, 72%);
 }
 
-
-.tile-x2 {
+.tile-merge-2 {
   color: black;
   background-color: hsl(28, 96%, 73%);
 }
 
-.tile-x3 {
+.tile-merge-3 {
   color: black;
   background-color: hsl(39, 100%, 50%);
 }
 
-.tile-x4 {
+.tile-merge-4 {
   color: black;
   background-color: hsl(54, 77%, 75%);
 }
 
-.tile-x5 {
+.tile-merge-5 {
   color: black;
   background-color: hsl(60, 100%, 50%);
 }
 
-.tile-x6 {
+.tile-merge-6 {
   color: black;
   background-color: hsl(80, 61%, 50%);
 }
 
-.tile-x7 {
+.tile-merge-7 {
   color: black;
   background-color: hsl(90, 100%, 49%);
 }
 
-.tile-x8 {
+.tile-merge-8 {
   color: black;
   background-color: hsl(120, 25%, 65%);
 }
 
-.tile-x9 {
+.tile-merge-9 {
   color: black;
   background-color: hsl(120, 73%, 75%);
 }
 
-.tile-x10 {
+.tile-merge-10 {
   color: black;
   background-color: hsl(150, 100%, 50%);
 }
 
-.tile-x11 {
+.tile-merge-11 {
   color: black;
   background-color: hsl(180, 100%, 50%);
 }
 
-.tile-x12 {
+.tile-merge-12 {
   color: black;
   background-color: hsl(195, 100%, 50%);
 }
 
-.tile-x13 {
+.tile-merge-13 {
   color: black;
   background-color: hsl(195, 53%, 79%);
 }
 
-.tile-x14 {
+.tile-merge-14 {
   color: black;
   background-color: hsl(302, 59%, 65%);
 }
 
-.tile-x15 {
+.tile-merge-15 {
   color: white;
   background-color: hsl(0, 0%, 50%);
 }
 
-.tile-x16 {
+.tile-merge-16 {
   color: white;
   background-color: hsl(16, 100%, 50%);
 }
 
-.tile-x17 {
+.tile-merge-17 {
   color: white;
   background-color: hsl(25, 76%, 31%);
 }
 
-.tile-x18 {
+.tile-merge-18 {
   color: white;
   background-color: hsl(60, 100%, 25%);
 }
 
-.tile-x19 {
+.tile-merge-19 {
   color: white;
   background-color: hsl(120, 61%, 34%);
 }
 
-.tile-x20 {
+.tile-merge-20 {
   color: white;
   background-color: hsl(180, 100%, 27%);
 }
 
-.tile-x21 {
+.tile-merge-21 {
   color: white;
   background-color: hsl(210, 100%, 56%);
 }
 
-.tile-x22 {
+.tile-merge-22 {
   color: white;
   background-color: hsl(240, 100%, 27%);
 }
 
-.tile-x23 {
+.tile-merge-23 {
   color: white;
   background-color: hsl(240, 100%, 50%);
 }
 
-.tile-x24 {
+.tile-merge-24 {
   color: white;
   background-color: hsl(248, 39%, 39%);
 }
 
-.tile-x25 {
+.tile-merge-25 {
   color: white;
   background-color: hsl(249, 80%, 67%);
 }
 
-.tile-x26 {
+.tile-merge-26 {
   color: white;
   background-color: hsl(271, 76%, 53%);
 }
 
-.tile-x27 {
+.tile-merge-27 {
   color: white;
   background-color: hsl(300, 100%, 25%);
 }
 
-.tile-x28 {
+.tile-merge-28 {
   color: white;
   background-color: hsl(300, 100%, 50%);
 }
 
-.tile-x29 {
+.tile-merge-29 {
   color: white;
   background-color: hsl(328, 100%, 54%);
 }
 
-.tile-x30 {
+.tile-merge-30 {
   color: white;
   background-color: hsl(338, 57%, 44%);
 }
 
-.tile-x31 {
+.tile-merge-31 {
   color: white;
   background-color: hsl(348, 83%, 47%);
 }
 
-.tile-x32 {
+.tile-merge-32 {
   color: black;
   background-color: white;
   border: 2px solid white;
