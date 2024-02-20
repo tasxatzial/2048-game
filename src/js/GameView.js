@@ -23,9 +23,8 @@ export default class GameView {
           tile.style.setProperty('--column', cellObj.column);
           if (cellObj.tile) {
             tile.textContent = cellObj.tile.value;
-            tile.classList.add('tile', 'glass');
+            tile.classList.add('tile');
             const mergeCount = cellObj.tile.mergeCount;
-            tile.style.setProperty('--merge-count', cellObj.tile.mergeCount);
             tile.classList.add(mergeCount > 32 ? 'tile-merge-32' : 'tile-merge-' + mergeCount);
             const valueLength = cellObj.tile.value.toString().length;
             tile.classList.add(valueLength > 10 ? 'tile-font-size-10' : 'tile-font-size-' + valueLength);
