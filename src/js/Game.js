@@ -1,4 +1,4 @@
-import Grid from "./Grid.js";
+import Grid from "./grid/Grid.js";
 import Model from "./Model.js";
 
 export default class Game extends Model {

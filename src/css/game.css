@@ -1,18 +1,6 @@
-* {
-  box-sizing: border-box;
-}
-
 :root {
   --cell-gap: 0.25rem;
   --cell-size: 5rem;
-}
-
-body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  margin: 0;
 }
 
 .grid {

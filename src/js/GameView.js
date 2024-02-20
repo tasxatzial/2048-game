@@ -1,8 +1,8 @@
 export default class GameView {
-  constructor(gameObj, gridParent) {
-    this.gridParent = gridParent;
+  constructor(gameObj, gameContainer) {
+    this.gridParent = gameContainer;
     this.renderGrid(gameObj);
-    this.onKeydown = this.onKeydown.bind(this);
+    this._onKeydown = this._onKeydown.bind(this);
   }
 
   renderGrid({gridObj}) {
@@ -23,7 +23,7 @@ export default class GameView {
           tile.style.setProperty('--column', cellObj.column);
           if (cellObj.tile) {
             tile.textContent = cellObj.tile.value;
-            tile.classList.add('tile');
+            tile.classList.add('tile', 'glass');
             const mergeCount = cellObj.tile.mergeCount;
             tile.style.setProperty('--merge-count', cellObj.tile.mergeCount);
             tile.classList.add(mergeCount > 32 ? 'tile-merge-32' : 'tile-merge-' + mergeCount);
@@ -48,10 +48,10 @@ export default class GameView {
 
   bindKeydown(slideHandlers) {
     this.slideHandlers = slideHandlers;
-    window.addEventListener('keydown', this.onKeydown)
+    window.addEventListener('keydown', this._onKeydown)
   }
 
-  onKeydown(e) {
+  _onKeydown(e) {
     if (e.repeat) {
       return;
     }

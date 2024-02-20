@@ -1,9 +1,9 @@
 import Game from "./Game.js";
 import GameView from "./GameView.js";
-import GridGen from "./GridGen.js";
+import GridGen from "./grid/Gridgen.js";
 
 
-const gridParent = document.getElementById('game-board');
+const gameContainer = document.getElementById('game-container');
 
 const options = {
   gridObj: null,
@@ -13,7 +13,7 @@ const options = {
 };
 
 const game = new Game(options);
-const gameView = new GameView(game.toJSON(), gridParent);
+const gameView = new GameView(game.toJSON(), gameContainer);
 
 gameView.bindKeydown({
   slideUp: game.slideUp.bind(game),
