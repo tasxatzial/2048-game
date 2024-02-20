@@ -1,4 +1,4 @@
-export default class GridGen {
+export default class GridBoolean {
   constructor() {}
 
   static original2048() {

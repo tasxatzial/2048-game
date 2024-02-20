@@ -1,4 +1,4 @@
-export default class MergeResultGen {
+export default class MergeResult {
   constructor() {}
 
   static original2048(val1, val2) {

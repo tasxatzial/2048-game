@@ -1,7 +1,7 @@
 import Cell from "./Cell.js";
-import GridGen from "./Gridgen.js";
-import MergeResultGen from "./MergeResultGen.js";
-import NewTileGen from "./NewTileGen.js";
+import GridBoolean from "./GridBoolean.js";
+import MergeResult from "./MergeResult.js";
+import NewTile from "./NewTile.js";
 
 export default class Grid {
   constructor({grid, gridBooleanFnName, newTileFnName, mergeResultFnName}) {
@@ -33,10 +33,10 @@ export default class Grid {
     }
     else {
       if (gridBooleanFnName) {
-        this.gridBoolean = GridGen[gridBooleanFnName]();
+        this.gridBoolean = GridBoolean[gridBooleanFnName]();
       }
       else {
-        this.gridBoolean = GridGen.original2048();
+        this.gridBoolean = GridBoolean.original2048();
       }
       this.cells = this._createCells(this.gridBoolean);
       this.rows = this._createRows(this.gridBoolean);
@@ -45,19 +45,19 @@ export default class Grid {
       this.mergedTilesSum = 0;
       this.changedAfterSlide = false;
       if (newTileFnName) {
-        this.newTileFn = NewTileGen[newTileFnName];
+        this.newTileFn = NewTile[newTileFnName];
         this.newTileFnName = newTileFnName;
       }
       else {
-        this.newTileFn = NewTileGen.original2048;
+        this.newTileFn = NewTile.original2048;
         this.newTileFnName = "original2048";
       }
       if (mergeResultFnName) {
-        this.mergeResultFn = MergeResultGen[mergeResultFnName];
+        this.mergeResultFn = MergeResult[mergeResultFnName];
         this.mergeResultFnName = mergeResultFnName;
       }
       else {
-        this.mergeResultFn = MergeResultGen.original2048;
+        this.mergeResultFn = MergeResult.original2048;
         this.mergeResultFnName = "original2048";
       }
     }
