@@ -4,8 +4,8 @@ import Model from "./Model.js";
 export default class Game extends Model {
   constructor(options) {
     super();
-    const {gridBoolean, gridObj, newTileFnName, mergeResultFnName} = options;
-    this.grid = new Grid({gridBoolean, gridObj, newTileFnName, mergeResultFnName});
+    const {grid, gridBooleanFnName, newTileFnName, mergeResultFnName} = options;
+    this.grid = new Grid({grid, gridBooleanFnName, newTileFnName, mergeResultFnName});
     this.grid.addTile();
     this.grid.addTile();
   }
