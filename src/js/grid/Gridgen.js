@@ -1,7 +1,11 @@
 export default class GridGen {
   constructor() {}
 
-  static createFullRectangle(rowCount, columnCount) {
+  static original2048() {
+    return this._createFullRectangle(4, 4);
+  }
+
+  static _createFullRectangle(rowCount, columnCount) {
     const rows = [];
     for (let i = 0; i < rowCount; i++) {
       const row = [];

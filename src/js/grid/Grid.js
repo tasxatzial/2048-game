@@ -1,12 +1,13 @@
 import Cell from "./Cell.js";
+import GridGen from "./Gridgen.js";
 import MergeResultGen from "./MergeResultGen.js";
 import NewTileGen from "./NewTileGen.js";
 
 export default class Grid {
-  constructor({grid, gridBoolean, newTileFnName, mergeResultFnName}) {
+  constructor({grid, gridBooleanFnName, newTileFnName, mergeResultFnName}) {
     if (grid) {
       const {gridArray, slideCount, mergedTilesSum, changedAfterSlide, newTileFnName, mergeResultFnName} = grid;
-      const gridBooleanArray = [];
+      const gridBoolean = [];
       this.cells = {};
       for (let i = 0; i < gridArray.length; i++) {
         const row = [];
@@ -19,11 +20,11 @@ export default class Grid {
             row.push(0);
           }
         }
-        gridBooleanArray.push(row);
+        gridBoolean.push(row);
       }
-      this.rows = this._createRows(gridBooleanArray);
-      this.cols = this._createColumns(gridBooleanArray);
-      this.gridBoolean = gridBooleanArray;
+      this.rows = this._createRows(gridBoolean);
+      this.cols = this._createColumns(gridBoolean);
+      this.gridBoolean = gridBoolean;
       this.slideCount = slideCount;
       this.mergedTilesSum = mergedTilesSum;
       this.changedAfterSlide = changedAfterSlide;
@@ -31,10 +32,15 @@ export default class Grid {
       this.mergeResultFnName = mergeResultFnName;
     }
     else {
-      this.cells = this._createCells(gridBoolean);
-      this.rows = this._createRows(gridBoolean);
-      this.cols = this._createColumns(gridBoolean);
-      this.gridBoolean = gridBoolean;
+      if (gridBooleanFnName) {
+        this.gridBoolean = GridGen[gridBooleanFnName]();
+      }
+      else {
+        this.gridBoolean = GridGen.original2048();
+      }
+      this.cells = this._createCells(this.gridBoolean);
+      this.rows = this._createRows(this.gridBoolean);
+      this.cols = this._createColumns(this.gridBoolean);
       this.slideCount = 0;
       this.mergedTilesSum = 0;
       this.changedAfterSlide = false;

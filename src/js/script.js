@@ -1,15 +1,10 @@
 import Game from "./Game.js";
 import GameView from "./GameView.js";
-import GridGen from "./grid/Gridgen.js";
 
 
 const gameContainer = document.getElementById('game-container');
 
-const options = {
-  gridBoolean: GridGen.createFullRectangle(4, 4),
-  newTileFnName: "original2048",
-  mergeResultFnName: "original2048"
-};
+const options = {};
 
 const game = new Game(options);
 const gameView = new GameView(game.toJSON(), gameContainer);
