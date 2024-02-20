@@ -4,14 +4,14 @@ import Model from "./Model.js";
 export default class Game extends Model {
   constructor(options) {
     super();
-    const {gridArray, gridStateObj, newTileFnName, mergeResultFnName} = options;
-    this.grid = new Grid({gridArray, gridStateObj, newTileFnName, mergeResultFnName});
+    const {gridBoolean, gridObj, newTileFnName, mergeResultFnName} = options;
+    this.grid = new Grid({gridBoolean, gridObj, newTileFnName, mergeResultFnName});
     this.grid.addTile();
     this.grid.addTile();
   }
 
   toJSON() {
-    return this.grid.toStateObj();
+    return this.grid.toObj();
   }
 
   getBoard() {

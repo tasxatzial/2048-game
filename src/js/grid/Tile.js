@@ -46,4 +46,15 @@ export default class Tile {
       mergeCount: this.mergeCount
     };
   }
+
+  static fromObj(obj) {
+    if (obj) {
+      const {row, column, value, mergeCount} = obj;
+      const tile = new Tile(row, column, value);
+      tile.mergeCount = mergeCount;
+      return tile;
+    } else {
+      return null;
+    }
+  }
 }

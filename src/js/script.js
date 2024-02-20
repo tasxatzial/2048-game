@@ -6,8 +6,7 @@ import GridGen from "./grid/Gridgen.js";
 const gameContainer = document.getElementById('game-container');
 
 const options = {
-  gridObj: null,
-  gridArray: GridGen.createFullRectangle(4, 4),
+  gridBoolean: GridGen.createFullRectangle(4, 4),
   newTileFnName: "original2048",
   mergeResultFnName: "original2048"
 };

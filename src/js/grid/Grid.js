@@ -3,45 +3,69 @@ import MergeResultGen from "./MergeResultGen.js";
 import NewTileGen from "./NewTileGen.js";
 
 export default class Grid {
-  constructor({gridArray, gridStateObj, newTileFnName, mergeResultFnName}) {
-    if (gridStateObj) {
-
-    } else {
-      this.gridArray = gridArray;
-      this.cells = this._createCells(gridArray);
-      this.rows = this._createRows(gridArray);
-      this.cols = this._createColumns(gridArray);
-      this.slideCount = 0;
-      this.mergedTilesSum = 0;
-    }
-    if (newTileFnName) {
-      this.newTileFn = NewTileGen[newTileFnName];
+  constructor({grid, gridBoolean, newTileFnName, mergeResultFnName}) {
+    if (grid) {
+      const {gridArray, slideCount, mergedTilesSum, changedAfterSlide, newTileFnName, mergeResultFnName} = grid;
+      const gridBooleanArray = [];
+      this.cells = {};
+      for (let i = 0; i < gridArray.length; i++) {
+        const row = [];
+        for (let j = 0; j < gridArray[0].length; j++) {
+          const cellObj = gridArray[i][j];
+          if (cellObj) {
+            this.cells[i * gridArray[0].length + j] = Cell.fromObj(cellObj);
+            row.push(1);
+          } else {
+            row.push(0);
+          }
+        }
+        gridBooleanArray.push(row);
+      }
+      this.rows = this._createRows(gridBooleanArray);
+      this.cols = this._createColumns(gridBooleanArray);
+      this.gridBoolean = gridBooleanArray;
+      this.slideCount = slideCount;
+      this.mergedTilesSum = mergedTilesSum;
+      this.changedAfterSlide = changedAfterSlide;
       this.newTileFnName = newTileFnName;
-    }
-    else {
-      this.newTileFn = NewTileGen.original2048;
-      this.newTileFnName = "original2048";
-    }
-    if (mergeResultFnName) {
-      this.mergeResultFn = MergeResultGen[mergeResultFnName];
       this.mergeResultFnName = mergeResultFnName;
     }
     else {
-      this.mergeResultFn = MergeResultGen.original2048;
-      this.mergeResultFnName = "original2048";
+      this.cells = this._createCells(gridBoolean);
+      this.rows = this._createRows(gridBoolean);
+      this.cols = this._createColumns(gridBoolean);
+      this.gridBoolean = gridBoolean;
+      this.slideCount = 0;
+      this.mergedTilesSum = 0;
+      this.changedAfterSlide = false;
+      if (newTileFnName) {
+        this.newTileFn = NewTileGen[newTileFnName];
+        this.newTileFnName = newTileFnName;
+      }
+      else {
+        this.newTileFn = NewTileGen.original2048;
+        this.newTileFnName = "original2048";
+      }
+      if (mergeResultFnName) {
+        this.mergeResultFn = MergeResultGen[mergeResultFnName];
+        this.mergeResultFnName = mergeResultFnName;
+      }
+      else {
+        this.mergeResultFn = MergeResultGen.original2048;
+        this.mergeResultFnName = "original2048";
+      }
     }
-    this.changedAfterSlide = false;
   }
 
-  _createRows(grid) {
+  _createRows(gridBooleanArray) {
     const rows = [];
     let last = false;
-    for (let i = 0; i < grid.length; i++) {
+    for (let i = 0; i < gridBooleanArray.length; i++) {
       let row = [];
-      for (let j = 0; j < grid[0].length; j++) {
-        if (grid[i][j] == 1) {
+      for (let j = 0; j < gridBooleanArray[0].length; j++) {
+        if (gridBooleanArray[i][j] == 1) {
           last = true;
-          row.push(this.cells[i * grid[0].length + j]);
+          row.push(this.cells[i * gridBooleanArray[0].length + j]);
         }
         else if (last) {
           last = false;
@@ -54,18 +78,18 @@ export default class Grid {
     return rows;
   }
 
-  _createColumns(grid) {
-    if (!grid.length) {
+  _createColumns(gridBooleanArray) {
+    if (!gridBooleanArray.length) {
       return [];
     }
     const cols = [];
     let last = false;
-    for (let j = 0; j < grid[0].length; j++) {
+    for (let j = 0; j < gridBooleanArray[0].length; j++) {
       let col = [];
-      for (let i = 0; i < grid.length; i++) {
-        if (grid[i][j] == 1) {
+      for (let i = 0; i < gridBooleanArray.length; i++) {
+        if (gridBooleanArray[i][j] == 1) {
           last = true;
-          col.push(this.cells[i * grid[0].length + j]);
+          col.push(this.cells[i * gridBooleanArray[0].length + j]);
         }
         else if (last) {
           last = false;
@@ -78,36 +102,36 @@ export default class Grid {
     return cols;
   }
 
-  _createCells(grid) {
+  _createCells(gridBoolean) {
     const cells = {};
-    for (let i = 0; i < grid.length; i++) {
-      for (let j = 0; j < grid[0].length; j++) {
-        if (grid[i][j] == 1) {
-          cells[i * grid[0].length + j] = new Cell(i, j);
+    for (let i = 0; i < gridBoolean.length; i++) {
+      for (let j = 0; j < gridBoolean[0].length; j++) {
+        if (gridBoolean[i][j] == 1) {
+          cells[i * gridBoolean[0].length + j] = new Cell(i, j);
         }
       }
     }
     return cells;
   }
 
-  _slideTilesToEnd(arr) {
-    for (let i = arr.length - 1; i >= 0; i--) {
-      if (!arr[i].hasTile()) {
+  _slideTilesToEnd(cellArray) {
+    for (let i = cellArray.length - 1; i >= 0; i--) {
+      if (!cellArray[i].hasTile()) {
         continue;
       }
-      for (let j = i + 1; j < arr.length; j++) {
-        if (arr[j].hasTile()) {
-          if (arr[j].canMerge(arr[i])) {
-            arr[j].setMergeTileFrom(arr[i]);
+      for (let j = i + 1; j < cellArray.length; j++) {
+        if (cellArray[j].hasTile()) {
+          if (cellArray[j].canMerge(cellArray[i])) {
+            cellArray[j].setMergeTileFrom(cellArray[i]);
             this.changedAfterSlide = true;
           }
           else if (j-1 != i) {
-            arr[j-1].setTileFrom(arr[i]);
+            cellArray[j-1].setTileFrom(cellArray[i]);
             this.changedAfterSlide = true;
           }
           break;
-        } else if (j == arr.length - 1) {
-            arr[j].setTileFrom(arr[i]);
+        } else if (j == cellArray.length - 1) {
+            cellArray[j].setTileFrom(cellArray[i]);
             this.changedAfterSlide = true;
             break;
         }
@@ -153,9 +177,9 @@ export default class Grid {
   }
 
   canSlide() {
-    function _canSlide(arr) {
-      for (let i = 0; i < arr.length - 1; i++) {
-        if (!arr[i].hasTile() || !arr[i + 1].hasTile() || arr[i].canMerge(arr[i + 1])) {
+    function _canSlide(cellArray) {
+      for (let i = 0; i < cellArray.length - 1; i++) {
+        if (!cellArray[i].hasTile() || !cellArray[i + 1].hasTile() || cellArray[i].canMerge(cellArray[i + 1])) {
           return true;
         }
       }
@@ -178,9 +202,9 @@ export default class Grid {
   }
 
   addTile() {
-    const {row, column, value} = this.newTileFn(this.toStateObj().gridObj);
+    const {row, column, value} = this.newTileFn(this.toObj());
     if (row != undefined) {
-      this.cells[row * this.gridArray[0].length + column].setTile(value);
+      this.cells[row * this.gridBoolean[0].length + column].setTile(value);
     }
   }
 
@@ -211,41 +235,38 @@ export default class Grid {
     return maxLength;
   }
 
-  toStateObj() {
-    const arr = [];
-    for (let i = 0; i < this.gridArray.length; i++) {
+  toObj() {
+    const gridArray = [];
+    for (let i = 0; i < this.gridBoolean.length; i++) {
       const row = [];
-      for (let j = 0; j < this.gridArray[0].length; j++) {
-        if (this.gridArray[i][j] == 1) {
-          const cell = this.cells[i * this.gridArray[0].length + j];
+      for (let j = 0; j < this.gridBoolean[0].length; j++) {
+        if (this.gridBoolean[i][j] == 1) {
+          const cell = this.cells[i * this.gridBoolean[0].length + j];
           row.push(cell.toObj());
         } else {
           row.push(null);
         }
       }
-      arr.push(row);
+      gridArray.push(row);
     }
     return {
-      gridObj: arr,
+      gridArray: gridArray,
       slideCount: this.slideCount,
       mergedTilesSum: this.mergedTilesSum,
-      newTileFn: this.newTileFnName,
+      changedAfterSlide: this.changedAfterSlide,
+      newTileFnName: this.newTileFnName,
       mergeResultFnName: this.mergeResultFnName
     };
-  }
-
-  fromStateObj(stateObj) {
-
   }
 
   toString() {
     let result = '';
     const entryLength = this.getMaxTileLength();
     const pad = ' '.repeat(entryLength);
-    for (let i = 0; i < this.gridArray.length; i++) {
-      for (let j = 0; j < this.gridArray[0].length; j++) {
-        if (this.gridArray[i][j] == 1) {
-          const cell = this.cells[i * this.gridArray[0].length + j];
+    for (let i = 0; i < this.gridBoolean.length; i++) {
+      for (let j = 0; j < this.gridBoolean[0].length; j++) {
+        if (this.gridBoolean[i][j] == 1) {
+          const cell = this.cells[i * this.gridBoolean[0].length + j];
           if (cell.hasTile()) {
             result += (pad + cell.getTile().getValue()).slice(-entryLength);
           } else {
@@ -254,7 +275,7 @@ export default class Grid {
         } else {
           result += (pad + '◼').slice(-entryLength);
         }
-        if (j != this.gridArray[0].length - 1) {
+        if (j != this.gridBoolean[0].length - 1) {
           result += ' ';
         }
       }

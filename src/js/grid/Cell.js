@@ -81,4 +81,16 @@ export default class Cell {
       mergeTile: this.hasMergeTile() ? this.mergeTile.toObj() : null,
     }
   }
+
+  static fromObj(obj) {
+    if (obj) {
+      const {row, column, tile, mergeTile} = obj;
+      const cell = new Cell(row, column);
+      cell.tile = Tile.fromObj(tile);
+      cell.mergeTile = Tile.fromObj(mergeTile);
+      return cell;
+    } else {
+      return null;
+    }
+  }
 }
