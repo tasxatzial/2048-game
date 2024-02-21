@@ -8,24 +8,9 @@ export default class Grid {
   constructor({grid, gridBooleanFnName, newTileFnName, mergeResultFnName, mergeScoreFnName}) {
     if (grid) {
       const {gridArray, slideCount, score, changedAfterSlide, newTileFnName, mergeResultFnName, mergeScoreFnName} = grid;
-      const gridBoolean = [];
-      this.cells = {};
-      for (let i = 0; i < gridArray.length; i++) {
-        const row = [];
-        for (let j = 0; j < gridArray[0].length; j++) {
-          const cellObj = gridArray[i][j];
-          if (cellObj) {
-            this.cells[i * gridArray[0].length + j] = Cell.fromObj(cellObj);
-            row.push(1);
-          } else {
-            row.push(0);
-          }
-        }
-        gridBoolean.push(row);
-      }
-      this.rows = this._createRows(gridBoolean);
-      this.cols = this._createColumns(gridBoolean);
-      this.gridBoolean = gridBoolean;
+      this._createCellsFromGrid(gridArray);
+      this._createRows(this.gridBoolean);
+      this._createColumns(this.gridBoolean);
       this.slideCount = slideCount;
       this.score = score;
       this.changedAfterSlide = changedAfterSlide;
@@ -43,9 +28,9 @@ export default class Grid {
       else {
         this.gridBoolean = GridBoolean.original2048();
       }
-      this.cells = this._createCells(this.gridBoolean);
-      this.rows = this._createRows(this.gridBoolean);
-      this.cols = this._createColumns(this.gridBoolean);
+      this._createCellsFromGridBoolean(this.gridBoolean);
+      this._createRows(this.gridBoolean);
+      this._createColumns(this.gridBoolean);
       this.slideCount = 0;
       this.score = 0;
       this.changedAfterSlide = false;
@@ -76,61 +61,76 @@ export default class Grid {
     }
   }
 
-  _createRows(gridBooleanArray) {
-    const rows = [];
+  _createRows(booleanArray) {
+    this.rows = [];
     let last = false;
-    for (let i = 0; i < gridBooleanArray.length; i++) {
+    for (let i = 0; i < booleanArray.length; i++) {
       let row = [];
-      for (let j = 0; j < gridBooleanArray[0].length; j++) {
-        if (gridBooleanArray[i][j] == 1) {
+      for (let j = 0; j < booleanArray[0].length; j++) {
+        if (booleanArray[i][j] == 1) {
           last = true;
-          row.push(this.cells[i * gridBooleanArray[0].length + j]);
+          row.push(this.cells[i * booleanArray[0].length + j]);
         }
         else if (last) {
           last = false;
-          rows.push(row);
+          this.rows.push(row);
           row = [];
         }
       }
-      rows.push(row);
+      this.rows.push(row);
     }
-    return rows;
   }
 
-  _createColumns(gridBooleanArray) {
-    if (!gridBooleanArray.length) {
+  _createColumns(booleanArray) {
+    if (!booleanArray.length) {
       return [];
     }
-    const cols = [];
+    this.cols = [];
     let last = false;
-    for (let j = 0; j < gridBooleanArray[0].length; j++) {
+    for (let j = 0; j < booleanArray[0].length; j++) {
       let col = [];
-      for (let i = 0; i < gridBooleanArray.length; i++) {
-        if (gridBooleanArray[i][j] == 1) {
+      for (let i = 0; i < booleanArray.length; i++) {
+        if (booleanArray[i][j] == 1) {
           last = true;
-          col.push(this.cells[i * gridBooleanArray[0].length + j]);
+          col.push(this.cells[i * booleanArray[0].length + j]);
         }
         else if (last) {
           last = false;
-          cols.push(col);
+          this.cols.push(col);
           col = [];
         }
       }
-      cols.push(col);
+      this.cols.push(col);
     }
-    return cols;
   }
 
-  _createCells(gridBoolean) {
-    const cells = {};
-    for (let i = 0; i < gridBoolean.length; i++) {
-      for (let j = 0; j < gridBoolean[0].length; j++) {
-        if (gridBoolean[i][j] == 1) {
-          cells[i * gridBoolean[0].length + j] = new Cell(i, j);
+  _createCellsFromGridBoolean(booleanArray) {
+    this.cells = {};
+    for (let i = 0; i < booleanArray.length; i++) {
+      for (let j = 0; j < booleanArray[0].length; j++) {
+        if (booleanArray[i][j] == 1) {
+          this.cells[i * booleanArray[0].length + j] = new Cell(i, j);
         }
       }
     }
-    return cells;
+  }
+
+  _createCellsFromGrid(gridArray) {
+    this.gridBoolean = [];
+    this.cells = {};
+    for (let i = 0; i < gridArray.length; i++) {
+      const row = [];
+      for (let j = 0; j < gridArray[0].length; j++) {
+        const cellObj = gridArray[i][j];
+        if (cellObj) {
+          this.cells[i * gridArray[0].length + j] = Cell.fromObj(cellObj);
+          row.push(1);
+        } else {
+          row.push(0);
+        }
+      }
+      this.gridBoolean.push(row);
+    }
   }
 
   _slideTilesToEnd(cellArray) {
@@ -252,7 +252,7 @@ export default class Grid {
   }
 
   toObj() {
-    const gridArray = [];
+    const grid = [];
     for (let i = 0; i < this.gridBoolean.length; i++) {
       const row = [];
       for (let j = 0; j < this.gridBoolean[0].length; j++) {
@@ -263,10 +263,10 @@ export default class Grid {
           row.push(null);
         }
       }
-      gridArray.push(row);
+      grid.push(row);
     }
     return {
-      gridArray: gridArray,
+      gridArray: grid,
       slideCount: this.slideCount,
       score: this.score,
       changedAfterSlide: this.changedAfterSlide,

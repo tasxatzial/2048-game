@@ -6,12 +6,12 @@ export default class NewTileGen {
     if (emptyCells.length == 0) {
       return null;
     }
-    const randEl = emptyCells[Math.floor(Math.random() * emptyCells.length)];
-    const value = Math.floor(Math.random() > 0.9 ? 4 : 2);
+    const randCell = emptyCells[Math.floor(Math.random() * emptyCells.length)];
+    const randValue = Math.floor(Math.random() > 0.9 ? 4 : 2);
     return {
-      row: randEl.row,
-      column: randEl.column,
-      value: value
+      row: randCell.row,
+      column: randCell.column,
+      value: randValue
     };
   }
 }

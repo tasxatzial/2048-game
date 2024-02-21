@@ -1,9 +1,9 @@
 import Tile from "./Tile.js";
 
 export default class Cell {
-  constructor(row, col) {
+  constructor(row, column) {
     this.row = row;
-    this.col = col;
+    this.col = column;
     this.tile = null;
     this.mergeTile = null;
   }

@@ -1,7 +1,7 @@
 export default class Tile {
-  constructor(row, col, value) {
+  constructor(row, column, value) {
     this.row = row;
-    this.col = col;
+    this.col = column;
     this.value = value;
     this.mergeCount = 0;
   }
@@ -18,8 +18,8 @@ export default class Tile {
     this.row = row;
   }
 
-  setColumn(col) {
-    this.col = col;
+  setColumn(column) {
+    this.col = column;
   }
 
   getRow() {
