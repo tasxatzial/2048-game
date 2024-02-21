@@ -4,8 +4,8 @@ import Model from "./Model.js";
 export default class Game extends Model {
   constructor(options) {
     super();
-    const {grid, gridBooleanFnName, newTileFnName, mergeResultFnName} = options;
-    this.grid = new Grid({grid, gridBooleanFnName, newTileFnName, mergeResultFnName});
+    const {grid, gridBooleanFnName, newTileFnName, mergeResultFnName, mergeScoreFnName} = options;
+    this.grid = new Grid({grid, gridBooleanFnName, newTileFnName, mergeResultFnName, mergeScoreFnName});
     this.grid.addTile();
     this.grid.addTile();
   }
@@ -31,7 +31,7 @@ export default class Game extends Model {
   }
 
   getScore() {
-    return this.grid.getMergedTilesSum();
+    return this.grid.getScore();
   }
 
   _postSlide() {

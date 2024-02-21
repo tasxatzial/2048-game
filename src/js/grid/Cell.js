@@ -55,22 +55,23 @@ export default class Cell {
     this.mergeTile = null;
   }
 
-  willMerge() {
-    return this.tile && this.mergeTile;
-  }
-
   canMerge(cell) {
     return this.tile && !cell.mergeTile && !this.mergeTile && (this.tile.getValue() == cell.tile.getValue());
   }
 
-  mergeTiles(mergeTilesFn) {
-    if (this.willMerge()) {
-      this.tile.setValue(mergeTilesFn(this.tile.getValue(), this.mergeTile.getValue()));
+  mergeTiles(mergeResultFn, mergeScoreFn) {
+    let score = 0;
+    if (this.tile) {
       this.tile.setRow(this.row);
       this.tile.setColumn(this.col);
+    }
+    if (this.mergeTile) {
+      score = mergeScoreFn(this.tile.getValue(), this.mergeTile.getValue());
+      this.tile.setValue(mergeResultFn(this.tile.getValue(), this.mergeTile.getValue()));
       this.tile.setMergeCount(Math.max(this.tile.getMergeCount(), this.mergeTile.getMergeCount()) + 1);
       this.clearMergeTile();
     }
+    return score;
   }
 
   toObj() {

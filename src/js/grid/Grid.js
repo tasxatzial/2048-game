@@ -1,12 +1,13 @@
 import Cell from "./Cell.js";
 import GridBoolean from "./GridBoolean.js";
 import MergeResult from "./MergeResult.js";
+import MergeScore from "./MergeScore.js";
 import NewTile from "./NewTile.js";
 
 export default class Grid {
-  constructor({grid, gridBooleanFnName, newTileFnName, mergeResultFnName}) {
+  constructor({grid, gridBooleanFnName, newTileFnName, mergeResultFnName, mergeScoreFnName}) {
     if (grid) {
-      const {gridArray, slideCount, mergedTilesSum, changedAfterSlide, newTileFnName, mergeResultFnName} = grid;
+      const {gridArray, slideCount, score, changedAfterSlide, newTileFnName, mergeResultFnName, mergeScoreFnName} = grid;
       const gridBoolean = [];
       this.cells = {};
       for (let i = 0; i < gridArray.length; i++) {
@@ -26,10 +27,14 @@ export default class Grid {
       this.cols = this._createColumns(gridBoolean);
       this.gridBoolean = gridBoolean;
       this.slideCount = slideCount;
-      this.mergedTilesSum = mergedTilesSum;
+      this.score = score;
       this.changedAfterSlide = changedAfterSlide;
       this.newTileFnName = newTileFnName;
+      this.newTileFn = NewTile[newTileFnName];
       this.mergeResultFnName = mergeResultFnName;
+      this.mergeResultFn = MergeResult[mergeResultFnName];
+      this.mergeScoreFnName = mergeScoreFnName;
+      this.mergeScoreFn = MergeScore[mergeScoreFnName];
     }
     else {
       if (gridBooleanFnName) {
@@ -42,7 +47,7 @@ export default class Grid {
       this.rows = this._createRows(this.gridBoolean);
       this.cols = this._createColumns(this.gridBoolean);
       this.slideCount = 0;
-      this.mergedTilesSum = 0;
+      this.score = 0;
       this.changedAfterSlide = false;
       if (newTileFnName) {
         this.newTileFn = NewTile[newTileFnName];
@@ -59,6 +64,14 @@ export default class Grid {
       else {
         this.mergeResultFn = MergeResult.original2048;
         this.mergeResultFnName = "original2048";
+      }
+      if (mergeScoreFnName) {
+        this.mergeScoreFn = MergeScore[mergeScoreFnName];
+        this.mergeScoreFnName = mergeScoreFnName;
+      }
+      else {
+        this.mergeScoreFn = MergeScore.original2048;
+        this.mergeScoreFnName = "original2048";
       }
     }
   }
@@ -196,15 +209,12 @@ export default class Grid {
 
   mergeTiles() {
     Object.values(this.cells).forEach(cell => {
-      if (cell.willMerge()) {
-        cell.mergeTiles(this.mergeResultFn);
-        this.mergedTilesSum += cell.getTile().getValue();
-      }
+      this.score += cell.mergeTiles(this.mergeResultFn, this.mergeScoreFn);
     });
   }
 
-  getMergedTilesSum() {
-    return this.mergedTilesSum;
+  getScore() {
+    return this.score;
   }
 
   addTile() {
@@ -258,10 +268,11 @@ export default class Grid {
     return {
       gridArray: gridArray,
       slideCount: this.slideCount,
-      mergedTilesSum: this.mergedTilesSum,
+      score: this.score,
       changedAfterSlide: this.changedAfterSlide,
       newTileFnName: this.newTileFnName,
-      mergeResultFnName: this.mergeResultFnName
+      mergeResultFnName: this.mergeResultFnName,
+      mergeScoreFnName: this.mergeResultFnName
     };
   }
 
