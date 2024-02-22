@@ -24,7 +24,7 @@ export default class Cell {
     return this.mergeTile;
   }
 
-  setTileFrom(cell) {
+  moveTileFrom(cell) {
     if (this.tile) {
       throw new Error("target cell already has a tile");
     }
@@ -39,20 +39,12 @@ export default class Cell {
     this.tile = new Tile(this.row, this.col, value);
   }
 
-  setMergeTileFrom(cell) {
+  moveMergeTileFrom(cell) {
     if (this.mergeTile) {
       throw new Error("target cell already has a merge tile");
     }
     this.mergeTile = cell.tile;
     cell.tile = null;
-  }
-
-  clearTile() {
-    this.tile = null;
-  }
-
-  clearMergeTile() {
-    this.mergeTile = null;
   }
 
   canMerge(cell) {
@@ -69,7 +61,7 @@ export default class Cell {
       score = mergeScoreFn(this.tile.getValue(), this.mergeTile.getValue());
       this.tile.setValue(mergeResultFn(this.tile.getValue(), this.mergeTile.getValue()));
       this.tile.setMergeCount(Math.max(this.tile.getMergeCount(), this.mergeTile.getMergeCount()) + 1);
-      this.clearMergeTile();
+      this.mergeTile = null;
     }
     return score;
   }
