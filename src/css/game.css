@@ -11,7 +11,6 @@
   grid-template-columns: repeat(var(--grid-columns), var(--_cell-size));
   grid-template-rows: repeat(var(--grid-rows), var(--_cell-size));
   gap: var(--_cell-gap);
-  position: relative;
   padding: var(--padding);
   background-color: black;
 }
@@ -30,14 +29,19 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  position: absolute;
   width: var(--_cell-size);
   height: var(--_cell-size);
-  top: calc(var(--row) * (var(--_cell-size) + var(--_cell-gap)) + var(--padding));
-  left: calc(var(--column) * (var(--_cell-size) + var(--_cell-gap)) + var(--padding));
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   font-size: calc(var(--font-size) / var(--font-scale-factor));
   font-weight: bold;
+}
+
+.horizontal-slide {
+  transform: translateX(calc((var(--_cell-size) + var(--padding)) * (var(--cell-column) - var(--tile-column))));
+}
+
+.vertical-slide {
+  transform: translateY(calc((var(--_cell-size) + var(--padding)) * (var(--cell-row) - var(--tile-row))));
 }
 
 .grid,

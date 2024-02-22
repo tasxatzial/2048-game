@@ -1,26 +1,23 @@
 export default class GameView {
-  constructor(gameObj, gameContainer) {
+  constructor(gameContainer) {
     this.gridParent = gameContainer;
-    this.renderGrid(gameObj);
     this._onKeydown = this._onKeydown.bind(this);
   }
 
-  renderGrid({gridArray}) {
-    const rows = gridArray.length;
-    const columns = rows ? gridArray[0].length : 0;
+  initialize({gridArray}) {
+    this.gridRows = gridArray.length;
+    this.gridCols = this.gridRows? gridArray[0].length : 0;
     const grid = document.createElement('div');
     grid.classList.add('grid');
-    grid.style.setProperty('--grid-rows', rows);
-    grid.style.setProperty('--grid-columns', columns);
-    for (let i = 0; i < rows; i++) {
-      for (let j = 0; j < columns; j++) {
+    grid.style.setProperty('--grid-rows', this.gridRows);
+    grid.style.setProperty('--grid-columns', this.gridCols);
+    for (let i = 0; i < this.gridRows; i++) {
+      for (let j = 0; j < this.gridCols; j++) {
         const cell = document.createElement('div');
         const cellObj = gridArray[i][j];
         if (cellObj) {
           cell.classList.add('cell');
           const tile = document.createElement('div');
-          tile.style.setProperty('--row', cellObj.row);
-          tile.style.setProperty('--column', cellObj.column);
           if (cellObj.tile) {
             tile.textContent = cellObj.tile.value;
             tile.classList.add('tile');
@@ -41,13 +38,46 @@ export default class GameView {
     this.gridParent.appendChild(grid);
   }
 
-  updateGrid({gridArray}) {
-    this.renderGrid({gridArray});
+  slideBoard({gridArray}) {
+    const cells = this.gridParent.children[0].children;
+    for (let i = 0; i < this.gridRows; i++) {
+      for (let j = 0; j < this.gridCols; j++) {
+        const cellObj = gridArray[i][j];
+        if (!cellObj) {
+          continue;
+        }
+        [cellObj.tile, cellObj.mergeTile].forEach((tileObj) => {
+          if (tileObj) {
+            const slidingTile = cells.item(tileObj.row * gridArray[0].length + tileObj.column).children[0];
+            if (cellObj.column != tileObj.column) {
+              slidingTile.style.setProperty('--cell-column', cellObj.column);
+              slidingTile.style.setProperty('--tile-column', tileObj.column);
+              slidingTile.classList.add('horizontal-slide');
+            }
+            else if (cellObj.row != tileObj.row) {
+              slidingTile.style.setProperty('--cell-row', cellObj.row);
+              slidingTile.style.setProperty('--tile-row', tileObj.row);
+              slidingTile.classList.add('vertical-slide');
+            }
+          }
+        });
+      }
+    }
+    console.log("view slide");
+  }
+
+  mergeTiles({gridArray}) {
+    console.log("view merge");
+  }
+
+  addTile({gridArray}) {
+    console.log("view add tile");
+    this.bindKeydown(this.slideHandlers);
   }
 
   bindKeydown(slideHandlers) {
     this.slideHandlers = slideHandlers;
-    window.addEventListener('keydown', this._onKeydown)
+    window.addEventListener('keydown', this._onKeydown, {once: true});
   }
 
   _onKeydown(e) {

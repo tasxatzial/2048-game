@@ -34,31 +34,47 @@ export default class Game extends Model {
     return this.grid.getScore();
   }
 
-  _postSlide() {
-    if (this.grid.hasChangedAfterSlide()) {
-      this.grid.mergeTiles();
-      this.grid.addTile();
-      this.raiseChange("gridUpdate");
-    }
+  addTile() {
+    this.grid.addTile();
+    console.log("model add tile");
+    this.raiseChange("addTileEvent");
+  }
+
+  mergeTiles() {
+    this.grid.mergeTiles();
+    console.log("model merge");
+    this.raiseChange("mergeEvent");
   }
 
   slideLeft() {
     this.grid.slideLeft();
-    this._postSlide();
+    if (this.grid.hasChangedAfterSlide()) {
+      console.log("model slide");
+      this.raiseChange("slideEvent");
+    }
   }
 
   slideRight() {
     this.grid.slideRight();
-    this._postSlide();
+    if (this.grid.hasChangedAfterSlide()) {
+      console.log("model slide");
+      this.raiseChange("slideEvent");
+    }
   }
 
   slideUp() {
     this.grid.slideUp();
-    this._postSlide();
+    if (this.grid.hasChangedAfterSlide()) {
+      console.log("model slide");
+      this.raiseChange("slideEvent");
+    }
   }
 
   slideDown() {
     this.grid.slideDown();
-    this._postSlide();
+    if (this.grid.hasChangedAfterSlide()) {
+      console.log("model slide");
+      this.raiseChange("slideEvent");
+    }
   }
 }
