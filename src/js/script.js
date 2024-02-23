@@ -24,11 +24,16 @@ game.addChangeListener("slideEvent", () => {
   }, 100)
 });
 
-game.addChangeListener("mergeEvent", () => {
-  gameView.mergeTiles(game.toJSON());
+game.addChangeListener("slideMergeEvent", () => {
+  gameView.finalizeBoard(game.toJSON());
   setTimeout(() => {
     game.addTile();
   }, 100);
+});
+
+game.addChangeListener("slideNoMergeEvent", () => {
+  gameView.finalizeBoard(game.toJSON());
+  game.addTile();
 });
 
 game.addChangeListener("addTileEvent", () => {

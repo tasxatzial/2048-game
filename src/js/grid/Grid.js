@@ -207,9 +207,18 @@ export default class Grid {
     return this.rows.some(_canSlide) || this.cols.some(_canSlide);
   }
 
-  mergeTiles() {
+  willMerge() {
     Object.values(this.cells).forEach(cell => {
-      this.score += cell.mergeTiles(this.mergeResultFn, this.mergeScoreFn);
+      if (cell.willMerge()) {
+        return true;
+      }
+    });
+    return false;
+  }
+
+  finalizeCells() {
+    Object.values(this.cells).forEach(cell => {
+      this.score += cell.finalize(this.mergeResultFn, this.mergeScoreFn);
     });
   }
 

@@ -51,7 +51,11 @@ export default class Cell {
     return this.tile && !cell.mergeTile && !this.mergeTile && (this.tile.getValue() == cell.tile.getValue());
   }
 
-  mergeTiles(mergeResultFn, mergeScoreFn) {
+  willMerge() {
+    return this.tile && this.mergeTile;
+  }
+
+  finalize(mergeResultFn, mergeScoreFn) {
     let score = 0;
     if (this.tile) {
       this.tile.setRow(this.row);

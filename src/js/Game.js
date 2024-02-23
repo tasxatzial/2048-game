@@ -26,10 +26,6 @@ export default class Game extends Model {
     return !this.grid.canSlide();
   }
 
-  hasBoardChanged() {
-    return this.grid.hasChangedAfterSlide();
-  }
-
   getScore() {
     return this.grid.getScore();
   }
@@ -41,9 +37,14 @@ export default class Game extends Model {
   }
 
   mergeTiles() {
-    this.grid.mergeTiles();
+    const willMerge = this.grid.willMerge();
+    this.grid.finalizeCells();
+    if (willMerge) {
+      this.raiseChange("slideMergeEvent");
+    } else {
+      this.raiseChange("slideNoMergeEvent");
+    }
     console.log("model merge");
-    this.raiseChange("mergeEvent");
   }
 
   slideLeft() {

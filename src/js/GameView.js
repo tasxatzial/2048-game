@@ -46,6 +46,9 @@ export default class GameView {
         if (!cellObj) {
           continue;
         }
+        if (cellObj.mergeTile) {
+          cells.item(cellObj.row * gridArray[0].length + cellObj.column).setAttribute('data-will-merge', '');
+        }
         [cellObj.tile, cellObj.mergeTile].forEach((tileObj) => {
           if (tileObj) {
             const slidingTile = cells.item(tileObj.row * gridArray[0].length + tileObj.column).children[0];
@@ -66,7 +69,7 @@ export default class GameView {
     console.log("view slide");
   }
 
-  mergeTiles({gridArray}) {
+  finalizeBoard({gridArray}) {
     const cells = this.gridParent.children[0].children;
     for (let i = 0; i < this.gridRows; i++) {
       for (let j = 0; j < this.gridCols; j++) {
@@ -84,6 +87,10 @@ export default class GameView {
           innerCell.classList.add(mergeCount > 32 ? 'tile-merge-32' : 'tile-merge-' + mergeCount);
           const valueLength = cellObj.tile.value.toString().length;
           innerCell.classList.add(valueLength > 10 ? 'tile-font-size-10' : 'tile-font-size-' + valueLength);
+          if (cell.hasAttribute('data-will-merge')) {
+            innerCell.classList.add('zoomin');
+            innerCell.addEventListener('animationend', () => innerCell.classList.remove('zoomin'));
+          }
         } else {
           innerCell.textContent = '';
         }
@@ -101,6 +108,7 @@ export default class GameView {
           continue;
         }
         const cell = cells.item(i * gridArray[0].length + j);
+        cell.removeAttribute('data-will-merge');
         const innerCell = cell.children[0];
         if (cellObj.tile && innerCell.textContent == '') {
           innerCell.textContent = cellObj.tile.value;
@@ -108,11 +116,15 @@ export default class GameView {
           innerCell.classList.add(mergeCount > 32 ? 'tile-merge-32' : 'tile-merge-' + mergeCount);
           const valueLength = cellObj.tile.value.toString().length;
           innerCell.classList.add(valueLength > 10 ? 'tile-font-size-10' : 'tile-font-size-' + valueLength);
+          innerCell.classList.add('zoomin');
+          innerCell.addEventListener('animationend', () => innerCell.classList.remove('zoomin'));
         }
       }
     }
     console.log("view add tile");
-    this.bindKeydown(this.slideHandlers);
+    setTimeout(() => {
+      this.bindKeydown(this.slideHandlers);
+    }, 100);
   }
 
   noModelChange() {
@@ -125,9 +137,6 @@ export default class GameView {
   }
 
   _onKeydown(e) {
-    if (e.repeat) {
-      return;
-    }
     switch(e.code) {
       case 'ArrowLeft':
         this.slideHandlers.slideLeft();
