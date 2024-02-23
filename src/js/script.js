@@ -18,17 +18,13 @@ gameView.bindKeydown({
 });
 
 game.addChangeListener("slideEvent", () => {
-  gameView.slideBoard(game.toJSON());
-  setTimeout(() => {
-    game.mergeBoard();
-  }, 100)
+  const promises = gameView.slideBoard(game.toJSON());
+  Promise.all(promises).then(() => game.mergeBoard());
 });
 
 game.addChangeListener("mergeTilesEvent", () => {
-  gameView.mergeBoard(game.toJSON());
-  setTimeout(() => {
-    game.addTile();
-  }, 100);
+  const promises = gameView.mergeBoard(game.toJSON());
+  Promise.all(promises).then(() => game.addTile());
 });
 
 game.addChangeListener("mergeBoardEvent", () => {
@@ -37,7 +33,8 @@ game.addChangeListener("mergeBoardEvent", () => {
 });
 
 game.addChangeListener("addTileEvent", () => {
-  gameView.addTile(game.toJSON());
+  const promises = gameView.addTiles(game.toJSON());
+  Promise.all(promises).then(() => gameView.reEnableHandlers());
 });
 
 game.addChangeListener("noOpEvent", () => {

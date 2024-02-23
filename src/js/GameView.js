@@ -12,6 +12,12 @@ export default class GameView {
     tileElement.classList.add(valueLength > 10 ? 'tile-font-size-10' : 'tile-font-size-' + valueLength);
   }
 
+  _waitForEvent(element, eventType) {
+    return new Promise(resolve => {
+      element.addEventListener(eventType, resolve, {once: true})
+    });
+  }
+
   initialize({gridArray}) {
     this.gridRows = gridArray.length;
     this.gridCols = this.gridRows? gridArray[0].length : 0;
@@ -43,6 +49,7 @@ export default class GameView {
   }
 
   slideBoard({gridArray}) {
+    const promises = [];
     const cells = this.gridParent.children[0].children;
     for (let i = 0; i < this.gridRows; i++) {
       for (let j = 0; j < this.gridCols; j++) {
@@ -57,11 +64,13 @@ export default class GameView {
           if (tileObj) {
             const slidingTile = cells.item(tileObj.row * gridArray[0].length + tileObj.column).children[0];
             if (cellObj.column != tileObj.column) {
+              promises.push(this._waitForEvent(slidingTile, 'transitionend'));
               slidingTile.style.setProperty('--cell-column', cellObj.column);
               slidingTile.style.setProperty('--tile-column', tileObj.column);
               slidingTile.classList.add('horizontal-slide');
             }
             else if (cellObj.row != tileObj.row) {
+              promises.push(this._waitForEvent(slidingTile, 'transitionend'));
               slidingTile.style.setProperty('--cell-row', cellObj.row);
               slidingTile.style.setProperty('--tile-row', tileObj.row);
               slidingTile.classList.add('vertical-slide');
@@ -70,10 +79,11 @@ export default class GameView {
         });
       }
     }
-    console.log("view slide");
+    return promises;
   }
 
   mergeBoard({gridArray}) {
+    const promises = [];
     const cells = this.gridParent.children[0].children;
     for (let i = 0; i < this.gridRows; i++) {
       for (let j = 0; j < this.gridCols; j++) {
@@ -88,9 +98,10 @@ export default class GameView {
         if (cellObj.tile) {
           this._initializeTile(innerCell, cellObj.tile);
           if (cell.hasAttribute('data-will-merge')) {
+            promises.push(this._waitForEvent(innerCell, 'animationend'));
             cell.removeAttribute('data-will-merge');
             innerCell.classList.add('zoomin');
-            innerCell.addEventListener('animationend', () => innerCell.classList.remove('zoomin'));
+            innerCell.addEventListener('animationend', () => innerCell.classList.remove('zoomin'), {once: true});
           }
         }
         else {
@@ -98,10 +109,11 @@ export default class GameView {
         }
       }
     }
-    console.log("view merge");
+    return promises;
   }
 
-  addTile({gridArray}) {
+  addTiles({gridArray}) {
+    const promises = [];
     const cells = this.gridParent.children[0].children;
     for (let i = 0; i < this.gridRows; i++) {
       for (let j = 0; j < this.gridCols; j++) {
@@ -112,16 +124,14 @@ export default class GameView {
         const cell = cells.item(i * gridArray[0].length + j);
         const innerCell = cell.children[0];
         if (cellObj.tile && innerCell.textContent == '') {
+          promises.push(this._waitForEvent(innerCell, 'animationend'));
           this._initializeTile(innerCell, cellObj.tile);
           innerCell.classList.add('zoomin');
-          innerCell.addEventListener('animationend', () => innerCell.classList.remove('zoomin'));
+          innerCell.addEventListener('animationend', () => innerCell.classList.remove('zoomin'), {once: true});
         }
       }
     }
-    console.log("view add tile");
-    setTimeout(() => {
-      this.bindKeydown(this.slideHandlers);
-    }, 100);
+    return promises;
   }
 
   reEnableHandlers() {
