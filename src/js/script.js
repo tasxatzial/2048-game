@@ -21,14 +21,14 @@ game.addChangeListener("slideEvent", () => {
   gameView.slideBoard(game.toJSON());
   setTimeout(() => {
     game.mergeTiles();
-  }, 1000)
+  }, 100)
 });
 
 game.addChangeListener("mergeEvent", () => {
   gameView.mergeTiles(game.toJSON());
   setTimeout(() => {
     game.addTile();
-  }, 500);
+  }, 100);
 });
 
 game.addChangeListener("addTileEvent", () => {

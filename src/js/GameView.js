@@ -93,6 +93,24 @@ export default class GameView {
   }
 
   addTile({gridArray}) {
+    const cells = this.gridParent.children[0].children;
+    for (let i = 0; i < this.gridRows; i++) {
+      for (let j = 0; j < this.gridCols; j++) {
+        const cellObj = gridArray[i][j];
+        if (!cellObj) {
+          continue;
+        }
+        const cell = cells.item(i * gridArray[0].length + j);
+        const innerCell = cell.children[0];
+        if (cellObj.tile && innerCell.textContent == '') {
+          innerCell.textContent = cellObj.tile.value;
+          const mergeCount = cellObj.tile.mergeCount;
+          innerCell.classList.add(mergeCount > 32 ? 'tile-merge-32' : 'tile-merge-' + mergeCount);
+          const valueLength = cellObj.tile.value.toString().length;
+          innerCell.classList.add(valueLength > 10 ? 'tile-font-size-10' : 'tile-font-size-' + valueLength);
+        }
+      }
+    }
     console.log("view add tile");
     this.bindKeydown(this.slideHandlers);
   }
