@@ -52,6 +52,9 @@ export default class Game extends Model {
       console.log("model slide");
       this.raiseChange("slideEvent");
     }
+    else {
+      this.raiseChange("noOpEvent");
+    }
   }
 
   slideRight() {
@@ -59,6 +62,9 @@ export default class Game extends Model {
     if (this.grid.hasChangedAfterSlide()) {
       console.log("model slide");
       this.raiseChange("slideEvent");
+    }
+    else {
+      this.raiseChange("noOpEvent");
     }
   }
 
@@ -68,6 +74,9 @@ export default class Game extends Model {
       console.log("model slide");
       this.raiseChange("slideEvent");
     }
+    else {
+      this.raiseChange("noOpEvent");
+    }
   }
 
   slideDown() {
@@ -75,6 +84,9 @@ export default class Game extends Model {
     if (this.grid.hasChangedAfterSlide()) {
       console.log("model slide");
       this.raiseChange("slideEvent");
+    }
+    else {
+      this.raiseChange("noOpEvent");
     }
   }
 }

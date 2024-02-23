@@ -115,6 +115,10 @@ export default class GameView {
     this.bindKeydown(this.slideHandlers);
   }
 
+  noModelChange() {
+    this.bindKeydown(this.slideHandlers);
+  }
+
   bindKeydown(slideHandlers) {
     this.slideHandlers = slideHandlers;
     window.addEventListener('keydown', this._onKeydown, {once: true});

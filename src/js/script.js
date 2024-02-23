@@ -34,3 +34,7 @@ game.addChangeListener("mergeEvent", () => {
 game.addChangeListener("addTileEvent", () => {
   gameView.addTile(game.toJSON());
 });
+
+game.addChangeListener("noOpEvent", () => {
+  gameView.noModelChange();
+});
