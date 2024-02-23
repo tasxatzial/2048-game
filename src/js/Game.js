@@ -32,62 +32,45 @@ export default class Game extends Model {
 
   addTile() {
     this.grid.addTile();
-    console.log("model add tile");
     this.raiseChange("addTileEvent");
   }
 
-  mergeTiles() {
-    const willMerge = this.grid.willMerge();
-    this.grid.finalizeCells();
-    if (willMerge) {
-      this.raiseChange("slideMergeEvent");
+  mergeBoard() {
+    const willMergeTilesResult = this.grid.willMergeTiles();
+    this.grid.mergeCells();
+    if (willMergeTilesResult) {
+      this.raiseChange("mergeTilesEvent");
     } else {
-      this.raiseChange("slideNoMergeEvent");
+      this.raiseChange("mergeBoardEvent");
     }
-    console.log("model merge");
+  }
+
+  _raiseEventAfterSlide() {
+    if (this.grid.hasChangedAfterSlide()) {
+      this.raiseChange("slideEvent");
+    }
+    else {
+      this.raiseChange("noOpEvent");
+    }
   }
 
   slideLeft() {
     this.grid.slideLeft();
-    if (this.grid.hasChangedAfterSlide()) {
-      console.log("model slide");
-      this.raiseChange("slideEvent");
-    }
-    else {
-      this.raiseChange("noOpEvent");
-    }
+    this._raiseEventAfterSlide();
   }
 
   slideRight() {
     this.grid.slideRight();
-    if (this.grid.hasChangedAfterSlide()) {
-      console.log("model slide");
-      this.raiseChange("slideEvent");
-    }
-    else {
-      this.raiseChange("noOpEvent");
-    }
+    this._raiseEventAfterSlide();
   }
 
   slideUp() {
     this.grid.slideUp();
-    if (this.grid.hasChangedAfterSlide()) {
-      console.log("model slide");
-      this.raiseChange("slideEvent");
-    }
-    else {
-      this.raiseChange("noOpEvent");
-    }
+    this._raiseEventAfterSlide();
   }
 
   slideDown() {
     this.grid.slideDown();
-    if (this.grid.hasChangedAfterSlide()) {
-      console.log("model slide");
-      this.raiseChange("slideEvent");
-    }
-    else {
-      this.raiseChange("noOpEvent");
-    }
+    this._raiseEventAfterSlide();
   }
 }

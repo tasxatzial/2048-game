@@ -140,17 +140,17 @@ export default class Grid {
       }
       for (let j = i + 1; j < cellArray.length; j++) {
         if (cellArray[j].hasTile()) {
-          if (cellArray[j].canMerge(cellArray[i])) {
-            cellArray[j].moveMergeTileFrom(cellArray[i]);
+          if (cellArray[j].canMergeTile(cellArray[i])) {
+            cellArray[j].setMergeTileFrom(cellArray[i]);
             this.changedAfterSlide = true;
           }
           else if (j-1 != i) {
-            cellArray[j-1].moveTileFrom(cellArray[i]);
+            cellArray[j-1].setTileFrom(cellArray[i]);
             this.changedAfterSlide = true;
           }
           break;
         } else if (j == cellArray.length - 1) {
-            cellArray[j].moveTileFrom(cellArray[i]);
+            cellArray[j].setTileFrom(cellArray[i]);
             this.changedAfterSlide = true;
             break;
         }
@@ -207,18 +207,15 @@ export default class Grid {
     return this.rows.some(_canSlide) || this.cols.some(_canSlide);
   }
 
-  willMerge() {
-    Object.values(this.cells).forEach(cell => {
-      if (cell.willMerge()) {
-        return true;
-      }
+  willMergeTiles() {
+    Object.values(this.cells).some(cell => {
+      return cell.willMergeTiles();
     });
-    return false;
   }
 
-  finalizeCells() {
+  mergeCells() {
     Object.values(this.cells).forEach(cell => {
-      this.score += cell.finalize(this.mergeResultFn, this.mergeScoreFn);
+      this.score += cell.merge(this.mergeResultFn, this.mergeScoreFn);
     });
   }
 

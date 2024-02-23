@@ -20,19 +20,19 @@ gameView.bindKeydown({
 game.addChangeListener("slideEvent", () => {
   gameView.slideBoard(game.toJSON());
   setTimeout(() => {
-    game.mergeTiles();
+    game.mergeBoard();
   }, 100)
 });
 
-game.addChangeListener("slideMergeEvent", () => {
-  gameView.finalizeBoard(game.toJSON());
+game.addChangeListener("mergeTilesEvent", () => {
+  gameView.mergeBoard(game.toJSON());
   setTimeout(() => {
     game.addTile();
   }, 100);
 });
 
-game.addChangeListener("slideNoMergeEvent", () => {
-  gameView.finalizeBoard(game.toJSON());
+game.addChangeListener("mergeBoardEvent", () => {
+  gameView.mergeBoard(game.toJSON());
   game.addTile();
 });
 
@@ -41,5 +41,5 @@ game.addChangeListener("addTileEvent", () => {
 });
 
 game.addChangeListener("noOpEvent", () => {
-  gameView.noModelChange();
+  gameView.reEnableHandlers();
 });

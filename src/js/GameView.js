@@ -4,6 +4,14 @@ export default class GameView {
     this._onKeydown = this._onKeydown.bind(this);
   }
 
+  _initializeTile(tileElement, tileObj) {
+    tileElement.textContent = tileObj.value;
+    const mergeCount = tileObj.mergeCount;
+    tileElement.classList.add(mergeCount > 32 ? 'tile-merge-32' : 'tile-merge-' + mergeCount);
+    const valueLength = tileObj.value.toString().length;
+    tileElement.classList.add(valueLength > 10 ? 'tile-font-size-10' : 'tile-font-size-' + valueLength);
+  }
+
   initialize({gridArray}) {
     this.gridRows = gridArray.length;
     this.gridCols = this.gridRows? gridArray[0].length : 0;
@@ -20,11 +28,7 @@ export default class GameView {
           const innerCell = document.createElement('div');
           innerCell.classList.add('inner-cell');
           if (cellObj.tile) {
-            innerCell.textContent = cellObj.tile.value;
-            const mergeCount = cellObj.tile.mergeCount;
-            innerCell.classList.add(mergeCount > 32 ? 'tile-merge-32' : 'tile-merge-' + mergeCount);
-            const valueLength = cellObj.tile.value.toString().length;
-            innerCell.classList.add(valueLength > 10 ? 'tile-font-size-10' : 'tile-font-size-' + valueLength);
+            this._initializeTile(innerCell, cellObj.tile);
           }
           cell.appendChild(innerCell);
         }
@@ -69,29 +73,27 @@ export default class GameView {
     console.log("view slide");
   }
 
-  finalizeBoard({gridArray}) {
+  mergeBoard({gridArray}) {
     const cells = this.gridParent.children[0].children;
     for (let i = 0; i < this.gridRows; i++) {
       for (let j = 0; j < this.gridCols; j++) {
-        const cell = cells.item(i * gridArray[0].length + j);
         const cellObj = gridArray[i][j];
         if (!cellObj) {
           continue;
         }
+        const cell = cells.item(i * gridArray[0].length + j);
         const innerCell = cell.children[0];
         innerCell.removeAttribute('style');
         innerCell.classList = 'inner-cell';
         if (cellObj.tile) {
-          innerCell.textContent = cellObj.tile.value;
-          const mergeCount = cellObj.tile.mergeCount;
-          innerCell.classList.add(mergeCount > 32 ? 'tile-merge-32' : 'tile-merge-' + mergeCount);
-          const valueLength = cellObj.tile.value.toString().length;
-          innerCell.classList.add(valueLength > 10 ? 'tile-font-size-10' : 'tile-font-size-' + valueLength);
+          this._initializeTile(innerCell, cellObj.tile);
           if (cell.hasAttribute('data-will-merge')) {
+            cell.removeAttribute('data-will-merge');
             innerCell.classList.add('zoomin');
             innerCell.addEventListener('animationend', () => innerCell.classList.remove('zoomin'));
           }
-        } else {
+        }
+        else {
           innerCell.textContent = '';
         }
       }
@@ -108,14 +110,9 @@ export default class GameView {
           continue;
         }
         const cell = cells.item(i * gridArray[0].length + j);
-        cell.removeAttribute('data-will-merge');
         const innerCell = cell.children[0];
         if (cellObj.tile && innerCell.textContent == '') {
-          innerCell.textContent = cellObj.tile.value;
-          const mergeCount = cellObj.tile.mergeCount;
-          innerCell.classList.add(mergeCount > 32 ? 'tile-merge-32' : 'tile-merge-' + mergeCount);
-          const valueLength = cellObj.tile.value.toString().length;
-          innerCell.classList.add(valueLength > 10 ? 'tile-font-size-10' : 'tile-font-size-' + valueLength);
+          this._initializeTile(innerCell, cellObj.tile);
           innerCell.classList.add('zoomin');
           innerCell.addEventListener('animationend', () => innerCell.classList.remove('zoomin'));
         }
@@ -127,7 +124,7 @@ export default class GameView {
     }, 100);
   }
 
-  noModelChange() {
+  reEnableHandlers() {
     this.bindKeydown(this.slideHandlers);
   }
 
