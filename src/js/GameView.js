@@ -7,7 +7,7 @@ export default class GameView {
   _initializeTile(tileElement, tileObj) {
     tileElement.textContent = tileObj.value;
     const mergeCount = tileObj.mergeCount;
-    tileElement.classList.add(mergeCount > 32 ? 'tile-merge-32' : 'tile-merge-' + mergeCount);
+    tileElement.classList.add(mergeCount > 40 ? 'tile-merge-40' : 'tile-merge-' + mergeCount);
     const valueLength = tileObj.value.toString().length;
     tileElement.classList.add(valueLength > 10 ? 'tile-font-size-10' : 'tile-font-size-' + valueLength);
   }
