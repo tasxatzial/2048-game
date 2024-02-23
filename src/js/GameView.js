@@ -17,16 +17,16 @@ export default class GameView {
         const cellObj = gridArray[i][j];
         if (cellObj) {
           cell.classList.add('cell');
-          const tile = document.createElement('div');
+          const innerCell = document.createElement('div');
+          innerCell.classList.add('inner-cell');
           if (cellObj.tile) {
-            tile.textContent = cellObj.tile.value;
-            tile.classList.add('tile');
+            innerCell.textContent = cellObj.tile.value;
             const mergeCount = cellObj.tile.mergeCount;
-            tile.classList.add(mergeCount > 32 ? 'tile-merge-32' : 'tile-merge-' + mergeCount);
+            innerCell.classList.add(mergeCount > 32 ? 'tile-merge-32' : 'tile-merge-' + mergeCount);
             const valueLength = cellObj.tile.value.toString().length;
-            tile.classList.add(valueLength > 10 ? 'tile-font-size-10' : 'tile-font-size-' + valueLength);
+            innerCell.classList.add(valueLength > 10 ? 'tile-font-size-10' : 'tile-font-size-' + valueLength);
           }
-          cell.appendChild(tile);
+          cell.appendChild(innerCell);
         }
         else {
           cell.classList.add('missing-cell');

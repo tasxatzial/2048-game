@@ -24,15 +24,15 @@
   border: 2px solid white;
 }
 
-.tile {
-  --font-size: calc(var(--_cell-size) / 2.6);
+.inner-cell {
+  --_font-scale-factor: var(--font-scale-factor, 1);
   display: flex;
   justify-content: center;
   align-items: center;
   width: var(--_cell-size);
   height: var(--_cell-size);
   font-family: Verdana, Geneva, Tahoma, sans-serif;
-  font-size: calc(var(--font-size) / var(--font-scale-factor));
+  font-size: calc(var(--_cell-size) / 2.6 / var(--_font-scale-factor));
   font-weight: bold;
 }
 
@@ -46,7 +46,7 @@
 
 .grid,
 .cell,
-.tile {
+.inner-cell {
   border-radius: 0.25rem;
 }
 
