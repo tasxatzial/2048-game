@@ -67,6 +67,28 @@ export default class GameView {
   }
 
   mergeTiles({gridArray}) {
+    const cells = this.gridParent.children[0].children;
+    for (let i = 0; i < this.gridRows; i++) {
+      for (let j = 0; j < this.gridCols; j++) {
+        const cell = cells.item(i * gridArray[0].length + j);
+        const cellObj = gridArray[i][j];
+        if (!cellObj) {
+          continue;
+        }
+        const innerCell = cell.children[0];
+        innerCell.removeAttribute('style');
+        innerCell.classList = 'inner-cell';
+        if (cellObj.tile) {
+          innerCell.textContent = cellObj.tile.value;
+          const mergeCount = cellObj.tile.mergeCount;
+          innerCell.classList.add(mergeCount > 32 ? 'tile-merge-32' : 'tile-merge-' + mergeCount);
+          const valueLength = cellObj.tile.value.toString().length;
+          innerCell.classList.add(valueLength > 10 ? 'tile-font-size-10' : 'tile-font-size-' + valueLength);
+        } else {
+          innerCell.textContent = '';
+        }
+      }
+    }
     console.log("view merge");
   }
 
