@@ -52,7 +52,7 @@ export default class Game extends Model {
     return this.grid.getScore();
   }
 
-  addTile() {
+  addTiles() {
     this.grid.addTile();
     this.raiseChange("addTileEvent");
   }
@@ -62,7 +62,8 @@ export default class Game extends Model {
     this.grid.mergeCells();
     if (willMergeTilesResult) {
       this.raiseChange("mergeTilesEvent");
-    } else {
+    }
+    else {
       this.raiseChange("mergeBoardEvent");
     }
   }

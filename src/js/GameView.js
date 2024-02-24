@@ -138,11 +138,7 @@ export default class GameView {
     return promises;
   }
 
-  reEnableHandlers() {
-    this.bindKeydown(this.slideHandlers);
-  }
-
-  bindKeydown(slideHandlers) {
+  bindHandlers(slideHandlers) {
     this.slideHandlers = slideHandlers;
     window.addEventListener('keydown', this._onKeydown, {once: true});
   }
