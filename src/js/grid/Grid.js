@@ -21,7 +21,6 @@ export default class Grid {
       this._createColumns(this.gridBoolean);
       this.slideCount = 0;
       this.score = 0;
-      this.changedAfterSlide = false;
       if (newTileFnName) {
         this.newTileFn = NewTile[newTileFnName];
         this.newTileFnName = newTileFnName;
@@ -48,13 +47,12 @@ export default class Grid {
       }
     }
     else {
-      const {gridArray, slideCount, score, changedAfterSlide, newTileFnName, mergeResultFnName, mergeScoreFnName, gridBooleanFnName} = grid;
+      const {gridArray, slideCount, score, newTileFnName, mergeResultFnName, mergeScoreFnName, gridBooleanFnName} = grid;
       this._createCellsFromGrid(gridArray);
       this._createRows(this.gridBoolean);
       this._createColumns(this.gridBoolean);
       this.slideCount = slideCount;
       this.score = score;
-      this.changedAfterSlide = changedAfterSlide;
       this.newTileFnName = newTileFnName;
       this.newTileFn = NewTile[newTileFnName];
       this.mergeResultFnName = mergeResultFnName;
@@ -279,7 +277,6 @@ export default class Grid {
       gridArray: grid,
       slideCount: this.slideCount,
       score: this.score,
-      changedAfterSlide: this.changedAfterSlide,
       newTileFnName: this.newTileFnName,
       mergeResultFnName: this.mergeResultFnName,
       mergeScoreFnName: this.mergeResultFnName,
