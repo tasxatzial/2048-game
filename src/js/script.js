@@ -1,17 +1,28 @@
 import Game from "./Game.js";
 import GameView from "./GameView.js";
 
+localStorage.clear(); //required since there's no reset button yet
+
 
 const gameContainer = document.getElementById('game-container');
 
-const gameObj = {
-  game: {},
-  options: {
-    gridBooleanFnName: "threeByThree"
-  }
-};
+let game;
+const savedGame = JSON.parse(localStorage.getItem('game-2048'));
+if (savedGame) {
+  game = new Game({
+    game: savedGame,
+    options: {}
+  });
+}
+else {
+  game = new Game({
+    game: {},
+    options: {
+      gridBooleanFnName: "threeByThree"
+    }
+  });
+}
 
-const game = new Game(gameObj);
 const gameView = new GameView(gameContainer);
 const initialPromises = gameView.initialize(game.getBoard());
 
@@ -45,7 +56,10 @@ game.addChangeListener("noOpEvent", () => {
 
 game.addChangeListener("addTileEvent", () => {
   const promises = gameView.addTiles(game.getBoard());
-  Promise.all(promises).then(() => initialSetup());
+  Promise.all(promises).then(() => {
+    localStorage.setItem('game-2048', JSON.stringify(game.toJSON()));
+    initialSetup();
+  });
 });
 
 /*------------- FUNCTIONS ------------- */

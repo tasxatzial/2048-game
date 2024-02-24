@@ -4,7 +4,7 @@ export default class NewTileGen {
   static original2048({gridArray}) {
     const emptyCells = gridArray.map(row => row.filter(el => el && !el.tile)).flat();
     if (emptyCells.length == 0) {
-      return null;
+      return {};
     }
     const randCell = emptyCells[Math.floor(Math.random() * emptyCells.length)];
     const randValue = Math.floor(Math.random() > 0.9 ? 4 : 2);
