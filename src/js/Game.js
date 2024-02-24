@@ -2,24 +2,46 @@ import Grid from "./grid/Grid.js";
 import Model from "./Model.js";
 
 export default class Game extends Model {
-  constructor(options) {
+  constructor({game, options}) {
     super();
-    const {grid, gridBooleanFnName, newTileFnName, mergeResultFnName, mergeScoreFnName} = options;
-    this.grid = new Grid({grid, gridBooleanFnName, newTileFnName, mergeResultFnName, mergeScoreFnName});
+    if (Object.keys(game).length == 0) {
+      const gridOptions = {
+        newTileFnName: options.newTileFnName,
+        mergeResultFnName: options.mergeResultFnName,
+        mergeScoreFnName: options.mergeScoreFnName,
+        gridBooleanFnName: options.gridBooleanFnName
+      };
+      this.grid = new Grid({grid: {}, options: gridOptions});
+      if (options.winTile) {
+        this.winTile = options.winTile;
+      }
+      else {
+        this.winTile = '2048';
+      }
+    }
+    else {
+      this.winTile = game.options.winTile;
+      this.grid = new Grid({grid: game.grid, options: {}});
+    }
     this.grid.addTile();
     this.grid.addTile();
   }
 
   toJSON() {
-    return this.grid.toObj();
+    return {
+      grid: this.grid.toObj(),
+      options: {
+        winTile: this.winTile
+      }
+    }
   }
 
   getBoard() {
-    return this.grid.toString();
+    return this.grid.toObj();
   }
 
   isWon() {
-    return this.grid.hasTile(2048);
+    return this.grid.hasTile(this.winTile);
   }
 
   isLost() {

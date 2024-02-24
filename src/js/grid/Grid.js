@@ -5,28 +5,16 @@ import MergeScore from "./MergeScore.js";
 import NewTile from "./NewTile.js";
 
 export default class Grid {
-  constructor({grid, gridBooleanFnName, newTileFnName, mergeResultFnName, mergeScoreFnName}) {
-    if (grid) {
-      const {gridArray, slideCount, score, changedAfterSlide, newTileFnName, mergeResultFnName, mergeScoreFnName} = grid;
-      this._createCellsFromGrid(gridArray);
-      this._createRows(this.gridBoolean);
-      this._createColumns(this.gridBoolean);
-      this.slideCount = slideCount;
-      this.score = score;
-      this.changedAfterSlide = changedAfterSlide;
-      this.newTileFnName = newTileFnName;
-      this.newTileFn = NewTile[newTileFnName];
-      this.mergeResultFnName = mergeResultFnName;
-      this.mergeResultFn = MergeResult[mergeResultFnName];
-      this.mergeScoreFnName = mergeScoreFnName;
-      this.mergeScoreFn = MergeScore[mergeScoreFnName];
-    }
-    else {
+  constructor({grid, options}) {
+    if (Object.keys(grid).length == 0) {
+      const {newTileFnName, mergeResultFnName, mergeScoreFnName, gridBooleanFnName} = options;
       if (gridBooleanFnName) {
         this.gridBoolean = GridBoolean[gridBooleanFnName]();
+        this.gridBooleanFnName = gridBooleanFnName;
       }
       else {
         this.gridBoolean = GridBoolean.original2048();
+        this.gridBooleanFnName = "original2048";
       }
       this._createCellsFromGridBoolean(this.gridBoolean);
       this._createRows(this.gridBoolean);
@@ -58,6 +46,22 @@ export default class Grid {
         this.mergeScoreFn = MergeScore.original2048;
         this.mergeScoreFnName = "original2048";
       }
+    }
+    else {
+      const {gridArray, slideCount, score, changedAfterSlide, newTileFnName, mergeResultFnName, mergeScoreFnName, gridBooleanFnName} = grid;
+      this._createCellsFromGrid(gridArray);
+      this._createRows(this.gridBoolean);
+      this._createColumns(this.gridBoolean);
+      this.slideCount = slideCount;
+      this.score = score;
+      this.changedAfterSlide = changedAfterSlide;
+      this.newTileFnName = newTileFnName;
+      this.newTileFn = NewTile[newTileFnName];
+      this.mergeResultFnName = mergeResultFnName;
+      this.mergeResultFn = MergeResult[mergeResultFnName];
+      this.mergeScoreFnName = mergeScoreFnName;
+      this.mergeScoreFn = MergeScore[mergeScoreFnName];
+      this.gridBooleanFnName = gridBooleanFnName;
     }
   }
 
@@ -278,7 +282,8 @@ export default class Grid {
       changedAfterSlide: this.changedAfterSlide,
       newTileFnName: this.newTileFnName,
       mergeResultFnName: this.mergeResultFnName,
-      mergeScoreFnName: this.mergeResultFnName
+      mergeScoreFnName: this.mergeResultFnName,
+      gridBooleanFnName: this.gridBooleanFnName
     };
   }
 

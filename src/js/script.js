@@ -4,11 +4,14 @@ import GameView from "./GameView.js";
 
 const gameContainer = document.getElementById('game-container');
 
-const options = {};
+let gameObj = {
+  game: {},
+  options: {}
+};
 
-const game = new Game(options);
+const game = new Game(gameObj);
 const gameView = new GameView(gameContainer);
-gameView.initialize(game.toJSON());
+gameView.initialize(game.getBoard());
 
 gameView.bindKeydown({
   slideUp: game.slideUp.bind(game),
@@ -18,22 +21,22 @@ gameView.bindKeydown({
 });
 
 game.addChangeListener("slideEvent", () => {
-  const promises = gameView.slideBoard(game.toJSON());
+  const promises = gameView.slideBoard(game.getBoard());
   Promise.all(promises).then(() => game.mergeBoard());
 });
 
 game.addChangeListener("mergeTilesEvent", () => {
-  const promises = gameView.mergeBoard(game.toJSON());
+  const promises = gameView.mergeBoard(game.getBoard());
   Promise.all(promises).then(() => game.addTile());
 });
 
 game.addChangeListener("mergeBoardEvent", () => {
-  gameView.mergeBoard(game.toJSON());
+  gameView.mergeBoard(game.getBoard());
   game.addTile();
 });
 
 game.addChangeListener("addTileEvent", () => {
-  const promises = gameView.addTiles(game.toJSON());
+  const promises = gameView.addTiles(game.getBoard());
   Promise.all(promises).then(() => gameView.reEnableHandlers());
 });
 
