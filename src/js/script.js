@@ -11,13 +11,15 @@ let gameObj = {
 
 const game = new Game(gameObj);
 const gameView = new GameView(gameContainer);
-gameView.initialize(game.getBoard());
+const promises = gameView.initialize(game.getBoard());
 
-gameView.bindKeydown({
-  slideUp: game.slideUp.bind(game),
-  slideRight: game.slideRight.bind(game),
-  slideDown: game.slideDown.bind(game),
-  slideLeft: game.slideLeft.bind(game)
+Promise.all(promises).then(() => {
+  gameView.bindKeydown({
+    slideUp: game.slideUp.bind(game),
+    slideRight: game.slideRight.bind(game),
+    slideDown: game.slideDown.bind(game),
+    slideLeft: game.slideLeft.bind(game)
+  });
 });
 
 game.addChangeListener("slideEvent", () => {
@@ -35,11 +37,11 @@ game.addChangeListener("mergeBoardEvent", () => {
   game.addTile();
 });
 
+game.addChangeListener("noOpEvent", () => {
+  gameView.reEnableHandlers();
+});
+
 game.addChangeListener("addTileEvent", () => {
   const promises = gameView.addTiles(game.getBoard());
   Promise.all(promises).then(() => gameView.reEnableHandlers());
-});
-
-game.addChangeListener("noOpEvent", () => {
-  gameView.reEnableHandlers();
 });

@@ -19,6 +19,7 @@ export default class GameView {
   }
 
   initialize({gridArray}) {
+    const promises = [];
     this.gridRows = gridArray.length;
     this.gridCols = this.gridRows? gridArray[0].length : 0;
     const grid = document.createElement('div');
@@ -32,8 +33,10 @@ export default class GameView {
         if (cellObj) {
           cell.classList.add('cell');
           const innerCell = document.createElement('div');
-          innerCell.classList.add('inner-cell');
+          innerCell.classList.add('inner-cell', 'zoomin');
+          innerCell.addEventListener('animationend', () => innerCell.classList.remove('zoomin'), {once: true});
           if (cellObj.tile) {
+            promises.push(this._waitForEvent(innerCell, 'animationend'));
             this._initializeTile(innerCell, cellObj.tile);
           }
           cell.appendChild(innerCell);
@@ -46,6 +49,7 @@ export default class GameView {
     }
     this.gridParent.innerHTML = "";
     this.gridParent.appendChild(grid);
+    return promises;
   }
 
   slideBoard({gridArray}) {
