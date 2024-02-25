@@ -1,7 +1,7 @@
-import Grid from "./grid/Grid.js";
-import Model from "./Model.js";
+import Grid from "./gameModel/Grid.js";
+import EventEmitter from "./EventEmitter.js";
 
-export default class Game extends Model {
+export default class Game extends EventEmitter {
   constructor({game, options}) {
     super();
     if (Object.keys(game).length == 0) {

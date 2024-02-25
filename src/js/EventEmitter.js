@@ -1,4 +1,4 @@
-export default class Model {
+export default class EventEmitter {
   constructor() {}
 
   addChangeListener(name, listener) {

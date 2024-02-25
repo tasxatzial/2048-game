@@ -1,6 +1,6 @@
-export default class GameView {
-  constructor(gameContainer) {
-    this.gridParent = gameContainer;
+export default class GridView {
+  constructor(gridContainer) {
+    this.gridContainer = gridContainer;
     this._onKeydown = this._onKeydown.bind(this);
   }
 
@@ -47,14 +47,14 @@ export default class GameView {
         grid.appendChild(cell);
       }
     }
-    this.gridParent.innerHTML = "";
-    this.gridParent.appendChild(grid);
+    this.gridContainer.innerHTML = "";
+    this.gridContainer.appendChild(grid);
     return promises;
   }
 
   slideBoard({gridArray}) {
     const promises = [];
-    const cells = this.gridParent.children[0].children;
+    const cells = this.gridContainer.children[0].children;
     for (let i = 0; i < this.gridRows; i++) {
       for (let j = 0; j < this.gridCols; j++) {
         const cellObj = gridArray[i][j];
@@ -88,7 +88,7 @@ export default class GameView {
 
   mergeBoard({gridArray}) {
     const promises = [];
-    const cells = this.gridParent.children[0].children;
+    const cells = this.gridContainer.children[0].children;
     for (let i = 0; i < this.gridRows; i++) {
       for (let j = 0; j < this.gridCols; j++) {
         const cellObj = gridArray[i][j];
@@ -118,7 +118,7 @@ export default class GameView {
 
   addTiles({gridArray}) {
     const promises = [];
-    const cells = this.gridParent.children[0].children;
+    const cells = this.gridContainer.children[0].children;
     for (let i = 0; i < this.gridRows; i++) {
       for (let j = 0; j < this.gridCols; j++) {
         const cellObj = gridArray[i][j];
