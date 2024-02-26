@@ -1,17 +1,15 @@
 :root {
-  --cell-gap: 0.25rem;
   --cell-size: 5rem;
 }
 
 .grid {
   --_cell-size: var(--cell-size, 5rem);
-  --_cell-gap: var(--cell-gap, 0.25rem);
-  --padding: var(--_cell-gap);
+  --cell-gap: calc(var(--cell-size) / 20) ;
   display: grid;
   grid-template-columns: repeat(var(--grid-columns), var(--_cell-size));
   grid-template-rows: repeat(var(--grid-rows), var(--_cell-size));
-  gap: var(--_cell-gap);
-  padding: var(--padding);
+  gap: var(--cell-gap);
+  padding: var(--cell-gap);
   background-color: black;
 }
 
@@ -37,12 +35,12 @@
 }
 
 .horizontal-slide {
-  transform: translateX(calc((var(--_cell-size) + var(--padding)) * (var(--cell-column) - var(--tile-column))));
+  transform: translateX(calc((var(--_cell-size) + var(--cell-gap)) * (var(--cell-column) - var(--tile-column))));
   transition: transform 100ms ease-out;
 }
 
 .vertical-slide {
-  transform: translateY(calc((var(--_cell-size) + var(--padding)) * (var(--cell-row) - var(--tile-row))));
+  transform: translateY(calc((var(--_cell-size) + var(--cell-gap)) * (var(--cell-row) - var(--tile-row))));
   transition: transform 100ms ease-out;
 }
 
