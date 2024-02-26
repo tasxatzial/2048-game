@@ -1,6 +1,8 @@
 import Grid from "./gameModel/Grid.js";
 import WinCondition from "./gameModel/WinCondition.js";
+import LoseCondition from "./gameModel/LoseCondition.js";
 import EventEmitter from "./EventEmitter.js";
+
 
 export default class Game extends EventEmitter {
   constructor({game, options}) {
@@ -21,10 +23,20 @@ export default class Game extends EventEmitter {
         this.winConditionFnName = "original2048";
         this.winConditionFn = WinCondition.original2048;
       }
+      if (options.loseConditionFnName) {
+        this.loseConditionFnName = options.loseConditionFnName;
+        this.loseConditionFn = LoseCondition[this.loseConditionFnName];
+      }
+      else {
+        this.loseConditionFnName = "original2048";
+        this.loseConditionFn = LoseCondition.original2048;
+      }
     }
     else {
       this.winConditionFnName = game.options.winConditionFnName;
       this.winConditionFn = WinCondition[this.winConditionFnName];
+      this.loseConditionFnName = game.options.loseConditionFnName;
+      this.loseConditionFn = LoseCondition[this.loseConditionFnName];
       this.grid = new Grid({grid: game.grid, options: {}});
     }
     this.grid.addTile();
@@ -35,7 +47,8 @@ export default class Game extends EventEmitter {
     return {
       grid: this.grid.toJSON(),
       options: {
-        winConditionFnName: this.winConditionFnName
+        winConditionFnName: this.winConditionFnName,
+        loseConditionFnName: this.loseConditionFnName
       }
     }
   }
@@ -49,7 +62,7 @@ export default class Game extends EventEmitter {
   }
 
   isLost() {
-    return !this.grid.canSlide();
+    return this.loseConditionFn(this.grid);
   }
 
   getScore() {
