@@ -210,13 +210,13 @@ export default class Grid {
   }
 
   willMergeTiles() {
-    Object.values(this.cells).some(cell => {
+    this.getCells().some(cell => {
       return cell.willMergeTiles();
     });
   }
 
   mergeCells() {
-    Object.values(this.cells).forEach(cell => {
+    this.getCells().forEach(cell => {
       this.score += cell.merge(this.mergeResultFn, this.mergeScoreFn);
     });
   }
@@ -226,14 +226,14 @@ export default class Grid {
   }
 
   addTile() {
-    const {row, column, value} = this.newTileFn(this.toJSON());
+    const {row, column, value} = this.newTileFn(this);
     if (row != undefined) {
       this.cells[row * this.gridBoolean[0].length + column].setTile(value);
     }
   }
 
   hasTile(value) {
-    return Object.values(this.cells).some(cell => {
+    return this.getCells().some(cell => {
       return cell.hasTile() && cell.getTile().getValue() == value;
     });
   }
@@ -248,7 +248,7 @@ export default class Grid {
 
   getMaxTileLength() {
     let maxLength = 0;
-    Object.values(this.cells).forEach(cell => {
+    this.getCells().forEach(cell => {
       if (cell.hasTile()) {
         const tileLength = cell.getTile().getValue().toString().length;
         if (tileLength > maxLength) {
@@ -257,6 +257,10 @@ export default class Grid {
       }
     });
     return maxLength;
+  }
+
+  getCells() {
+    return Object.values(this.cells);
   }
 
   toJSON() {

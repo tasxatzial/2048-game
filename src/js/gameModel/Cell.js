@@ -8,6 +8,14 @@ export default class Cell {
     this.mergeTile = null;
   }
 
+  getRow() {
+    return this.row;
+  }
+
+  getColumn() {
+    return this.col;
+  }
+
   hasTile() {
     return !!this.tile;
   }
