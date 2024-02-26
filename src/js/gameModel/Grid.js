@@ -2,12 +2,13 @@ import Cell from "./Cell.js";
 import GridBoolean from "./GridBoolean.js";
 import MergeResult from "./MergeResult.js";
 import MergeScore from "./MergeScore.js";
+import MergeCondition from "./MergeCondition.js";
 import NewTile from "./NewTile.js";
 
 export default class Grid {
   constructor({grid, options}) {
     if (Object.keys(grid).length == 0) {
-      const {newTileFnName, mergeResultFnName, mergeScoreFnName, gridBooleanFnName} = options;
+      const {newTileFnName, mergeResultFnName, mergeScoreFnName, mergeConditionFnName, gridBooleanFnName} = options;
       if (gridBooleanFnName) {
         this.gridBoolean = GridBoolean[gridBooleanFnName]();
         this.gridBooleanFnName = gridBooleanFnName;
@@ -45,9 +46,18 @@ export default class Grid {
         this.mergeScoreFn = MergeScore.original2048;
         this.mergeScoreFnName = "original2048";
       }
+      if (mergeConditionFnName) {
+        this.mergeConditionFn = MergeCondition[mergeConditionFnName];
+        this.mergeConditionFnName = mergeConditionFnName;
+      }
+      else {
+        this.mergeConditionFn = MergeCondition.original2048;
+        this.mergeConditionFnName = "original2048";
+      }
+      Cell.prototype.mergeConditionFn = this.mergeConditionFn;
     }
     else {
-      const {gridArray, slideCount, score, newTileFnName, mergeResultFnName, mergeScoreFnName, gridBooleanFnName} = grid;
+      const {gridArray, slideCount, score, newTileFnName, mergeResultFnName, mergeScoreFnName, mergeConditionFnName, gridBooleanFnName} = grid;
       this._createCellsFromGrid(gridArray);
       this._createRows(this.gridBoolean);
       this._createColumns(this.gridBoolean);
@@ -59,7 +69,10 @@ export default class Grid {
       this.mergeResultFn = MergeResult[mergeResultFnName];
       this.mergeScoreFnName = mergeScoreFnName;
       this.mergeScoreFn = MergeScore[mergeScoreFnName];
+      this.mergeConditionFnName = mergeConditionFnName;
+      this.mergeConditionFn = MergeCondition[mergeConditionFnName];
       this.gridBooleanFnName = gridBooleanFnName;
+      Cell.prototype.mergeConditionFn = this.mergeConditionFn;
     }
   }
 
@@ -284,6 +297,7 @@ export default class Grid {
       newTileFnName: this.newTileFnName,
       mergeResultFnName: this.mergeResultFnName,
       mergeScoreFnName: this.mergeResultFnName,
+      mergeConditionFnName: this.mergeConditionFnName,
       gridBooleanFnName: this.gridBooleanFnName
     };
   }

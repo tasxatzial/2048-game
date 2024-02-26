@@ -56,7 +56,7 @@ export default class Cell {
   }
 
   canMergeTile(cell) {
-    return this.tile && !cell.mergeTile && !this.mergeTile && (this.tile.getValue() == cell.tile.getValue());
+    return this.tile && !cell.mergeTile && !this.mergeTile && this.mergeConditionFn(this.tile.getValue(), cell.tile.getValue());
   }
 
   willMergeTiles() {

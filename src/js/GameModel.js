@@ -12,6 +12,7 @@ export default class Game extends EventEmitter {
         newTileFnName: options.newTileFnName,
         mergeResultFnName: options.mergeResultFnName,
         mergeScoreFnName: options.mergeScoreFnName,
+        mergeConditionFnName: options.mergeConditionFnName,
         gridBooleanFnName: options.gridBooleanFnName
       };
       this.grid = new Grid({grid: {}, options: gridOptions});
