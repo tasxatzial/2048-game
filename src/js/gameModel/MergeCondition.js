@@ -1,5 +1,3 @@
-import Cell from "./Cell.js";
-
 export default class MergeCondition {
   constructor() {}
 

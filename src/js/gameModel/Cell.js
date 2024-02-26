@@ -63,15 +63,15 @@ export default class Cell {
     return this.tile && this.mergeTile;
   }
 
-  merge(mergeResultFn, mergeScoreFn) {
+  merge() {
     let score = 0;
     if (this.tile) {
       this.tile.setRow(this.row);
       this.tile.setColumn(this.col);
     }
     if (this.mergeTile) {
-      score = mergeScoreFn(this.tile.getValue(), this.mergeTile.getValue());
-      this.tile.setValue(mergeResultFn(this.tile.getValue(), this.mergeTile.getValue()));
+      score = this.mergeScoreFn(this.tile.getValue(), this.mergeTile.getValue());
+      this.tile.setValue(this.mergeResultFn(this.tile.getValue(), this.mergeTile.getValue()));
       this.tile.setMergeCount(Math.max(this.tile.getMergeCount(), this.mergeTile.getMergeCount()) + 1);
       this.mergeTile = null;
     }

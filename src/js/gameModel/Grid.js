@@ -54,7 +54,6 @@ export default class Grid {
         this.mergeConditionFn = MergeCondition.original2048;
         this.mergeConditionFnName = "original2048";
       }
-      Cell.prototype.mergeConditionFn = this.mergeConditionFn;
     }
     else {
       const {gridArray, slideCount, score, newTileFnName, mergeResultFnName, mergeScoreFnName, mergeConditionFnName, gridBooleanFnName} = grid;
@@ -72,8 +71,10 @@ export default class Grid {
       this.mergeConditionFnName = mergeConditionFnName;
       this.mergeConditionFn = MergeCondition[mergeConditionFnName];
       this.gridBooleanFnName = gridBooleanFnName;
-      Cell.prototype.mergeConditionFn = this.mergeConditionFn;
     }
+    Cell.prototype.mergeResultFn = this.mergeResultFn;
+    Cell.prototype.mergeScoreFn = this.mergeScoreFn;
+    Cell.prototype.mergeConditionFn = this.mergeConditionFn;
   }
 
   _createRows(booleanArray) {
@@ -230,7 +231,7 @@ export default class Grid {
 
   mergeCells() {
     this.getCells().forEach(cell => {
-      this.score += cell.merge(this.mergeResultFn, this.mergeScoreFn);
+      this.score += cell.merge();
     });
   }
 
