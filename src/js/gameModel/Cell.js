@@ -78,21 +78,21 @@ export default class Cell {
     return score;
   }
 
-  toObj() {
+  toJSON() {
     return {
       row: this.row,
       column: this.col,
-      tile: this.tile ? this.tile.toObj() : null,
-      mergeTile: this.mergeTile ? this.mergeTile.toObj() : null,
+      tile: this.tile ? this.tile.toJSON() : null,
+      mergeTile: this.mergeTile ? this.mergeTile.toJSON() : null,
     }
   }
 
-  static fromObj(obj) {
-    if (obj) {
-      const {row, column, tile, mergeTile} = obj;
+  static fromJSON(json) {
+    if (json) {
+      const {row, column, tile, mergeTile} = json;
       const cell = new Cell(row, column);
-      cell.tile = Tile.fromObj(tile);
-      cell.mergeTile = Tile.fromObj(mergeTile);
+      cell.tile = Tile.fromJSON(tile);
+      cell.mergeTile = Tile.fromJSON(mergeTile);
       return cell;
     } else {
       return null;

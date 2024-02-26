@@ -139,7 +139,7 @@ export default class Grid {
       for (let j = 0; j < gridArray[0].length; j++) {
         const cellObj = gridArray[i][j];
         if (cellObj) {
-          this.cells[i * gridArray[0].length + j] = Cell.fromObj(cellObj);
+          this.cells[i * gridArray[0].length + j] = Cell.fromJSON(cellObj);
           row.push(1);
         } else {
           row.push(0);
@@ -284,7 +284,7 @@ export default class Grid {
       for (let j = 0; j < this.gridBoolean[0].length; j++) {
         if (this.gridBoolean[i][j] == 1) {
           const cell = this.cells[i * this.gridBoolean[0].length + j];
-          row.push(cell.toObj());
+          row.push(cell.toJSON());
         } else {
           row.push(null);
         }

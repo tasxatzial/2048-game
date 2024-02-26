@@ -38,7 +38,7 @@ export default class Tile {
     this.mergeCount = value;
   }
 
-  toObj() {
+  toJSON() {
     return {
       row: this.row,
       column: this.col,
@@ -47,9 +47,9 @@ export default class Tile {
     };
   }
 
-  static fromObj(obj) {
-    if (obj) {
-      const {row, column, value, mergeCount} = obj;
+  static fromJSON(json) {
+    if (json) {
+      const {row, column, value, mergeCount} = json;
       const tile = new Tile(row, column, value);
       tile.mergeCount = mergeCount;
       return tile;
