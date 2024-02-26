@@ -1,7 +1,7 @@
 import GameModel from "./GameModel.js";
 import GridView from "./gameView/GridView.js";
 
-localStorage.clear(); //required since there's no reset button yet
+//localStorage.clear(); //required since there's no reset button yet
 
 
 const gameGridContainer = document.getElementById('game-grid-container');

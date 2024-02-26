@@ -1,4 +1,5 @@
 import Grid from "./gameModel/Grid.js";
+import WinCondition from "./gameModel/WinCondition.js";
 import EventEmitter from "./EventEmitter.js";
 
 export default class Game extends EventEmitter {
@@ -12,15 +13,18 @@ export default class Game extends EventEmitter {
         gridBooleanFnName: options.gridBooleanFnName
       };
       this.grid = new Grid({grid: {}, options: gridOptions});
-      if (options.winTile) {
-        this.winTile = options.winTile;
+      if (options.winConditionFnName) {
+        this.winConditionFnName = options.winConditionFnName;
+        this.winConditionFn = WinCondition[this.winConditionFnName];
       }
       else {
-        this.winTile = '2048';
+        this.winConditionFnName = "original2048";
+        this.winConditionFn = WinCondition.original2048;
       }
     }
     else {
-      this.winTile = game.options.winTile;
+      this.winConditionFnName = game.options.winConditionFnName;
+      this.winConditionFn = WinCondition[this.winConditionFnName];
       this.grid = new Grid({grid: game.grid, options: {}});
     }
     this.grid.addTile();
@@ -29,19 +33,19 @@ export default class Game extends EventEmitter {
 
   toJSON() {
     return {
-      grid: this.grid.toObj(),
+      grid: this.grid.toJSON(),
       options: {
-        winTile: this.winTile
+        winConditionFnName: this.winConditionFnName
       }
     }
   }
 
   getBoard() {
-    return this.grid.toObj();
+    return this.grid.toJSON();
   }
 
   isWon() {
-    return this.grid.hasTile(this.winTile);
+    return this.winConditionFn(this.grid);
   }
 
   isLost() {

@@ -226,7 +226,7 @@ export default class Grid {
   }
 
   addTile() {
-    const {row, column, value} = this.newTileFn(this.toObj());
+    const {row, column, value} = this.newTileFn(this.toJSON());
     if (row != undefined) {
       this.cells[row * this.gridBoolean[0].length + column].setTile(value);
     }
@@ -259,7 +259,7 @@ export default class Grid {
     return maxLength;
   }
 
-  toObj() {
+  toJSON() {
     const grid = [];
     for (let i = 0; i < this.gridBoolean.length; i++) {
       const row = [];
