@@ -1,13 +1,17 @@
+import BoardViewColorModel from "./BoardViewColorModel.js";
+
 export default class BoardView {
   constructor(boardContainer) {
+    this.boardViewColorModel = new BoardViewColorModel();
     this.boardContainer = boardContainer;
     this._onKeydown = this._onKeydown.bind(this);
   }
 
   _initializeTile(tileElement, tileObj) {
     tileElement.textContent = tileObj.value;
-    const mergeCount = tileObj.mergeCount;
-    tileElement.classList.add(mergeCount > 40 ? 'tile-merge-40' : 'tile-merge-' + mergeCount);
+    const {color, backgroundColor} = this.boardViewColorModel.getTileColor(tileObj.value);
+    tileElement.style.color = color;
+    tileElement.style.backgroundColor = backgroundColor;
     const valueLength = tileObj.value.toString().length;
     tileElement.classList.add(valueLength > 10 ? 'tile-font-size-10' : 'tile-font-size-' + valueLength);
   }
@@ -19,6 +23,7 @@ export default class BoardView {
   }
 
   initialize({gridArray}) {
+    this.boardViewColorModel.updateTileColors(gridArray);
     const promises = [];
     this.gridRows = gridArray.length;
     this.gridCols = this.gridRows? gridArray[0].length : 0;
@@ -86,6 +91,7 @@ export default class BoardView {
   }
 
   merge({gridArray}) {
+    this.boardViewColorModel.updateTileColors(gridArray);
     const promises = [];
     const cells = this.boardContainer.children[0].children;
     for (let i = 0; i < this.gridRows; i++) {
@@ -116,6 +122,7 @@ export default class BoardView {
   }
 
   addTiles({gridArray}) {
+    this.boardViewColorModel.updateTileColors(gridArray);
     const promises = [];
     const cells = this.boardContainer.children[0].children;
     for (let i = 0; i < this.gridRows; i++) {

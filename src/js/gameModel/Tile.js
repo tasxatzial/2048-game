@@ -3,7 +3,6 @@ export default class Tile {
     this.row = row;
     this.col = column;
     this.value = value;
-    this.mergeCount = 0;
   }
 
   getValue() {
@@ -30,30 +29,20 @@ export default class Tile {
     return this.col;
   }
 
-  getMergeCount() {
-    return this.mergeCount;
-  }
-
-  setMergeCount(value) {
-    this.mergeCount = value;
-  }
-
   toJSON() {
     return {
       row: this.row,
       column: this.col,
-      value: this.value,
-      mergeCount: this.mergeCount
+      value: this.value
     };
   }
 
   static fromJSON(json) {
     if (json) {
-      const {row, column, value, mergeCount} = json;
-      const tile = new Tile(row, column, value);
-      tile.mergeCount = mergeCount;
-      return tile;
-    } else {
+      const {row, column, value} = json;
+      return new Tile(row, column, value);
+    }
+    else {
       return null;
     }
   }

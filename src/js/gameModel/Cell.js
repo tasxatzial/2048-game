@@ -72,7 +72,6 @@ export default class Cell {
     if (this.mergeTile) {
       score = Cell.mergeScoreFn(this.tile.getValue(), this.mergeTile.getValue());
       this.tile.setValue(Cell.mergeResultFn(this.tile.getValue(), this.mergeTile.getValue()));
-      this.tile.setMergeCount(Math.max(this.tile.getMergeCount(), this.mergeTile.getMergeCount()) + 1);
       this.mergeTile = null;
     }
     return score;
@@ -94,7 +93,8 @@ export default class Cell {
       cell.tile = Tile.fromJSON(tile);
       cell.mergeTile = Tile.fromJSON(mergeTile);
       return cell;
-    } else {
+    }
+    else {
       return null;
     }
   }
