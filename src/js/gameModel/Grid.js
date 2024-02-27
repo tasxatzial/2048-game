@@ -72,9 +72,9 @@ export default class Grid {
       this.mergeConditionFn = MergeCondition[mergeConditionFnName];
       this.gridBooleanFnName = gridBooleanFnName;
     }
-    Cell.prototype.mergeResultFn = this.mergeResultFn;
-    Cell.prototype.mergeScoreFn = this.mergeScoreFn;
-    Cell.prototype.mergeConditionFn = this.mergeConditionFn;
+    Cell.mergeResultFn = this.mergeResultFn;
+    Cell.mergeScoreFn = this.mergeScoreFn;
+    Cell.mergeConditionFn = this.mergeConditionFn;
   }
 
   _createRows(booleanArray) {

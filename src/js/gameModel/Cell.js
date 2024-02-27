@@ -56,7 +56,7 @@ export default class Cell {
   }
 
   canMergeTile(cell) {
-    return this.tile && !cell.mergeTile && !this.mergeTile && this.mergeConditionFn(this.tile.getValue(), cell.tile.getValue());
+    return this.tile && !cell.mergeTile && !this.mergeTile && Cell.mergeConditionFn(this.tile.getValue(), cell.tile.getValue());
   }
 
   willMergeTiles() {
@@ -70,8 +70,8 @@ export default class Cell {
       this.tile.setColumn(this.col);
     }
     if (this.mergeTile) {
-      score = this.mergeScoreFn(this.tile.getValue(), this.mergeTile.getValue());
-      this.tile.setValue(this.mergeResultFn(this.tile.getValue(), this.mergeTile.getValue()));
+      score = Cell.mergeScoreFn(this.tile.getValue(), this.mergeTile.getValue());
+      this.tile.setValue(Cell.mergeResultFn(this.tile.getValue(), this.mergeTile.getValue()));
       this.tile.setMergeCount(Math.max(this.tile.getMergeCount(), this.mergeTile.getMergeCount()) + 1);
       this.mergeTile = null;
     }
