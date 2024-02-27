@@ -3,7 +3,6 @@ import WinCondition from "./gameModel/WinCondition.js";
 import LoseCondition from "./gameModel/LoseCondition.js";
 import EventEmitter from "./EventEmitter.js";
 
-
 export default class Game extends EventEmitter {
   constructor({game, options}) {
     super();
@@ -52,10 +51,6 @@ export default class Game extends EventEmitter {
         loseConditionFnName: this.loseConditionFnName
       }
     }
-  }
-
-  getBoard() {
-    return this.grid.toJSON();
   }
 
   isWon() {

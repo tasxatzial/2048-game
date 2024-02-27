@@ -1,10 +1,7 @@
 import GameModel from "./GameModel.js";
-import GridView from "./gameView/GridView.js";
+import BoardView from "./gameView/BoardView.js";
 
 localStorage.clear(); //required since there's no reset button yet
-
-
-const gameGridContainer = document.getElementById('game-grid-container');
 
 let game;
 const savedGame = JSON.parse(localStorage.getItem('game-2048'));
@@ -23,8 +20,8 @@ else {
   });
 }
 
-const gridView = new GridView(gameGridContainer);
-const initialPromises = gridView.initialize(game.getBoard());
+const boardView = new BoardView(document.getElementById('board-container'));
+const initialPromises = boardView.initialize(game.toJSON().grid);
 
 const keydownHandlers = {
   slideUp: game.slideUp.bind(game),
@@ -36,28 +33,28 @@ const keydownHandlers = {
 Promise.all(initialPromises).then(() => initialSetup());
 
 game.addChangeListener("slideEvent", () => {
-  const promises = gridView.slideBoard(game.getBoard());
+  const promises = boardView.slide(game.toJSON().grid);
   Promise.all(promises).then(() => game.mergeBoard());
 });
 
 game.addChangeListener("mergeTilesEvent", () => {
-  const promises = gridView.mergeBoard(game.getBoard());
+  const promises = boardView.merge(game.toJSON().grid);
   Promise.all(promises).then(() => game.addTiles());
 });
 
 game.addChangeListener("mergeBoardEvent", () => {
-  gridView.mergeBoard(game.getBoard());
+  boardView.merge(game.toJSON().grid);
   game.addTiles();
 });
 
 game.addChangeListener("noOpEvent", () => {
-  gridView.bindHandlers(keydownHandlers);
+  boardView.bindHandlers(keydownHandlers);
 });
 
 game.addChangeListener("addTileEvent", () => {
-  const promises = gridView.addTiles(game.getBoard());
+  const promises = boardView.addTiles(game.toJSON().grid);
   Promise.all(promises).then(() => {
-    localStorage.setItem('game-2048', JSON.stringify(game.toJSON()));
+    localStorage.setItem('game-2048', JSON.stringify(game.toJSON().grid));
     initialSetup();
   });
 });
@@ -72,6 +69,6 @@ function initialSetup() {
     alert('Game is lost');
   }
   else {
-    gridView.bindHandlers(keydownHandlers);
+    boardView.bindHandlers(keydownHandlers);
   }
 }
