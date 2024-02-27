@@ -224,7 +224,7 @@ export default class Grid {
   }
 
   willMergeTiles() {
-    this.getCells().some(cell => {
+    return this.getCells().some(cell => {
       return cell.willMergeTiles();
     });
   }
