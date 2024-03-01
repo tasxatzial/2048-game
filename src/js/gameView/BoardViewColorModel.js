@@ -1,9 +1,9 @@
 export default class BoardViewColorModel {
   constructor() {
     this.tileColors = new Map();
-    this.colors = new Map();
+    this.colors = [];
     for (let i = 0; i < COLORS.length; i++) {
-      this.colors.set(i, {
+      this.colors.push({
         'color': COLORS[i][0],
         'backgroundColor': COLORS[i][1],
         'used': false
@@ -12,7 +12,7 @@ export default class BoardViewColorModel {
   }
 
   getTileColor(tileValue) {
-    return this.colors.get(this.tileColors.get(tileValue));
+    return this.colors[this.tileColors.get(tileValue)];
   }
 
   updateTileColors(gridArray) {
@@ -33,7 +33,7 @@ export default class BoardViewColorModel {
     this.tileColors.forEach((colorIndex, tileValue) => {
       if (!tileValues.has(tileValue)) {
         this.tileColors.delete(tileValue);
-        this.colors.get(colorIndex).used = false;
+        this.colors[colorIndex].used = false;
       }
     });
 
@@ -41,16 +41,15 @@ export default class BoardViewColorModel {
       if (this.tileColors.get(tileValue) != undefined) {
         return;
       }
-      const colors = Array.from(this.colors.entries());
       let i;
-      for (i = 0; i < colors.length; i++) {
-        if (!colors[i][1].used) {
-          this.colors.get(i).used = true;
+      for (i = 0; i < this.colors.length; i++) {
+        if (!this.colors[i].used) {
+          this.colors[i].used = true;
           this.tileColors.set(tileValue, i);
           break;
         }
       }
-      if (i == colors.length) {
+      if (i == this.colors.length) {
         this.tileColors.set(tileValue, i - 1);
       }
     });
