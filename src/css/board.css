@@ -71,41 +71,41 @@
 }
 
 .tile-font-size-1 {
-  --font-scale-factor: 1;
+  --_font-scale-factor: 1;
 }
 
 .tile-font-size-2 {
-  --font-scale-factor: 1;
+  --_font-scale-factor: 1;
 }
 
 .tile-font-size-3 {
-  --font-scale-factor: 1;
+  --_font-scale-factor: 1;
 }
 
 .tile-font-size-4 {
-  --font-scale-factor: 1.25;
+  --_font-scale-factor: 1.25;
 }
 
 .tile-font-size-5 {
-  --font-scale-factor: 1.55;
+  --_font-scale-factor: 1.55;
 }
 
 .tile-font-size-6 {
-  --font-scale-factor: 1.85;
+  --_font-scale-factor: 1.85;
 }
 
 .tile-font-size-7 {
-  --font-scale-factor: 2.2;
+  --_font-scale-factor: 2.2;
 }
 
 .tile-font-size-8 {
-  --font-scale-factor: 2.55;
+  --_font-scale-factor: 2.55;
 }
 
 .tile-font-size-9 {
-  --font-scale-factor: 2.9;
+  --_font-scale-factor: 2.9;
 }
 
 .tile-font-size-10 {
-  --font-scale-factor: 3.2;
+  --_font-scale-factor: 3.2;
 }
