@@ -31,6 +31,8 @@ export default class Game extends EventEmitter {
         this.loseConditionFnName = "original2048";
         this.loseConditionFn = LoseCondition.original2048;
       }
+      this.grid.addTile();
+      this.grid.addTile();
     }
     else {
       this.winConditionFnName = game.options.winConditionFnName;
@@ -39,8 +41,6 @@ export default class Game extends EventEmitter {
       this.loseConditionFn = LoseCondition[this.loseConditionFnName];
       this.grid = new Grid({grid: game.grid, options: {}});
     }
-    this.grid.addTile();
-    this.grid.addTile();
   }
 
   toJSON() {

@@ -30,7 +30,7 @@ const keydownHandlers = {
   slideLeft: game.slideLeft.bind(game)
 };
 
-Promise.all(initialPromises).then(() => initialSetup());
+Promise.all(initialPromises).then(initialSetup);
 
 game.addChangeListener("slideEvent", () => {
   const promises = boardView.slide(game.toJSON().grid);
@@ -54,7 +54,7 @@ game.addChangeListener("noOpEvent", () => {
 game.addChangeListener("addTileEvent", () => {
   const promises = boardView.addTiles(game.toJSON().grid);
   Promise.all(promises).then(() => {
-    localStorage.setItem('game-2048', JSON.stringify(game.toJSON().grid));
+    localStorage.setItem('game-2048', JSON.stringify(game.toJSON()));
     initialSetup();
   });
 });
