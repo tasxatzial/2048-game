@@ -9,7 +9,7 @@ export default class Game extends EventEmitter {
     if (!obj) {
       obj = {};
     }
-    let {grid, gridOptions, options} = obj;
+    let {grid, gridOptions, options, initialTiles} = obj;
     if (!options) {
       options = {};
     }
@@ -34,8 +34,13 @@ export default class Game extends EventEmitter {
     }
     else {
       this.grid = new Grid({options: gridOptions});
-      this.grid.addTiles();
-      this.grid.addTiles();
+      if (initialTiles) {
+        this.grid.initTiles(initialTiles);
+      }
+      else {
+        this.grid.addTiles();
+        this.grid.addTiles();
+      }
     }
   }
 

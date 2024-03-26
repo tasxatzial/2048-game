@@ -253,6 +253,12 @@ export default class Grid {
     })
   }
 
+  initTiles(tiles) {
+    tiles.forEach(tile => {
+      this.cells[tile.row * this.gridBoolean[0].length + tile.column].setTile(tile.value);
+    })
+  }
+
   hasTile(value) {
     return this.getCells().some(cell => {
       return cell.hasTile() && cell.getTile().getValue() == value;
