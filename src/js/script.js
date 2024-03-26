@@ -6,14 +6,10 @@ localStorage.clear(); //required since there's no reset button yet
 let game;
 const savedGame = JSON.parse(localStorage.getItem('game-2048'));
 if (savedGame) {
-  game = new GameModel({
-    game: savedGame,
-    options: {}
-  });
+  game = new GameModel(savedGame);
 }
 else {
   game = new GameModel({
-    game: {},
     options: {
       gridBooleanFnName: "threeByThree"
     }

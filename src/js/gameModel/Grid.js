@@ -6,8 +6,32 @@ import MergeCondition from "./MergeCondition.js";
 import NewTile from "./NewTile.js";
 
 export default class Grid {
-  constructor({grid, options}) {
-    if (Object.keys(grid).length == 0) {
+  constructor(obj) {
+    if (!obj) {
+      obj = {};
+    }
+    let {grid, options} = obj;
+    if (grid) {
+      const {gridArray, slideCount, score, newTileFnName, mergeResultFnName, mergeScoreFnName, mergeConditionFnName, gridBooleanFnName} = grid;
+      this._createCellsFromGrid(gridArray);
+      this._createRows(this.gridBoolean);
+      this._createColumns(this.gridBoolean);
+      this.slideCount = slideCount;
+      this.score = score;
+      this.newTileFnName = newTileFnName;
+      this.newTileFn = NewTile[newTileFnName];
+      this.mergeResultFnName = mergeResultFnName;
+      this.mergeResultFn = MergeResult[mergeResultFnName];
+      this.mergeScoreFnName = mergeScoreFnName;
+      this.mergeScoreFn = MergeScore[mergeScoreFnName];
+      this.mergeConditionFnName = mergeConditionFnName;
+      this.mergeConditionFn = MergeCondition[mergeConditionFnName];
+      this.gridBooleanFnName = gridBooleanFnName;
+    }
+    else {
+      if (!options) {
+        options = {};
+      }
       const {newTileFnName, mergeResultFnName, mergeScoreFnName, mergeConditionFnName, gridBooleanFnName} = options;
       if (gridBooleanFnName) {
         this.gridBoolean = GridBoolean[gridBooleanFnName]();
@@ -54,23 +78,6 @@ export default class Grid {
         this.mergeConditionFn = MergeCondition.original2048;
         this.mergeConditionFnName = "original2048";
       }
-    }
-    else {
-      const {gridArray, slideCount, score, newTileFnName, mergeResultFnName, mergeScoreFnName, mergeConditionFnName, gridBooleanFnName} = grid;
-      this._createCellsFromGrid(gridArray);
-      this._createRows(this.gridBoolean);
-      this._createColumns(this.gridBoolean);
-      this.slideCount = slideCount;
-      this.score = score;
-      this.newTileFnName = newTileFnName;
-      this.newTileFn = NewTile[newTileFnName];
-      this.mergeResultFnName = mergeResultFnName;
-      this.mergeResultFn = MergeResult[mergeResultFnName];
-      this.mergeScoreFnName = mergeScoreFnName;
-      this.mergeScoreFn = MergeScore[mergeScoreFnName];
-      this.mergeConditionFnName = mergeConditionFnName;
-      this.mergeConditionFn = MergeCondition[mergeConditionFnName];
-      this.gridBooleanFnName = gridBooleanFnName;
     }
     Cell.mergeResultFn = this.mergeResultFn;
     Cell.mergeScoreFn = this.mergeScoreFn;

@@ -4,9 +4,35 @@ import LoseCondition from "./gameModel/LoseCondition.js";
 import EventEmitter from "./EventEmitter.js";
 
 export default class Game extends EventEmitter {
-  constructor({game, options}) {
+  constructor(obj) {
     super();
-    if (Object.keys(game).length == 0) {
+    if (!obj) {
+      obj = {};
+    }
+    let {grid, options} = obj;
+    if (!options) {
+      options = {};
+    }
+    if (options.winConditionFnName) {
+      this.winConditionFnName = options.winConditionFnName;
+      this.winConditionFn = WinCondition[this.winConditionFnName];
+    }
+    else {
+      this.winConditionFnName = "original2048";
+      this.winConditionFn = WinCondition.original2048;
+    }
+    if (options.loseConditionFnName) {
+      this.loseConditionFnName = options.loseConditionFnName;
+      this.loseConditionFn = LoseCondition[this.loseConditionFnName];
+    }
+    else {
+      this.loseConditionFnName = "original2048";
+      this.loseConditionFn = LoseCondition.original2048;
+    }
+    if (grid) {
+      this.grid = new Grid({grid: grid});
+    }
+    else {
       const gridOptions = {
         newTileFnName: options.newTileFnName,
         mergeResultFnName: options.mergeResultFnName,
@@ -14,32 +40,9 @@ export default class Game extends EventEmitter {
         mergeConditionFnName: options.mergeConditionFnName,
         gridBooleanFnName: options.gridBooleanFnName
       };
-      this.grid = new Grid({grid: {}, options: gridOptions});
-      if (options.winConditionFnName) {
-        this.winConditionFnName = options.winConditionFnName;
-        this.winConditionFn = WinCondition[this.winConditionFnName];
-      }
-      else {
-        this.winConditionFnName = "original2048";
-        this.winConditionFn = WinCondition.original2048;
-      }
-      if (options.loseConditionFnName) {
-        this.loseConditionFnName = options.loseConditionFnName;
-        this.loseConditionFn = LoseCondition[this.loseConditionFnName];
-      }
-      else {
-        this.loseConditionFnName = "original2048";
-        this.loseConditionFn = LoseCondition.original2048;
-      }
+      this.grid = new Grid({options: gridOptions});
       this.grid.addTile();
       this.grid.addTile();
-    }
-    else {
-      this.winConditionFnName = game.options.winConditionFnName;
-      this.winConditionFn = WinCondition[this.winConditionFnName];
-      this.loseConditionFnName = game.options.loseConditionFnName;
-      this.loseConditionFn = LoseCondition[this.loseConditionFnName];
-      this.grid = new Grid({grid: game.grid, options: {}});
     }
   }
 
