@@ -8,10 +8,10 @@ export default class NewTileGen {
     }
     const randCell = emptyCells[Math.floor(Math.random() * emptyCells.length)];
     const randValue = Math.floor(Math.random() > 0.9 ? 4 : 2);
-    return {
+    return [{
       row: randCell.getRow(),
       column: randCell.getColumn(),
       value: randValue
-    };
+    }];
   }
 }

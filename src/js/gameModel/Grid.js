@@ -246,11 +246,11 @@ export default class Grid {
     return this.score;
   }
 
-  addTile() {
-    const {row, column, value} = this.newTileFn(this);
-    if (row != undefined) {
-      this.cells[row * this.gridBoolean[0].length + column].setTile(value);
-    }
+  addTiles() {
+    const newTiles = this.newTileFn(this);
+    newTiles.forEach(tile => {
+      this.cells[tile.row * this.gridBoolean[0].length + tile.column].setTile(tile.value);
+    })
   }
 
   hasTile(value) {

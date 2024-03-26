@@ -34,8 +34,8 @@ export default class Game extends EventEmitter {
     }
     else {
       this.grid = new Grid({options: gridOptions});
-      this.grid.addTile();
-      this.grid.addTile();
+      this.grid.addTiles();
+      this.grid.addTiles();
     }
   }
 
@@ -62,7 +62,7 @@ export default class Game extends EventEmitter {
   }
 
   addTiles() {
-    this.grid.addTile();
+    this.grid.addTiles();
     this.raiseChange("addTileEvent");
   }
 
