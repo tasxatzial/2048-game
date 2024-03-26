@@ -10,7 +10,7 @@ if (savedGame) {
 }
 else {
   game = new GameModel({
-    options: {
+    gridOptions: {
       gridBooleanFnName: "threeByThree"
     }
   });
