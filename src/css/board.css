@@ -26,7 +26,7 @@
   border: 2px solid white;
 }
 
-.inner-cell {
+.tile {
   --_font-scale-factor: var(--font-scale-factor, 1);
   display: flex;
   justify-content: center;
@@ -66,7 +66,7 @@
 
 .grid,
 .cell,
-.inner-cell {
+.tile {
   border-radius: 0.25rem;
 }
 

@@ -58,6 +58,7 @@ game.addChangeListener("addTileEvent", () => {
 /*------------- FUNCTIONS ------------- */
 
 function initialSetup() {
+  console.log("listeners added");
   if (game.isWon()) {
     alert('Game is won');
   }

@@ -38,11 +38,11 @@ export default class BoardView {
         if (cellObj) {
           cell.classList.add('cell');
           const innerCell = document.createElement('div');
-          innerCell.classList.add('inner-cell', 'zoomin');
-          innerCell.addEventListener('animationend', () => innerCell.classList.remove('zoomin'), {once: true});
           if (cellObj.tile) {
             promises.push(this._waitForEvent(innerCell, 'animationend'));
             this._initializeTile(innerCell, cellObj.tile);
+            innerCell.addEventListener('animationend', () => innerCell.classList.remove('zoomin'), {once: true});
+            innerCell.classList.add('tile', 'zoomin');
           }
           cell.appendChild(innerCell);
         }
@@ -103,14 +103,15 @@ export default class BoardView {
         const cell = cells.item(i * gridArray[0].length + j);
         const innerCell = cell.children[0];
         innerCell.removeAttribute('style');
-        innerCell.classList = 'inner-cell';
+        innerCell.classList = '';
         if (cellObj.tile) {
+          innerCell.classList.add('tile');
           this._initializeTile(innerCell, cellObj.tile);
           if (cell.hasAttribute('data-will-merge')) {
             promises.push(this._waitForEvent(innerCell, 'animationend'));
             cell.removeAttribute('data-will-merge');
-            innerCell.classList.add('zoomin');
             innerCell.addEventListener('animationend', () => innerCell.classList.remove('zoomin'), {once: true});
+            innerCell.classList.add('zoomin');
           }
         }
         else {
@@ -136,8 +137,8 @@ export default class BoardView {
         if (cellObj.tile && innerCell.textContent == '') {
           promises.push(this._waitForEvent(innerCell, 'animationend'));
           this._initializeTile(innerCell, cellObj.tile);
-          innerCell.classList.add('zoomin');
           innerCell.addEventListener('animationend', () => innerCell.classList.remove('zoomin'), {once: true});
+          innerCell.classList.add('tile', 'zoomin');
         }
       }
     }
