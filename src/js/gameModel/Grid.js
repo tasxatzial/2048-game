@@ -13,13 +13,6 @@ export default class Grid {
     let {grid, options} = obj;
     if (grid) {
       const {gridArray, slideCount, score, newTileFnName, mergeResultFnName, mergeScoreFnName, mergeConditionFnName, gridBooleanFnName} = grid;
-      const {gridBoolean, cells} =  this._createCellsFromGrid(gridArray);
-      this.gridBoolean = gridBoolean;
-      this.cells = cells;
-      this.rows = this._createRows(this.gridBoolean);
-      this.cols = this._createColumns(this.gridBoolean);
-      this.slideCount = slideCount;
-      this.score = score;
       this.newTileFnName = newTileFnName;
       this.newTileFn = NewTile[newTileFnName];
       this.mergeResultFnName = mergeResultFnName;
@@ -29,6 +22,13 @@ export default class Grid {
       this.mergeConditionFnName = mergeConditionFnName;
       this.mergeConditionFn = MergeCondition[mergeConditionFnName];
       this.gridBooleanFnName = gridBooleanFnName;
+      this.slideCount = slideCount;
+      this.score = score;
+      const {gridBoolean, cells} =  this._createCellsFromGrid(gridArray);
+      this.cells = cells;
+      this.gridBoolean = gridBoolean;
+      this.rows = this._createRows(this.gridBoolean);
+      this.cols = this._createColumns(this.gridBoolean);
     }
     else {
       if (!options) {
@@ -43,11 +43,6 @@ export default class Grid {
         this.gridBoolean = GridBoolean.original2048();
         this.gridBooleanFnName = "original2048";
       }
-      this.cells = this._createCellsFromGridBoolean(this.gridBoolean);
-      this.rows = this._createRows(this.gridBoolean);
-      this.cols = this._createColumns(this.gridBoolean);
-      this.slideCount = 0;
-      this.score = 0;
       if (newTileFnName) {
         this.newTileFn = NewTile[newTileFnName];
         this.newTileFnName = newTileFnName;
@@ -80,10 +75,12 @@ export default class Grid {
         this.mergeConditionFn = MergeCondition.original2048;
         this.mergeConditionFnName = "original2048";
       }
+      this.slideCount = 0;
+      this.score = 0;
+      this.cells = this._createCellsFromGridBoolean(this.gridBoolean);
+      this.rows = this._createRows(this.gridBoolean);
+      this.cols = this._createColumns(this.gridBoolean);
     }
-    Cell.mergeResultFn = this.mergeResultFn;
-    Cell.mergeScoreFn = this.mergeScoreFn;
-    Cell.mergeConditionFn = this.mergeConditionFn;
   }
 
   _createRows(booleanArray) {
@@ -136,7 +133,11 @@ export default class Grid {
     for (let i = 0; i < booleanArray.length; i++) {
       for (let j = 0; j < booleanArray[0].length; j++) {
         if (booleanArray[i][j] == 1) {
-          cells[i * booleanArray[0].length + j] = new Cell(i, j);
+          const idx = i * booleanArray[0].length + j;
+          cells[idx] = new Cell(i, j);
+          cells[idx].mergeResultFn = this.mergeResultFn;
+          cells[idx].mergeScoreFn = this.mergeScoreFn;
+          cells[idx].mergeConditionFn = this.mergeConditionFn;
         }
       }
     }
@@ -151,7 +152,11 @@ export default class Grid {
       for (let j = 0; j < gridArray[0].length; j++) {
         const cellObj = gridArray[i][j];
         if (cellObj) {
-          cells[i * gridArray[0].length + j] = Cell.fromJSON(cellObj);
+          const idx = i * gridArray[0].length + j;
+          cells[idx] = Cell.fromJSON(cellObj);
+          cells[idx].mergeResultFn = this.mergeResultFn;
+          cells[idx].mergeScoreFn = this.mergeScoreFn;
+          cells[idx].mergeConditionFn = this.mergeConditionFn;
           row.push(1);
         } else {
           row.push(0);
