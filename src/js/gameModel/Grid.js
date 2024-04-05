@@ -13,9 +13,11 @@ export default class Grid {
     let {grid, options} = obj;
     if (grid) {
       const {gridArray, slideCount, score, newTileFnName, mergeResultFnName, mergeScoreFnName, mergeConditionFnName, gridBooleanFnName} = grid;
-      this._createCellsFromGrid(gridArray);
-      this._createRows(this.gridBoolean);
-      this._createColumns(this.gridBoolean);
+      const {gridBoolean, cells} =  this._createCellsFromGrid(gridArray);
+      this.gridBoolean = gridBoolean;
+      this.cells = cells;
+      this.rows = this._createRows(this.gridBoolean);
+      this.cols = this._createColumns(this.gridBoolean);
       this.slideCount = slideCount;
       this.score = score;
       this.newTileFnName = newTileFnName;
@@ -41,9 +43,9 @@ export default class Grid {
         this.gridBoolean = GridBoolean.original2048();
         this.gridBooleanFnName = "original2048";
       }
-      this._createCellsFromGridBoolean(this.gridBoolean);
-      this._createRows(this.gridBoolean);
-      this._createColumns(this.gridBoolean);
+      this.cells = this._createCellsFromGridBoolean(this.gridBoolean);
+      this.rows = this._createRows(this.gridBoolean);
+      this.cols = this._createColumns(this.gridBoolean);
       this.slideCount = 0;
       this.score = 0;
       if (newTileFnName) {
@@ -85,7 +87,7 @@ export default class Grid {
   }
 
   _createRows(booleanArray) {
-    this.rows = [];
+    const rows = [];
     let last = false;
     for (let i = 0; i < booleanArray.length; i++) {
       let row = [];
@@ -96,19 +98,20 @@ export default class Grid {
         }
         else if (last) {
           last = false;
-          this.rows.push(row);
+          rows.push(row);
           row = [];
         }
       }
-      this.rows.push(row);
+      rows.push(row);
     }
+    return rows;
   }
 
   _createColumns(booleanArray) {
     if (!booleanArray.length) {
       return [];
     }
-    this.cols = [];
+    const cols = [];
     let last = false;
     for (let j = 0; j < booleanArray[0].length; j++) {
       let col = [];
@@ -119,41 +122,44 @@ export default class Grid {
         }
         else if (last) {
           last = false;
-          this.cols.push(col);
+          cols.push(col);
           col = [];
         }
       }
-      this.cols.push(col);
+      cols.push(col);
     }
+    return cols;
   }
 
   _createCellsFromGridBoolean(booleanArray) {
-    this.cells = {};
+    const cells = {};
     for (let i = 0; i < booleanArray.length; i++) {
       for (let j = 0; j < booleanArray[0].length; j++) {
         if (booleanArray[i][j] == 1) {
-          this.cells[i * booleanArray[0].length + j] = new Cell(i, j);
+          cells[i * booleanArray[0].length + j] = new Cell(i, j);
         }
       }
     }
+    return cells;
   }
 
   _createCellsFromGrid(gridArray) {
-    this.gridBoolean = [];
-    this.cells = {};
+    const gridBoolean = [];
+    const cells = {};
     for (let i = 0; i < gridArray.length; i++) {
       const row = [];
       for (let j = 0; j < gridArray[0].length; j++) {
         const cellObj = gridArray[i][j];
         if (cellObj) {
-          this.cells[i * gridArray[0].length + j] = Cell.fromJSON(cellObj);
+          cells[i * gridArray[0].length + j] = Cell.fromJSON(cellObj);
           row.push(1);
         } else {
           row.push(0);
         }
       }
-      this.gridBoolean.push(row);
+      gridBoolean.push(row);
     }
+    return {gridBoolean, cells};
   }
 
   _slideTilesToEnd(cellArray) {
