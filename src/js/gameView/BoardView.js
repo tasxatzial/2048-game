@@ -4,7 +4,6 @@ export default class BoardView {
   constructor(boardContainer) {
     this.boardViewColorModel = new BoardViewColorModel();
     this.boardContainer = boardContainer;
-    this._onKeydown = this._onKeydown.bind(this);
   }
 
   _initializeTile(tileElement, tileObj) {
@@ -143,27 +142,5 @@ export default class BoardView {
       }
     }
     return promises;
-  }
-
-  bindHandlers(slideHandlers) {
-    this.slideHandlers = slideHandlers;
-    window.addEventListener('keydown', this._onKeydown, {once: true});
-  }
-
-  _onKeydown(e) {
-    switch(e.code) {
-      case 'ArrowLeft':
-        this.slideHandlers.slideLeft();
-        break;
-      case 'ArrowUp':
-        this.slideHandlers.slideUp();
-        break;
-      case 'ArrowRight':
-        this.slideHandlers.slideRight();
-        break;
-      case 'ArrowDown':
-        this.slideHandlers.slideDown();
-        break;
-    }
   }
 }

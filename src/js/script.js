@@ -1,5 +1,5 @@
 import GameModel from "./GameModel.js";
-import BoardView from "./gameView/BoardView.js";
+import GameView from "./GameView.js";
 
 localStorage.clear(); //required since there's no reset button yet
 
@@ -16,9 +16,6 @@ else {
   });
 }
 
-const boardView = new BoardView(document.getElementById('board-container'));
-const initialPromises = boardView.initialize(game.toJSON().grid);
-
 const keydownHandlers = {
   slideUp: game.slideUp.bind(game),
   slideRight: game.slideRight.bind(game),
@@ -26,29 +23,31 @@ const keydownHandlers = {
   slideLeft: game.slideLeft.bind(game)
 };
 
+const view = new GameView();
+const initialPromises = view.initialize(game.toJSON());
 Promise.all(initialPromises).then(initialSetup);
 
 game.addChangeListener("slideEvent", () => {
-  const promises = boardView.slide(game.toJSON().grid);
+  const promises = view.slide(game.toJSON());
   Promise.all(promises).then(() => game.mergeBoard());
 });
 
 game.addChangeListener("mergeTilesEvent", () => {
-  const promises = boardView.merge(game.toJSON().grid);
+  const promises = view.merge(game.toJSON());
   Promise.all(promises).then(() => game.addTiles());
 });
 
-game.addChangeListener("mergeBoardEvent", () => {
-  boardView.merge(game.toJSON().grid);
+game.addChangeListener("mergeNoTilesEvent", () => {
+  view.merge(game.toJSON());
   game.addTiles();
 });
 
 game.addChangeListener("noOpEvent", () => {
-  boardView.bindHandlers(keydownHandlers);
+  view.bindHandlers(keydownHandlers);
 });
 
 game.addChangeListener("addTileEvent", () => {
-  const promises = boardView.addTiles(game.toJSON().grid);
+  const promises = view.addTiles(game.toJSON());
   Promise.all(promises).then(() => {
     localStorage.setItem('game-2048', JSON.stringify(game.toJSON()));
     initialSetup();
@@ -66,6 +65,6 @@ function initialSetup() {
     alert('Game is lost');
   }
   else {
-    boardView.bindHandlers(keydownHandlers);
+    view.bindHandlers(keydownHandlers);
   }
 }

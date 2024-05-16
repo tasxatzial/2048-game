@@ -90,7 +90,7 @@ export default class Game extends EventEmitter {
       this.raiseChange("mergeTilesEvent");
     }
     else {
-      this.raiseChange("mergeBoardEvent");
+      this.raiseChange("mergeNoTilesEvent");
     }
   }
 
