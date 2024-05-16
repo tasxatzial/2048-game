@@ -10,12 +10,8 @@ export default class Grid {
     if (!obj) {
       obj = {};
     }
-    let {grid, options} = obj;
-    if (!options) {
-      options = {};
-    }
-    if (grid) {
-      const {gridArray, newTileFnName, mergeResultFnName, mergeScoreFnName, mergeConditionFnName, gridBooleanFnName} = grid;
+    if (obj.grid) {
+      const {gridArray, newTileFnName, mergeResultFnName, mergeScoreFnName, mergeConditionFnName, gridBooleanFnName} = obj.grid;
       this.newTileFnName = newTileFnName;
       this.newTileFn = NewTile[newTileFnName];
       this.mergeResultFnName = mergeResultFnName;
@@ -32,6 +28,7 @@ export default class Grid {
       this.cols = this._createColumns(this.gridBoolean);
     }
     else {
+      const options = obj.options || {};
       const {newTileFnName, mergeResultFnName, mergeScoreFnName, mergeConditionFnName, gridBooleanFnName} = options;
       if (gridBooleanFnName) {
         this.gridBoolean = GridBoolean[gridBooleanFnName]();
