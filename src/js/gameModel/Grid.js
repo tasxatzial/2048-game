@@ -231,6 +231,7 @@ export default class Grid {
     return this.rows.some(_canSlide) || this.cols.some(_canSlide);
   }
 
+  //currently unused
   willMergeCells() {
     return this.getCells().some(cell => {
       return cell.willMergeTiles();

@@ -10,11 +10,11 @@ export default class GameView {
     return this.boardView.initialize(game.grid);
   }
 
-  slide(game) {
+  slideTiles(game) {
     return this.boardView.slide(game.grid);
   }
 
-  merge(game) {
+  mergeTiles(game) {
     return this.boardView.merge(game.grid);
   }
 

@@ -27,31 +27,26 @@ const view = new GameView();
 const initialPromises = view.initialize(game.toJSON());
 Promise.all(initialPromises).then(initialSetup);
 
-game.addChangeListener("slideEvent", () => {
-  const promises = view.slide(game.toJSON());
-  Promise.all(promises).then(() => game.mergeBoard());
+game.addChangeListener("slideTilesEvent", () => {
+  const promises = view.slideTiles(game.toJSON());
+  Promise.all(promises).then(() => game.mergeTiles());
 });
 
 game.addChangeListener("mergeTilesEvent", () => {
-  const promises = view.merge(game.toJSON());
+  const promises = view.mergeTiles(game.toJSON());
   Promise.all(promises).then(() => game.addTiles());
 });
 
-game.addChangeListener("mergeNoTilesEvent", () => {
-  view.merge(game.toJSON());
-  game.addTiles();
-});
-
-game.addChangeListener("noOpEvent", () => {
-  view.bindHandlers(keydownHandlers);
-});
-
-game.addChangeListener("addTileEvent", () => {
+game.addChangeListener("addTilesEvent", () => {
   const promises = view.addTiles(game.toJSON());
   Promise.all(promises).then(() => {
     localStorage.setItem('game-2048', JSON.stringify(game.toJSON()));
     initialSetup();
   });
+});
+
+game.addChangeListener("noOpEvent", () => {
+  view.bindHandlers(keydownHandlers);
 });
 
 /*------------- FUNCTIONS ------------- */

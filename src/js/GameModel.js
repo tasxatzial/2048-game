@@ -80,23 +80,17 @@ export default class Game extends EventEmitter {
 
   addTiles() {
     this.grid.addTiles();
-    this.raiseChange("addTileEvent");
+    this.raiseChange("addTilesEvent");
   }
 
-  mergeBoard() {
-    const willMergeCells = this.grid.willMergeCells();
+  mergeTiles() {
     this.score += this.grid.mergeCells();
-    if (willMergeCells) {
-      this.raiseChange("mergeTilesEvent");
-    }
-    else {
-      this.raiseChange("mergeNoTilesEvent");
-    }
+    this.raiseChange("mergeTilesEvent");
   }
 
   _raiseEventAfterSlide() {
     if (this.grid.hasChangedAfterSlide()) {
-      this.raiseChange("slideEvent");
+      this.raiseChange("slideTilesEvent");
       this.slideCount++;
     }
     else {

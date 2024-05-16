@@ -60,6 +60,7 @@ export default class Cell {
     return this.tile && !cell.mergeTile && !this.mergeTile && this.mergeConditionFn(this.tile.getValue(), cell.tile.getValue());
   }
 
+  //currently unused
   willMergeTiles() {
     return this.tile && this.mergeTile;
   }
