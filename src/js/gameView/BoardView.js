@@ -64,9 +64,6 @@ export default class BoardView {
         if (!cellObj) {
           continue;
         }
-        if (cellObj.mergeTile) {
-          cells.item(cellObj.row * gridArray[0].length + cellObj.column).setAttribute('data-will-merge', '');
-        }
         [cellObj.tile, cellObj.mergeTile].forEach((tileObj) => {
           if (tileObj) {
             const slidingTile = cells.item(tileObj.row * gridArray[0].length + tileObj.column).children[0];
@@ -106,9 +103,8 @@ export default class BoardView {
         if (cellObj.tile) {
           innerCell.classList.add('tile');
           this._initializeTile(innerCell, cellObj.tile);
-          if (cell.hasAttribute('data-will-merge')) {
+          if (cellObj.merged) {
             promises.push(this._waitForEvent(innerCell, 'animationend'));
-            cell.removeAttribute('data-will-merge');
             innerCell.addEventListener('animationend', () => innerCell.classList.remove('zoomin'), {once: true});
             innerCell.classList.add('zoomin');
           }

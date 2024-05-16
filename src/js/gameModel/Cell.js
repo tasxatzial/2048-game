@@ -6,6 +6,7 @@ export default class Cell {
     this.col = column;
     this.tile = null;
     this.mergeTile = null;
+    this.merged = false;
   }
 
   getRow() {
@@ -73,6 +74,9 @@ export default class Cell {
       score = this.mergeScoreFn(this.tile.getValue(), this.mergeTile.getValue());
       this.tile.setValue(this.mergeResultFn(this.tile.getValue(), this.mergeTile.getValue()));
       this.mergeTile = null;
+      this.merged = true;
+    } else {
+      this.merged = false;
     }
     return score;
   }
@@ -83,15 +87,17 @@ export default class Cell {
       column: this.col,
       tile: this.tile ? this.tile.toJSON() : null,
       mergeTile: this.mergeTile ? this.mergeTile.toJSON() : null,
+      merged: this.merged
     }
   }
 
   static fromJSON(json) {
     if (json) {
-      const {row, column, tile, mergeTile} = json;
+      const {row, column, tile, mergeTile, merged} = json;
       const cell = new Cell(row, column);
       cell.tile = Tile.fromJSON(tile);
       cell.mergeTile = Tile.fromJSON(mergeTile);
+      cell.merged = merged;
       return cell;
     }
     else {
