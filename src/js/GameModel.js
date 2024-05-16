@@ -9,31 +9,37 @@ export default class Game extends EventEmitter {
     if (!obj) {
       obj = {};
     }
-    let {grid, gridOptions, options, initialTiles} = obj;
-    if (!options) {
-      options = {};
-    }
-    if (options.winConditionFnName) {
-      this.winConditionFnName = options.winConditionFnName;
+    if (obj.grid) {
+      const {grid, gameOptions, score, slideCount} = obj;
+      this.grid = new Grid({grid: grid});
+      this.score = score;
+      this.slideCount = slideCount;
+      this.winConditionFnName = gameOptions.winConditionFnName;
       this.winConditionFn = WinCondition[this.winConditionFnName];
-    }
-    else {
-      this.winConditionFnName = "original2048";
-      this.winConditionFn = WinCondition.original2048;
-    }
-    if (options.loseConditionFnName) {
-      this.loseConditionFnName = options.loseConditionFnName;
+      this.loseConditionFnName = gameOptions.loseConditionFnName;
       this.loseConditionFn = LoseCondition[this.loseConditionFnName];
     }
     else {
-      this.loseConditionFnName = "original2048";
-      this.loseConditionFn = LoseCondition.original2048;
-    }
-    if (grid) {
-      this.grid = new Grid({grid: grid});
-    }
-    else {
+      const {gridOptions, initialTiles} = obj;
+      const gameOptions = obj.gameOptions || {};
       this.grid = new Grid({options: gridOptions});
+      const {winConditionFnName, loseConditionFnName} = gameOptions;
+      if (winConditionFnName) {
+        this.winConditionFnName = gameOptions.winConditionFnName;
+        this.winConditionFn = WinCondition[this.winConditionFnName];
+      }
+      else {
+        this.winConditionFnName = "original2048";
+        this.winConditionFn = WinCondition.original2048;
+      }
+      if (loseConditionFnName) {
+        this.loseConditionFnName = gameOptions.loseConditionFnName;
+        this.loseConditionFn = LoseCondition[this.loseConditionFnName];
+      }
+      else {
+        this.loseConditionFnName = "original2048";
+        this.loseConditionFn = LoseCondition.original2048;
+      }
       if (initialTiles) {
         this.grid.initTiles(initialTiles);
       }
@@ -47,10 +53,12 @@ export default class Game extends EventEmitter {
   toJSON() {
     return {
       grid: this.grid.toJSON(),
-      options: {
+      gameOptions: {
         winConditionFnName: this.winConditionFnName,
-        loseConditionFnName: this.loseConditionFnName
-      }
+        loseConditionFnName: this.loseConditionFnName,
+      },
+      score: this.score,
+      slideCount: this.slideCount
     }
   }
 
@@ -63,7 +71,11 @@ export default class Game extends EventEmitter {
   }
 
   getScore() {
-    return this.grid.getScore();
+    return this.score;
+  }
+
+  getSlideCount() {
+    return this.slideCount;
   }
 
   addTiles() {
@@ -72,9 +84,9 @@ export default class Game extends EventEmitter {
   }
 
   mergeBoard() {
-    const willMergeTilesResult = this.grid.willMergeTiles();
-    this.grid.mergeCells();
-    if (willMergeTilesResult) {
+    const willMergeCells = this.grid.willMergeCells();
+    this.score += this.grid.mergeCells();
+    if (willMergeCells) {
       this.raiseChange("mergeTilesEvent");
     }
     else {
@@ -85,6 +97,7 @@ export default class Game extends EventEmitter {
   _raiseEventAfterSlide() {
     if (this.grid.hasChangedAfterSlide()) {
       this.raiseChange("slideEvent");
+      this.slideCount++;
     }
     else {
       this.raiseChange("noOpEvent");

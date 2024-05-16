@@ -1,7 +1,7 @@
 import GameModel from "./GameModel.js";
 import BoardView from "./gameView/BoardView.js";
 
-localStorage.clear(); //required since there's no reset button yet
+//localStorage.clear(); //required since there's no reset button yet
 
 let game;
 const savedGame = JSON.parse(localStorage.getItem('game-2048'));
@@ -11,7 +11,7 @@ if (savedGame) {
 else {
   game = new GameModel({
     gridOptions: {
-      gridBooleanFnName: "threeByThree"
+      gridBooleanFnName: "threeByThree",
     }
   });
 }

@@ -11,8 +11,11 @@ export default class Grid {
       obj = {};
     }
     let {grid, options} = obj;
+    if (!options) {
+      options = {};
+    }
     if (grid) {
-      const {gridArray, slideCount, score, newTileFnName, mergeResultFnName, mergeScoreFnName, mergeConditionFnName, gridBooleanFnName} = grid;
+      const {gridArray, newTileFnName, mergeResultFnName, mergeScoreFnName, mergeConditionFnName, gridBooleanFnName} = grid;
       this.newTileFnName = newTileFnName;
       this.newTileFn = NewTile[newTileFnName];
       this.mergeResultFnName = mergeResultFnName;
@@ -22,8 +25,6 @@ export default class Grid {
       this.mergeConditionFnName = mergeConditionFnName;
       this.mergeConditionFn = MergeCondition[mergeConditionFnName];
       this.gridBooleanFnName = gridBooleanFnName;
-      this.slideCount = slideCount;
-      this.score = score;
       const {gridBoolean, cells} =  this._createCellsFromGrid(gridArray);
       this.cells = cells;
       this.gridBoolean = gridBoolean;
@@ -31,9 +32,6 @@ export default class Grid {
       this.cols = this._createColumns(this.gridBoolean);
     }
     else {
-      if (!options) {
-        options = {};
-      }
       const {newTileFnName, mergeResultFnName, mergeScoreFnName, mergeConditionFnName, gridBooleanFnName} = options;
       if (gridBooleanFnName) {
         this.gridBoolean = GridBoolean[gridBooleanFnName]();
@@ -75,8 +73,6 @@ export default class Grid {
         this.mergeConditionFn = MergeCondition.original2048;
         this.mergeConditionFnName = "original2048";
       }
-      this.slideCount = 0;
-      this.score = 0;
       this.cells = this._createCellsFromGridBoolean(this.gridBoolean);
       this.rows = this._createRows(this.gridBoolean);
       this.cols = this._createColumns(this.gridBoolean);
@@ -85,16 +81,16 @@ export default class Grid {
 
   _createRows(booleanArray) {
     const rows = [];
-    let last = false;
+    let isRowNonEmpty = false;
     for (let i = 0; i < booleanArray.length; i++) {
       let row = [];
       for (let j = 0; j < booleanArray[0].length; j++) {
         if (booleanArray[i][j] == 1) {
-          last = true;
+          isRowNonEmpty = true;
           row.push(this.cells[i * booleanArray[0].length + j]);
         }
-        else if (last) {
-          last = false;
+        else if (isRowNonEmpty) {
+          isRowNonEmpty = false;
           rows.push(row);
           row = [];
         }
@@ -109,16 +105,16 @@ export default class Grid {
       return [];
     }
     const cols = [];
-    let last = false;
+    let isRowNonEmpty = false;
     for (let j = 0; j < booleanArray[0].length; j++) {
       let col = [];
       for (let i = 0; i < booleanArray.length; i++) {
         if (booleanArray[i][j] == 1) {
-          last = true;
+          isRowNonEmpty = true;
           col.push(this.cells[i * booleanArray[0].length + j]);
         }
-        else if (last) {
-          last = false;
+        else if (isRowNonEmpty) {
+          isRowNonEmpty = false;
           cols.push(col);
           col = [];
         }
@@ -208,9 +204,6 @@ export default class Grid {
         this.rows.forEach(x => this._slideTilesToEnd(x));
         break;
     }
-    if (this.changedAfterSlide) {
-      this.slideCount++;
-    }
   }
 
   slideRight() {
@@ -241,20 +234,18 @@ export default class Grid {
     return this.rows.some(_canSlide) || this.cols.some(_canSlide);
   }
 
-  willMergeTiles() {
+  willMergeCells() {
     return this.getCells().some(cell => {
       return cell.willMergeTiles();
     });
   }
 
   mergeCells() {
+    let mergeScore = 0;
     this.getCells().forEach(cell => {
-      this.score += cell.merge();
+      mergeScore += cell.merge();
     });
-  }
-
-  getScore() {
-    return this.score;
+    return mergeScore;
   }
 
   addTiles() {
@@ -278,10 +269,6 @@ export default class Grid {
 
   hasChangedAfterSlide() {
     return this.changedAfterSlide;
-  }
-
-  getSlideCount() {
-    return this.slideCount;
   }
 
   getMaxTileLength() {
@@ -317,8 +304,6 @@ export default class Grid {
     }
     return {
       gridArray: grid,
-      slideCount: this.slideCount,
-      score: this.score,
       newTileFnName: this.newTileFnName,
       mergeResultFnName: this.mergeResultFnName,
       mergeScoreFnName: this.mergeResultFnName,
