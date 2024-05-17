@@ -2,10 +2,46 @@
   box-sizing: border-box;
 }
 
+:root {
+  --site-max-width: 50rem;
+  --site-content-max-width: 25rem;
+}
+
 body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
   margin: 0;
+  min-height: 100vh;
+  
+}
+
+h1,
+p {
+  margin: 0
+}
+
+.outer-container {
+  margin: 0 auto;
+  max-width: var(--site-max-width);
+  position: relative;
+}
+
+.inner-container {
+  margin: 0 auto;
+  max-width: var(--site-content-max-width);
+}
+
+.header-content {
+  text-align: center;
+}
+
+.score-container {
+  text-align: center;
+}
+
+.new-game-btn {
+  display: block;
+  margin: 0 auto;
+}
+
+.grid {
+  margin: 0 auto;
 }

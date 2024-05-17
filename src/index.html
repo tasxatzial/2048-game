@@ -9,6 +9,25 @@
   <script src="js/script.js" type="module"></script>
 </head>
 <body>
-  <div id="board-container"></div>
+  <div class="outer-container">
+    <header>
+      <div class="inner-container">
+        <div class="header-content">
+          <h1>2048</h1>
+          <p>Use the arrow keys to move the tiles. When two tiles with the same number collide, they merge into a single tile with their combined value. Aim to reach the 2048 tile!</p>
+        </div>
+      </div>
+    </header>
+    <main>
+      <div class="inner-container">
+        <button id="new-game-btn" class="new-game-btn">New game</button>
+        <div class="score-container">
+          <p>Score</p>
+          <p class="score">0</p>
+        </div>
+      </div>
+      <div id="board-container"></div>
+    </main>
+  </div>
 </body>
 </html>

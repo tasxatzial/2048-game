@@ -15,6 +15,8 @@
   gap: var(--_cell-gap);
   padding: var(--_cell-gap);
   background-color: black;
+  width: calc(var(--grid-columns) * (var(--_cell-size) + var(--cell-gap)) + var(--cell-gap));
+  height: calc(var(--grid-rows) * (var(--_cell-size) + var(--cell-gap)) + var(--cell-gap));;
 }
 
 .cell {
