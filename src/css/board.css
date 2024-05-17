@@ -1,9 +1,9 @@
 :root {
   --cell-gap: 0.25rem;
   --cell-size: 5rem;
-  --horizontal-slide-duration: 100ms;
-  --vertical-slide-duration: 100ms;
-  --zoomin-duration: 100ms;
+  --horizontal-slide-duration: 125ms;
+  --vertical-slide-duration: 125ms;
+  --zoomin-duration: 125ms;
 }
 
 .grid {
