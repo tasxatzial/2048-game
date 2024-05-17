@@ -3,7 +3,7 @@
   --cell-size: 5rem;
   --horizontal-slide-duration: 100ms;
   --vertical-slide-duration: 100ms;
-  --new-tile-zoomin-duration: 100ms;
+  --zoomin-duration: 100ms;
 }
 
 .grid {
@@ -51,7 +51,7 @@
 }
 
 .zoomin {
-  --_duration: var(--new-tile-zoomin-duration, 100ms);
+  --_duration: var(--zoomin-duration, 100ms);
   animation: zoomin var(--_duration) ease-out;
 }
 
