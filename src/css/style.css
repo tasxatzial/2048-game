@@ -8,9 +8,11 @@
 }
 
 body {
-  margin: 0;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  line-height: 1.3;
   min-height: 100vh;
-  
+  margin: 0;
+  padding-top: 5vh;
 }
 
 h1,
@@ -18,10 +20,14 @@ p {
   margin: 0
 }
 
+h1 {
+  font-size: 3rem;
+  margin-bottom: 1.5rem;
+}
+
 .outer-container {
   margin: 0 auto;
   max-width: var(--site-max-width);
-  position: relative;
 }
 
 .inner-container {
@@ -34,12 +40,34 @@ p {
 }
 
 .score-container {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
   text-align: center;
 }
 
 .new-game-btn {
+  background-color: #8de8bf;
+  border: 1px solid #82dbb3;
+  border-radius: 0.25rem;
+  box-shadow: 0px 2px 5px 1px rgba(0,0,0,0.2);
   display: block;
-  margin: 0 auto;
+  font-family: inherit;
+  font-size: 1.3rem;
+  font-weight: bold;
+  margin: 0 auto 2rem;
+  letter-spacing: 0.04em;
+  padding: 0.5em 1.25em;
+}
+
+.new-game-btn:active {
+  box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.2);
+  position: relative;
+  top: 1px;
+}
+
+.instructions {
+  font-size: 1.25rem;
+  margin-bottom: 2rem;
 }
 
 .grid {
