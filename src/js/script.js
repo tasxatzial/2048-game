@@ -9,11 +9,7 @@ if (savedGame) {
   game = new GameModel(savedGame);
 }
 else {
-  game = new GameModel({
-    gridOptions: {
-      gridBooleanFnName: "threeByThree",
-    }
-  });
+  game = new GameModel();
 }
 
 const keydownHandlers = {
