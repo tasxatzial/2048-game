@@ -1,56 +1,58 @@
 import GameModel from "./GameModel.js";
 import GameView from "./GameView.js";
 
-localStorage.clear(); //required since there's no reset button yet
 
 let game;
-const savedGame = JSON.parse(localStorage.getItem('game-2048'));
-if (savedGame) {
-  game = new GameModel(savedGame);
-}
-else {
-  game = new GameModel();
-}
+let view;
+let modelKeydownHandlers;
 
-const keydownHandlers = {
-  slideUp: game.slideUp.bind(game),
-  slideRight: game.slideRight.bind(game),
-  slideDown: game.slideDown.bind(game),
-  slideLeft: game.slideLeft.bind(game)
-};
+startGame(JSON.parse(localStorage.getItem('game-2048')));
+document.getElementById('new-game-btn').addEventListener('click', () => startGame(null));
 
-const view = new GameView();
-const initialPromises = view.initialize(game.toJSON());
-Promise.all(initialPromises).then(initialSetup);
+function startGame(savedGame) {
+  if (view) {
+    view.removeHandlers(modelKeydownHandlers);
+  }
+  game = savedGame ? new GameModel(savedGame) : new GameModel();
 
-game.addChangeListener("slideTilesEvent", () => {
-  const promises = view.slideTiles(game.toJSON());
-  Promise.all(promises).then(() => game.mergeTiles());
-});
-
-game.addChangeListener("mergeTilesEvent", () => {
-  const gameJSON = game.toJSON();
-  view.updateScore(gameJSON);
-  const promises = view.mergeTiles(gameJSON);
-  Promise.all(promises).then(() => game.addTiles());
-});
-
-game.addChangeListener("addTilesEvent", () => {
-  const promises = view.addTiles(game.toJSON());
-  Promise.all(promises).then(() => {
-    localStorage.setItem('game-2048', JSON.stringify(game.toJSON()));
-    initialSetup();
+  game.addChangeListener("slideTilesEvent", () => {
+    const promises = view.slideTiles(game.toJSON());
+    Promise.all(promises).then(() => game.mergeTiles());
   });
-});
-
-game.addChangeListener("noOpEvent", () => {
-  view.bindHandlers(keydownHandlers);
-});
-
-/*------------- FUNCTIONS ------------- */
+  
+  game.addChangeListener("mergeTilesEvent", () => {
+    const gameJSON = game.toJSON();
+    view.updateScore(gameJSON);
+    const promises = view.mergeTiles(gameJSON);
+    Promise.all(promises).then(() => game.addTiles());
+  });
+  
+  game.addChangeListener("addTilesEvent", () => {
+    const promises = view.addTiles(game.toJSON());
+    Promise.all(promises).then(() => {
+      localStorage.setItem('game-2048', JSON.stringify(game.toJSON()));
+      initialSetup();
+    });
+  });
+  
+  game.addChangeListener("noOpEvent", () => {
+    view.bindHandlers(modelKeydownHandlers);
+  });
+  
+  const gameJSON = game.toJSON();
+  localStorage.setItem('game-2048', JSON.stringify(gameJSON));
+  modelKeydownHandlers = {
+    slideUp: game.slideUp.bind(game),
+    slideRight: game.slideRight.bind(game),
+    slideDown: game.slideDown.bind(game),
+    slideLeft: game.slideLeft.bind(game)
+  }
+  view = new GameView();
+  const initialPromises = view.initialize(gameJSON);
+  Promise.all(initialPromises).then(initialSetup);
+}
 
 function initialSetup() {
-  console.log("listeners added");
   if (game.isWon()) {
     alert('Game is won');
   }
@@ -58,6 +60,6 @@ function initialSetup() {
     alert('Game is lost');
   }
   else {
-    view.bindHandlers(keydownHandlers);
+    view.bindHandlers(modelKeydownHandlers);
   }
 }

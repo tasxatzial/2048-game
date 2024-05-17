@@ -51,6 +51,7 @@ export default class BoardView {
         grid.appendChild(cell);
       }
     }
+    this.boardContainer.innerHTML = "";
     this.boardContainer.appendChild(grid);
     return promises;
   }
