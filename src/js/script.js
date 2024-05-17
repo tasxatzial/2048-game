@@ -29,7 +29,9 @@ game.addChangeListener("slideTilesEvent", () => {
 });
 
 game.addChangeListener("mergeTilesEvent", () => {
-  const promises = view.mergeTiles(game.toJSON());
+  const gameJSON = game.toJSON();
+  view.updateScore(gameJSON);
+  const promises = view.mergeTiles(gameJSON);
   Promise.all(promises).then(() => game.addTiles());
 });
 

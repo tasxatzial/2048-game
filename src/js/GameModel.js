@@ -47,6 +47,8 @@ export default class Game extends EventEmitter {
         this.grid.addTiles();
         this.grid.addTiles();
       }
+      this.score = 0;
+      this.slideCount = 0;
     }
   }
 
@@ -68,14 +70,6 @@ export default class Game extends EventEmitter {
 
   isLost() {
     return this.loseConditionFn(this.grid);
-  }
-
-  getScore() {
-    return this.score;
-  }
-
-  getSlideCount() {
-    return this.slideCount;
   }
 
   addTiles() {

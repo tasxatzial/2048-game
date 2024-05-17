@@ -3,10 +3,12 @@ import BoardView from "./gameView/BoardView.js";
 export default class GameView {
   constructor() {
     this.boardView = new BoardView(document.getElementById('board-container'));
+    this.score = document.getElementById('score');
     this._onKeydown = this._onKeydown.bind(this);
   }
 
   initialize(game) {
+    this.updateScore(game);
     return this.boardView.initialize(game.grid);
   }
 
@@ -20,6 +22,10 @@ export default class GameView {
 
   addTiles(game) {
     return this.boardView.addTiles(game.grid);
+  }
+
+  updateScore(game) {
+    this.score.textContent = game.score;
   }
 
   bindHandlers(slideHandlers) {
