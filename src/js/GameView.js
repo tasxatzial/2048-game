@@ -7,6 +7,7 @@ export default class GameView {
     this.score = document.getElementById('score');
     this._onKeydown = this._onKeydown.bind(this);
     this.slideHandlers = null;
+    this.slidePermitted = false;
   }
 
   initialize(game) {
@@ -32,7 +33,7 @@ export default class GameView {
 
   bindHandlers(slideHandlers) {
     this.slideHandlers = slideHandlers;
-    window.addEventListener('keydown', this._onKeydown, {once: true});
+    window.addEventListener('keydown', this._onKeydown);
   }
 
   removeHandlers() {
@@ -40,24 +41,31 @@ export default class GameView {
     window.removeEventListener('keydown', this._onKeydown);
   }
 
+  setReady() {
+    this.slidePermitted = true;
+  }
+
   _onKeydown(e) {
-    switch(e.code) {
-      case 'ArrowLeft':
-        this.slideHandlers.slideLeft();
-        this.newGameBtn.blur();
-        break;
-      case 'ArrowUp':
-        this.slideHandlers.slideUp();
-        this.newGameBtn.blur();
-        break;
-      case 'ArrowRight':
-        this.slideHandlers.slideRight();
-        this.newGameBtn.blur();
-        break;
-      case 'ArrowDown':
-        this.slideHandlers.slideDown();
-        this.newGameBtn.blur();
-        break;
+    if (!this.slidePermitted) {
+      return;
+    }
+    if (['ArrowLeft', 'ArrowUp', 'ArrowRight', 'ArrowDown'].includes(e.code)) {
+      this.slidePermitted = false;
+      this.newGameBtn.blur();
+      switch(e.code) {
+        case 'ArrowLeft':
+          this.slideHandlers.slideLeft();
+          break;
+        case 'ArrowUp':
+          this.slideHandlers.slideUp();
+          break;
+        case 'ArrowRight':
+          this.slideHandlers.slideRight();
+          break;
+        case 'ArrowDown':
+          this.slideHandlers.slideDown();
+          break;
+      }
     }
   }
 }

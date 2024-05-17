@@ -4,14 +4,14 @@ import GameView from "./GameView.js";
 
 let game;
 let view;
-let modelKeydownHandlers;
+let keydownHandlers;
 
 startGame(JSON.parse(localStorage.getItem('game-2048')));
 document.getElementById('new-game-btn').addEventListener('click', () => startGame(null));
 
 function startGame(savedGame) {
   if (view) {
-    view.removeHandlers(modelKeydownHandlers);
+    view.removeHandlers(keydownHandlers);
   }
   game = savedGame ? new GameModel(savedGame) : new GameModel();
 
@@ -28,26 +28,24 @@ function startGame(savedGame) {
   });
   
   game.addChangeListener("addTilesEvent", () => {
-    const promises = view.addTiles(game.toJSON());
-    Promise.all(promises).then(() => {
-      localStorage.setItem('game-2048', JSON.stringify(game.toJSON()));
-      initialSetup();
-    });
+    const gameJSON = game.toJSON();
+    localStorage.setItem('game-2048', JSON.stringify(gameJSON));
+    const promises = view.addTiles(gameJSON);
+    Promise.all(promises).then(initialSetup);
   });
   
-  game.addChangeListener("noOpEvent", () => {
-    view.bindHandlers(modelKeydownHandlers);
-  });
-  
+  game.addChangeListener("noOpEvent", () => view.setReady());
+
   const gameJSON = game.toJSON();
   localStorage.setItem('game-2048', JSON.stringify(gameJSON));
-  modelKeydownHandlers = {
+  keydownHandlers = {
     slideUp: game.slideUp.bind(game),
     slideRight: game.slideRight.bind(game),
     slideDown: game.slideDown.bind(game),
     slideLeft: game.slideLeft.bind(game)
   }
   view = new GameView();
+  view.bindHandlers(keydownHandlers);
   const initialPromises = view.initialize(gameJSON);
   Promise.all(initialPromises).then(initialSetup);
 }
@@ -60,6 +58,6 @@ function initialSetup() {
     alert('Game is lost');
   }
   else {
-    view.bindHandlers(modelKeydownHandlers);
+    view.setReady();
   }
 }
