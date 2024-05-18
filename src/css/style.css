@@ -33,6 +33,7 @@ h1 {
 .inner-container {
   margin: 0 auto;
   max-width: var(--site-content-max-width);
+  padding: 0 1rem;
 }
 
 .header-content {
@@ -70,6 +71,8 @@ h1 {
   margin-bottom: 2rem;
 }
 
-.grid {
+#board-container {
   margin: 0 auto;
+  max-width: fit-content;
+  padding: 0 1rem;
 }
