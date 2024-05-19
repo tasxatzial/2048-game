@@ -55,7 +55,6 @@ export default class BoardView {
 
   initialize({gridArray}) {
     this.boardViewColorModel.updateTileColors(gridArray);
-    const promises = [];
     this.gridRows = gridArray.length;
     this.gridCols = this.gridRows? gridArray[0].length : 0;
     this.grid = document.createElement('div');
@@ -70,10 +69,8 @@ export default class BoardView {
           cell.classList.add('cell');
           const innerCell = document.createElement('div');
           if (cellObj.tile) {
-            promises.push(this._waitForEvent(innerCell, 'animationend'));
             this._initializeTile(innerCell, cellObj.tile);
-            innerCell.addEventListener('animationend', () => innerCell.classList.remove('zoomin'), {once: true});
-            innerCell.classList.add('tile', 'zoomin');
+            innerCell.classList.add('tile');
           }
           cell.appendChild(innerCell);
         }
@@ -86,7 +83,6 @@ export default class BoardView {
     this._initializeEndGameOverlay();
     this.boardContainer.innerHTML = "";
     this.boardContainer.appendChild(this.grid);
-    return promises;
   }
 
   slide({gridArray}) {

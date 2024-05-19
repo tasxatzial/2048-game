@@ -8,7 +8,7 @@ let slideHandlers;
 
 startGame(JSON.parse(localStorage.getItem('game-2048')));
 document.querySelector('.js-new-game-btn')
-        .addEventListener('click', () => startGame(null));
+        .addEventListener('click', () => startGame(null, false));
 
 function startGame(savedGame) {
   if (view) {
@@ -37,7 +37,7 @@ function startGame(savedGame) {
   
   game.addChangeListener("noOpEvent", () => view.setReady());
 
-  const gameJSON = game.toJSON();
+  let gameJSON = game.toJSON();
   localStorage.setItem('game-2048', JSON.stringify(gameJSON));
   slideHandlers = {
     slideUp: game.slideUp.bind(game),
@@ -47,8 +47,17 @@ function startGame(savedGame) {
   }
   view = new GameView();
   view.bindHandlers(slideHandlers);
-  const initialPromises = view.initialize(gameJSON);
-  Promise.all(initialPromises).then(initialSetup);
+  view.initialize(gameJSON);
+  if (savedGame) {
+    initialSetup();
+  }
+  else {
+    game.initTiles();
+    gameJSON = game.toJSON();
+    localStorage.setItem('game-2048', JSON.stringify(gameJSON));
+    const promises = view.addTiles(gameJSON);
+    Promise.all(promises).then(initialSetup);
+  }
 }
 
 function initialSetup() {

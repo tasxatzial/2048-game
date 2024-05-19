@@ -21,6 +21,7 @@ export default class Game extends EventEmitter {
     }
     else {
       const {gridOptions, initialTiles} = obj;
+      this.initialTiles = initialTiles;
       const gameOptions = obj.gameOptions || {};
       this.grid = new Grid({options: gridOptions});
       const {winConditionFnName, loseConditionFnName} = gameOptions;
@@ -40,13 +41,6 @@ export default class Game extends EventEmitter {
         this.loseConditionFnName = "original2048";
         this.loseConditionFn = LoseCondition.original2048;
       }
-      if (initialTiles) {
-        this.grid.initTiles(initialTiles);
-      }
-      else {
-        this.grid.addTiles();
-        this.grid.addTiles();
-      }
       this.score = 0;
       this.slideCount = 0;
     }
@@ -61,6 +55,16 @@ export default class Game extends EventEmitter {
       },
       score: this.score,
       slideCount: this.slideCount
+    }
+  }
+
+  initTiles() {
+    if (this.initialTiles) {
+      this.grid.initTiles(this.initialTiles);
+    }
+    else {
+      this.grid.addTiles();
+      this.grid.addTiles();
     }
   }
 
