@@ -45,6 +45,14 @@ export default class GameView {
     this.slidePermitted = true;
   }
 
+  showWinMsg() {
+    this.boardView.showWinMsg();
+  }
+
+  showLoseMsg() {
+    this.boardView.showLoseMsg();
+  }
+
   _onKeydown(e) {
     if (!this.slidePermitted) {
       return;

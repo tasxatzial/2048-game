@@ -15,6 +15,7 @@
   gap: var(--_cell-gap);
   padding: var(--_cell-gap);
   background-color: black;
+  position: relative;
   width: calc(var(--grid-columns) * (var(--_cell-size) + var(--cell-gap)) + var(--cell-gap));
   height: calc(var(--grid-rows) * (var(--_cell-size) + var(--cell-gap)) + var(--cell-gap));;
 }
@@ -68,7 +69,8 @@
 
 .grid,
 .cell,
-.tile {
+.tile,
+.game-status-container {
   border-radius: 0.25rem;
 }
 

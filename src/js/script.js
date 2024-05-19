@@ -52,10 +52,10 @@ function startGame(savedGame) {
 
 function initialSetup() {
   if (game.isWon()) {
-    alert('Game is won');
+    view.showWinMsg();
   }
   else if (game.isLost()) {
-    alert('Game is lost');
+    view.showLoseMsg();
   }
   else {
     view.setReady();

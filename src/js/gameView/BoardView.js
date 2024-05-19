@@ -4,6 +4,13 @@ export default class BoardView {
   constructor(boardContainer) {
     this.boardViewColorModel = new BoardViewColorModel();
     this.boardContainer = boardContainer;
+    this.grid = null;
+  }
+
+  _waitForEvent(element, eventType) {
+    return new Promise(resolve => {
+      element.addEventListener(eventType, resolve, {once: true})
+    });
   }
 
   _initializeTile(tileElement, tileObj) {
@@ -15,10 +22,36 @@ export default class BoardView {
     tileElement.classList.add(valueLength > 10 ? 'tile-font-size-10' : 'tile-font-size-' + valueLength);
   }
 
-  _waitForEvent(element, eventType) {
-    return new Promise(resolve => {
-      element.addEventListener(eventType, resolve, {once: true})
-    });
+  _initializeEndGameOverlay() {
+    const endGameOverlay =
+      `<div class="end-game-overlay js-end-game-overlay">
+        <p class="end-game-msg js-end-game-msg"></p>
+        <button class="btn hide-overlay-btn js-hide-overlay-btn">Dismiss</button>
+      </div>`
+    this.grid.insertAdjacentHTML('beforeend', endGameOverlay);
+    this.endGameOverlay = this.grid.lastChild;
+    this.endGameMsg = this.endGameOverlay.querySelector('.js-end-game-msg');
+    this.endGameOverlay
+      .querySelector('.js-hide-overlay-btn')
+      .addEventListener('click', () => this._hideEndGameOverlay());
+  }
+
+  _showEndGameOverlay() {
+    this.endGameOverlay.classList.add('js-visible');
+  }
+
+  _hideEndGameOverlay() {
+    this.endGameOverlay.classList.remove('js-visible');
+  }
+
+  showWinMsg() {
+    this.endGameMsg.textContent = 'Game is Won!';
+    this._showEndGameOverlay();
+  }
+
+  showLoseMsg() {
+    this.endGameMsg.textContent = 'Game is Lost!';
+    this._showEndGameOverlay();
   }
 
   initialize({gridArray}) {
@@ -26,10 +59,10 @@ export default class BoardView {
     const promises = [];
     this.gridRows = gridArray.length;
     this.gridCols = this.gridRows? gridArray[0].length : 0;
-    const grid = document.createElement('div');
-    grid.classList.add('grid');
-    grid.style.setProperty('--grid-rows', this.gridRows);
-    grid.style.setProperty('--grid-columns', this.gridCols);
+    this.grid = document.createElement('div');
+    this.grid.classList.add('grid');
+    this.grid.style.setProperty('--grid-rows', this.gridRows);
+    this.grid.style.setProperty('--grid-columns', this.gridCols);
     for (let i = 0; i < this.gridRows; i++) {
       for (let j = 0; j < this.gridCols; j++) {
         const cell = document.createElement('div');
@@ -48,11 +81,12 @@ export default class BoardView {
         else {
           cell.classList.add('missing-cell');
         }
-        grid.appendChild(cell);
+        this.grid.appendChild(cell);
       }
     }
+    this._initializeEndGameOverlay();
     this.boardContainer.innerHTML = "";
-    this.boardContainer.appendChild(grid);
+    this.boardContainer.appendChild(this.grid);
     return promises;
   }
 
