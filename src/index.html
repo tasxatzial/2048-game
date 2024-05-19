@@ -12,7 +12,7 @@
   <div class="outer-container">
     <header>
       <div class="inner-container">
-        <div class="header-content centered-text">
+        <div class="header-content">
           <h1 class="primary-heading">2048</h1>
           <p class="instructions">Use the arrow keys to move the tiles. When two tiles with the same number collide,
             they combine into a single tile with double the value, which is added to the score.
@@ -23,8 +23,16 @@
     </header>
     <main>
       <div class="inner-container">
-        <button class="btn new-game-btn js-new-game-btn">New game</button>
-        <p class="score-container js-score-container">Score: <span class="score js-score"></span></p>
+        <button class="btn new-game-btn js-new-game-btn">New Game</button>
+        <div class="scores-container">
+          <div class="score">
+            <div>Score</div><span class="js-current-score"></span>
+          </div>
+          <div class="score">
+            <div>Best</div><span class="js-best-score">0</span>
+          </div>
+        </div>
+        
       </div>
       <div class="board-container js-board-container"></div>
     </main>

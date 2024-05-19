@@ -4,7 +4,7 @@ export default class GameView {
   constructor() {
     this.boardView = new BoardView(document.querySelector('.js-board-container'));
     this.newGameBtn = document.querySelector('.js-new-game-btn');
-    this.score = document.querySelector('.js-score');
+    this.score = document.querySelector('.js-current-score');
     this._onKeydown = this._onKeydown.bind(this);
     this.slideHandlers = null;
     this.slidePermitted = false;
