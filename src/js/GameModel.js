@@ -66,6 +66,7 @@ export default class Game extends EventEmitter {
       this.grid.addTiles();
       this.grid.addTiles();
     }
+    this.raiseChange("addTilesEvent");
   }
 
   isWon() {

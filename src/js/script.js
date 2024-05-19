@@ -5,16 +5,48 @@ import GameView from "./GameView.js";
 let game;
 let view;
 let slideHandlers;
+const bestScoreEl = document.querySelector('.js-best-score');
 
 startGame(JSON.parse(localStorage.getItem('game-2048')));
+
 document.querySelector('.js-new-game-btn')
-        .addEventListener('click', () => startGame(null, false));
+        .addEventListener('click', () => startGame(null));
 
 function startGame(savedGame) {
   if (view) {
     view.removeHandlers(slideHandlers);
   }
-  game = savedGame ? new GameModel(savedGame) : new GameModel();
+
+  const bestScore = JSON.parse(localStorage.getItem('game-2048-best-score'));
+  if (savedGame) {
+    game = new GameModel(savedGame);
+    bestScoreEl.textContent = bestScore;
+  }
+  else {
+    game = new GameModel();
+    if (!bestScore) {
+      bestScoreEl.textContent = '0';
+    }
+  }
+  
+  view = new GameView();
+  
+  game.addChangeListener("addTilesEvent", () => {
+    const gameJSON = game.toJSON();
+    localStorage.setItem('game-2048', JSON.stringify(gameJSON));
+    localStorage.setItem('game-2048-best-score', JSON.stringify(bestScoreEl.textContent));
+    const promises = view.addTiles(gameJSON);
+    Promise.all(promises).then(viewCheckGameStatus);
+  });
+
+  if (savedGame) {
+    view.initialize(savedGame);
+    viewCheckGameStatus();
+  }
+  else {
+    view.initialize(game.toJSON());
+    game.initTiles();
+  }
 
   game.addChangeListener("slideTilesEvent", () => {
     const promises = view.slideTiles(game.toJSON());
@@ -24,43 +56,25 @@ function startGame(savedGame) {
   game.addChangeListener("mergeTilesEvent", () => {
     const gameJSON = game.toJSON();
     view.updateScore(gameJSON);
+    if (gameJSON.score > bestScoreEl.textContent) {
+      bestScoreEl.textContent = gameJSON.score;
+    }
     const promises = view.mergeTiles(gameJSON);
     Promise.all(promises).then(() => game.addTiles());
   });
   
-  game.addChangeListener("addTilesEvent", () => {
-    const gameJSON = game.toJSON();
-    localStorage.setItem('game-2048', JSON.stringify(gameJSON));
-    const promises = view.addTiles(gameJSON);
-    Promise.all(promises).then(initialSetup);
-  });
-  
   game.addChangeListener("noOpEvent", () => view.setReady());
 
-  let gameJSON = game.toJSON();
-  localStorage.setItem('game-2048', JSON.stringify(gameJSON));
   slideHandlers = {
     slideUp: game.slideUp.bind(game),
     slideRight: game.slideRight.bind(game),
     slideDown: game.slideDown.bind(game),
     slideLeft: game.slideLeft.bind(game)
   }
-  view = new GameView();
   view.bindHandlers(slideHandlers);
-  view.initialize(gameJSON);
-  if (savedGame) {
-    initialSetup();
-  }
-  else {
-    game.initTiles();
-    gameJSON = game.toJSON();
-    localStorage.setItem('game-2048', JSON.stringify(gameJSON));
-    const promises = view.addTiles(gameJSON);
-    Promise.all(promises).then(initialSetup);
-  }
 }
 
-function initialSetup() {
+function viewCheckGameStatus() {
   if (game.isWon()) {
     view.showWinMsg();
   }
