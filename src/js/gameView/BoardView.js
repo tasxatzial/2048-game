@@ -31,9 +31,8 @@ export default class BoardView {
     this.grid.insertAdjacentHTML('beforeend', endGameOverlay);
     this.endGameOverlay = this.grid.lastChild;
     this.endGameMsg = this.endGameOverlay.querySelector('.js-end-game-msg');
-    this.endGameOverlay
-      .querySelector('.js-hide-overlay-btn')
-      .addEventListener('click', () => this._hideEndGameOverlay());
+    this.endGameOverlay.querySelector('.js-hide-overlay-btn')
+                       .addEventListener('click', () => this._hideEndGameOverlay());
   }
 
   _showEndGameOverlay() {

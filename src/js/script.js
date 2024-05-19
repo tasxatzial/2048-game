@@ -4,14 +4,15 @@ import GameView from "./GameView.js";
 
 let game;
 let view;
-let keydownHandlers;
+let slideHandlers;
 
 startGame(JSON.parse(localStorage.getItem('game-2048')));
-document.getElementById('new-game-btn').addEventListener('click', () => startGame(null));
+document.querySelector('.js-new-game-btn')
+        .addEventListener('click', () => startGame(null));
 
 function startGame(savedGame) {
   if (view) {
-    view.removeHandlers(keydownHandlers);
+    view.removeHandlers(slideHandlers);
   }
   game = savedGame ? new GameModel(savedGame) : new GameModel();
 
@@ -38,14 +39,14 @@ function startGame(savedGame) {
 
   const gameJSON = game.toJSON();
   localStorage.setItem('game-2048', JSON.stringify(gameJSON));
-  keydownHandlers = {
+  slideHandlers = {
     slideUp: game.slideUp.bind(game),
     slideRight: game.slideRight.bind(game),
     slideDown: game.slideDown.bind(game),
     slideLeft: game.slideLeft.bind(game)
   }
   view = new GameView();
-  view.bindHandlers(keydownHandlers);
+  view.bindHandlers(slideHandlers);
   const initialPromises = view.initialize(gameJSON);
   Promise.all(initialPromises).then(initialSetup);
 }

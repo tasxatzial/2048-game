@@ -2,9 +2,9 @@ import BoardView from "./gameView/BoardView.js";
 
 export default class GameView {
   constructor() {
-    this.boardView = new BoardView(document.getElementById('board-container'));
-    this.newGameBtn = document.getElementById('new-game-btn');
-    this.score = document.getElementById('score');
+    this.boardView = new BoardView(document.querySelector('.js-board-container'));
+    this.newGameBtn = document.querySelector('.js-new-game-btn');
+    this.score = document.querySelector('.js-score');
     this._onKeydown = this._onKeydown.bind(this);
     this.slideHandlers = null;
     this.slidePermitted = false;
