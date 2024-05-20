@@ -3,7 +3,6 @@ import BoardView from "./gameView/BoardView.js";
 export default class GameView {
   constructor() {
     this.boardView = new BoardView(document.querySelector('.js-board-container'));
-    this.newGameBtn = document.querySelector('.js-new-game-btn');
     this.score = document.querySelector('.js-current-score');
     this._onKeydown = this._onKeydown.bind(this);
     this.slideHandlers = null;
@@ -71,7 +70,6 @@ export default class GameView {
     }
     if (['ArrowLeft', 'ArrowUp', 'ArrowRight', 'ArrowDown'].includes(e.code)) {
       this.slidePermitted = false;
-      this.newGameBtn.blur();
       switch(e.code) {
         case 'ArrowLeft':
           this.slideHandlers.slideLeft();
