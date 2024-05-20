@@ -1,5 +1,5 @@
 :root {
-  --cell-size: 5rem;
+  --cell-size: 4.5rem;
   --cell-gap: 0.25rem;
   --cell-border-radius: 0.25rem;
   --horizontal-slide-duration: 125ms;
