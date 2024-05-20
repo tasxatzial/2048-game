@@ -122,8 +122,16 @@ p {
   background-color: var(--primary-button-color);
   border: 1px solid var(--primary-button-border-color);
   color: var(--primary-color-dark);
+}
+
+.new-game-btn {
   font-size: 1.25rem;
   margin: 0 auto 2rem;
+}
+
+.hide-overlay-btn {
+  font-size: 1rem;
+  margin: 0 auto 1rem;
 }
 
 .best-score-trash-btn {
@@ -140,7 +148,6 @@ p {
 .best-score-trash-btn > img {
   width: 1.5rem;
 }
-
 
 @media (hover:hover) {
   .new-game-btn:hover,
@@ -185,4 +192,5 @@ p {
   font-size: 2rem;
   font-weight: bold;
   margin-bottom: 1rem;
+  text-align: center;
 }
