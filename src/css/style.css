@@ -141,6 +141,7 @@ p {
   width: 1.5rem;
 }
 
+
 @media (hover:hover) {
   .new-game-btn:hover,
   .hide-overlay-btn:hover {
@@ -150,6 +151,10 @@ p {
   .best-score-trash-btn:hover {
     --icon-color: #e0455e;
   }
+}
+
+.best-score-trash-btn:active {
+  --icon-color: #ED4F32;
 }
 
 /*------------------------------------*\
