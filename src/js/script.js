@@ -36,12 +36,12 @@ function startGame(savedGame) {
     localStorage.setItem('game-2048', JSON.stringify(gameJSON));
     localStorage.setItem('game-2048-best-score', JSON.stringify(bestScoreEl.textContent));
     const promises = view.addTiles(gameJSON);
-    Promise.all(promises).then(viewCheckGameStatus);
+    Promise.all(promises).then(() => view.updateGameStatus(gameJSON));
   });
 
   if (savedGame) {
     view.initialize(savedGame);
-    viewCheckGameStatus();
+    view.updateGameStatus(savedGame);
   }
   else {
     view.initialize(game.toJSON());
@@ -72,16 +72,4 @@ function startGame(savedGame) {
     slideLeft: game.slideLeft.bind(game)
   }
   view.bindHandlers(slideHandlers);
-}
-
-function viewCheckGameStatus() {
-  if (game.isWon()) {
-    view.showWinMsg();
-  }
-  else if (game.isLost()) {
-    view.showLoseMsg();
-  }
-  else {
-    view.setReady();
-  }
 }

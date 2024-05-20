@@ -41,15 +41,27 @@ export default class GameView {
     window.removeEventListener('keydown', this._onKeydown);
   }
 
+  updateGameStatus(game) {
+    if (game.isWon) {
+      this._showWinMsg();
+    }
+    else if (game.isLost) {
+      this._showLoseMsg();
+    }
+    else {
+      this.setReady();
+    }
+  }
+
   setReady() {
     this.slidePermitted = true;
   }
 
-  showWinMsg() {
+  _showWinMsg() {
     this.boardView.showWinMsg();
   }
 
-  showLoseMsg() {
+  _showLoseMsg() {
     this.boardView.showLoseMsg();
   }
 

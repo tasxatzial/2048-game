@@ -47,7 +47,7 @@ export default class Game extends EventEmitter {
   }
 
   toJSON() {
-    return {
+    const JSON = {
       grid: this.grid.toJSON(),
       gameOptions: {
         winConditionFnName: this.winConditionFnName,
@@ -55,7 +55,14 @@ export default class Game extends EventEmitter {
       },
       score: this.score,
       slideCount: this.slideCount
+    };
+    if (this.winConditionFn(this.grid)) {
+      return {...JSON, isWon: true}
     }
+    else if (this.loseConditionFn(this.grid)) {
+      return {...JSON, isLost: true}
+    }
+    return JSON;
   }
 
   initTiles() {
@@ -69,14 +76,6 @@ export default class Game extends EventEmitter {
     this.raiseChange("addTilesEvent");
   }
 
-  isWon() {
-    return this.winConditionFn(this.grid);
-  }
-
-  isLost() {
-    return this.loseConditionFn(this.grid);
-  }
-
   addTiles() {
     this.grid.addTiles();
     this.raiseChange("addTilesEvent");
@@ -85,16 +84,6 @@ export default class Game extends EventEmitter {
   mergeTiles() {
     this.score += this.grid.mergeCells();
     this.raiseChange("mergeTilesEvent");
-  }
-
-  _raiseEventAfterSlide() {
-    if (this.grid.hasChangedAfterSlide()) {
-      this.raiseChange("slideTilesEvent");
-      this.slideCount++;
-    }
-    else {
-      this.raiseChange("noOpEvent");
-    }
   }
 
   slideLeft() {
@@ -115,5 +104,15 @@ export default class Game extends EventEmitter {
   slideDown() {
     this.grid.slideDown();
     this._raiseEventAfterSlide();
+  }
+
+  _raiseEventAfterSlide() {
+    if (this.grid.hasChangedAfterSlide()) {
+      this.raiseChange("slideTilesEvent");
+      this.slideCount++;
+    }
+    else {
+      this.raiseChange("noOpEvent");
+    }
   }
 }
