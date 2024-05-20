@@ -8,13 +8,13 @@ export default class GameView {
     this.boardView = new BoardView();
     this.score = document.querySelector('.js-current-score');
     this._onKeydown = this._onKeydown.bind(this);
-    this._onMouseDown = this._onMouseDown.bind(this);
-    this._onMouseMove = this._onMouseMove.bind(this);
-    this._onMouseUp = this._onMouseUp.bind(this);
+    this._onPointerDown = this._onPointerDown.bind(this);
+    this._onPointerMove = this._onPointerMove.bind(this);
+    this._onPointerUp = this._onPointerUp.bind(this);
     this.slideHandlers = null;
     this.slidePermitted = false;
     this.grid = null;
-    this.mouseDownPos = null;
+    this.pointerDownPos = null;
     this.mouseTriggerDistance = obj.mouseTriggerDistance || 40;
   }
 
@@ -45,16 +45,21 @@ export default class GameView {
   bindHandlers(slideHandlers) {
     this.slideHandlers = slideHandlers;
     window.addEventListener('keydown', this._onKeydown);
-    this.grid.addEventListener('mousedown', this._onMouseDown);
-    document.addEventListener('mouseup', this._onMouseUp);
-    document.addEventListener('mousemove', this._onMouseMove);
+    this.grid.addEventListener('mousedown', this._onPointerDown);
+    document.addEventListener('mouseup', this._onPointerUp);
+    document.addEventListener('mousemove', this._onPointerMove);
+    this.grid.addEventListener('touchstart', this._onPointerDown);
+    document.addEventListener('touchend', this._onPointerUp);
+    document.addEventListener('touchmove', this._onPointerMove);
   }
 
   removeHandlers() {
     this.slideHandlers = null;
     window.removeEventListener('keydown', this._onKeydown);
-    document.removeEventListener('mouseup', this._onMouseUp);
-    document.removeEventListener('mousemove', this._onMouseMove);
+    document.removeEventListener('mouseup', this._onPointerUp);
+    document.removeEventListener('mousemove', this._onPointerMove);
+    document.removeEventListener('touchend', this._onPointerUp);
+    document.removeEventListener('touchmove', this._onPointerMove);
   }
 
   updateGameStatus(game) {
@@ -104,27 +109,43 @@ export default class GameView {
     }
   }
 
-  _onMouseDown(e) {
-    this.mouseDownPos = {
-      x: e.clientX,
-      y: e.clientY
+  _onPointerDown(e) {
+    if (e.type === 'mousedown') {
+      this.pointerDownPos = {
+        x: e.clientX,
+        y: e.clientY
+      }
+    }
+    else if (e.type === 'touchstart') {
+      this.pointerDownPos = {
+        x: e.touches[0].clientX,
+        y: e.touches[0].clientY
+      }
     }
   }
 
-  _onMouseUp(e) {
-    this.mouseDownPos = null;
+  _onPointerUp(e) {
+    this.pointerDownPos = null;
   }
 
-  _onMouseMove(e) {
-    if (!this.mouseDownPos || !this.slidePermitted) {
+  _onPointerMove(e) {
+    if (!this.pointerDownPos || !this.slidePermitted) {
       return;
     }
-    const horizontalDistance = e.clientX - this.mouseDownPos.x;
-    const verticalDistance = e.clientY - this.mouseDownPos.y;
+    let horizontalDistance;
+    let verticalDistance;
+    if (e.type === 'mousemove') {
+      horizontalDistance = e.clientX - this.pointerDownPos.x;
+      verticalDistance = e.clientY - this.pointerDownPos.y;
+    }
+    else if (e.type === 'touchmove') {
+      horizontalDistance = e.touches[0].clientX - this.pointerDownPos.x;
+      verticalDistance = e.touches[0].clientY - this.pointerDownPos.y;
+    }
     if (Math.abs(horizontalDistance) > this.mouseTriggerDistance ||
         Math.abs(verticalDistance) > this.mouseTriggerDistance) {
           this.slidePermitted = false;
-          this.mouseDownPos = null;
+          this.pointerDownPos = null;
           if (horizontalDistance > this.mouseTriggerDistance) {
             this.slideHandlers.slideRight();
           }
