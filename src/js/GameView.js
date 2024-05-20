@@ -2,16 +2,20 @@ import BoardView from "./gameView/BoardView.js";
 
 export default class GameView {
   constructor() {
-    this.boardView = new BoardView(document.querySelector('.js-board-container'));
+    this.boardView = new BoardView();
     this.score = document.querySelector('.js-current-score');
     this._onKeydown = this._onKeydown.bind(this);
     this.slideHandlers = null;
     this.slidePermitted = false;
+    this.grid = null;
   }
 
   initialize(game) {
     this.updateScore(game);
-    return this.boardView.initialize(game.grid);
+    this.grid = this.boardView.initialize(game.grid);
+    const boardContainer = document.querySelector('.js-board-container');
+    boardContainer.innerHTML = "";
+    boardContainer.appendChild(this.grid);
   }
 
   slideTiles(game) {

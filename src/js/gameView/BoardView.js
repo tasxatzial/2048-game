@@ -1,9 +1,8 @@
 import BoardViewColorModel from "./BoardViewColorModel.js";
 
 export default class BoardView {
-  constructor(boardContainer) {
+  constructor() {
     this.boardViewColorModel = new BoardViewColorModel();
-    this.boardContainer = boardContainer;
     this.grid = null;
   }
 
@@ -81,13 +80,12 @@ export default class BoardView {
       }
     }
     this._initializeEndGameOverlay();
-    this.boardContainer.innerHTML = "";
-    this.boardContainer.appendChild(this.grid);
+    return this.grid;
   }
 
   slide({gridArray}) {
     const promises = [];
-    const cells = this.boardContainer.children[0].children;
+    const cells = this.grid.children;
     for (let i = 0; i < this.gridRows; i++) {
       for (let j = 0; j < this.gridCols; j++) {
         const cellObj = gridArray[i][j];
@@ -119,7 +117,7 @@ export default class BoardView {
   merge({gridArray}) {
     this.boardViewColorModel.updateTileColors(gridArray);
     const promises = [];
-    const cells = this.boardContainer.children[0].children;
+    const cells = this.grid.children;
     for (let i = 0; i < this.gridRows; i++) {
       for (let j = 0; j < this.gridCols; j++) {
         const cellObj = gridArray[i][j];
@@ -150,7 +148,7 @@ export default class BoardView {
   addTiles({gridArray}) {
     this.boardViewColorModel.updateTileColors(gridArray);
     const promises = [];
-    const cells = this.boardContainer.children[0].children;
+    const cells = this.grid.children;
     for (let i = 0; i < this.gridRows; i++) {
       for (let j = 0; j < this.gridCols; j++) {
         const cellObj = gridArray[i][j];
