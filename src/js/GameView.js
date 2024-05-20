@@ -48,7 +48,7 @@ export default class GameView {
     this.grid.addEventListener('mousedown', this._onPointerDown);
     document.addEventListener('mouseup', this._onPointerUp);
     document.addEventListener('mousemove', this._onPointerMove);
-    this.grid.addEventListener('touchstart', this._onPointerDown);
+    this.grid.addEventListener('touchstart', this._onPointerDown, {passive: false});
     document.addEventListener('touchend', this._onPointerUp);
     document.addEventListener('touchmove', this._onPointerMove);
   }
@@ -110,6 +110,9 @@ export default class GameView {
   }
 
   _onPointerDown(e) {
+    if (!e.target.closest('button')) {
+      e.preventDefault();
+    }
     if (e.type === 'mousedown') {
       this.pointerDownPos = {
         x: e.clientX,
