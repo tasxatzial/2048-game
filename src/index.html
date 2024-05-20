@@ -29,7 +29,16 @@
             <div>Score</div><span class="js-current-score"></span>
           </div>
           <div class="score">
-            <div>Best</div><span class="js-best-score"></span>
+            <div class="best-score-header">
+              <span>Best</span>
+              <button aria-label="Clear best score." class="best-score-trash-btn js-best-score-trash-btn">
+                <svg width="24px" height="24px">
+                  <title>Clear best score</title>
+                  <use href="./assets/trash.svg#trash"></use>
+                </svg>
+              </button>
+            </div>
+            <span class="js-best-score"></span>
           </div>
         </div>
       </div>

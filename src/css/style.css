@@ -93,6 +93,10 @@ p {
   margin-bottom: 1.5rem;
 }
 
+.best-score-header {
+  position: relative;
+}
+
 /*------------------------------------*\
   #BUTTONS
 \*------------------------------------*/
@@ -122,10 +126,29 @@ p {
   margin: 0 auto 2rem;
 }
 
+.best-score-trash-btn {
+  background-color: transparent;
+  border: none;
+  display: inline-flex;
+  padding: 0.2rem;
+  position: absolute;
+  right: 0;
+  transform: translateY(-50%);
+  top: 50%;
+}
+
+.best-score-trash-btn > img {
+  width: 1.5rem;
+}
+
 @media (hover:hover) {
   .new-game-btn:hover,
   .hide-overlay-btn:hover {
     background-color: var(--primary-button-color-hover);
+  }
+
+  .best-score-trash-btn:hover {
+    --icon-color: #e0455e;
   }
 }
 

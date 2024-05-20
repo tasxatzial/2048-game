@@ -11,6 +11,11 @@ startGame(JSON.parse(localStorage.getItem('game-2048')));
 
 document.querySelector('.js-new-game-btn')
         .addEventListener('click', () => startGame(null));
+document.querySelector('.js-best-score-trash-btn')
+        .addEventListener('click', () => {
+          bestScoreEl.textContent = 0;
+          localStorage.setItem('game-2048-best-score', JSON.stringify(0));
+        });
 
 function startGame(savedGame) {
   if (view) {
