@@ -15,7 +15,7 @@ export default class GameView {
     this.slidePermitted = false;
     this.grid = null;
     this.pointerDownPos = null;
-    this.mouseTriggerDistance = obj.mouseTriggerDistance || 40;
+    this.slideTriggerDistance = obj.slideTriggerDistance || 40;
   }
 
   initialize(game) {
@@ -145,20 +145,20 @@ export default class GameView {
       horizontalDistance = e.touches[0].clientX - this.pointerDownPos.x;
       verticalDistance = e.touches[0].clientY - this.pointerDownPos.y;
     }
-    if (Math.abs(horizontalDistance) > this.mouseTriggerDistance ||
-        Math.abs(verticalDistance) > this.mouseTriggerDistance) {
+    if (Math.abs(horizontalDistance) > this.slideTriggerDistance ||
+        Math.abs(verticalDistance) > this.slideTriggerDistance) {
           this.slidePermitted = false;
           this.pointerDownPos = null;
-          if (horizontalDistance > this.mouseTriggerDistance) {
+          if (horizontalDistance > this.slideTriggerDistance) {
             this.slideHandlers.slideRight();
           }
-          else if (horizontalDistance < -this.mouseTriggerDistance) {
+          else if (horizontalDistance < -this.slideTriggerDistance) {
             this.slideHandlers.slideLeft();
           }
-          else if (verticalDistance > this.mouseTriggerDistance) {
+          else if (verticalDistance > this.slideTriggerDistance) {
             this.slideHandlers.slideDown();
           }
-          else if (verticalDistance < -this.mouseTriggerDistance) {
+          else if (verticalDistance < -this.slideTriggerDistance) {
             this.slideHandlers.slideUp();
           }
         }
