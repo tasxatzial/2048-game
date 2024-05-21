@@ -56,8 +56,10 @@ export default class GameView {
   removeHandlers() {
     this.slideHandlers = null;
     window.removeEventListener('keydown', this._onKeydown);
+    this.grid.removeEventListener('mousedown', this._onPointerDown);
     document.removeEventListener('mouseup', this._onPointerUp);
     document.removeEventListener('mousemove', this._onPointerMove);
+    this.grid.removeEventListener('touchstart', this._onPointerDown);
     document.removeEventListener('touchend', this._onPointerUp);
     document.removeEventListener('touchmove', this._onPointerMove);
   }
