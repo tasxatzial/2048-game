@@ -157,6 +157,7 @@ p {
 
   .best-score-trash-btn:hover {
     --icon-color: #e0455e;
+    cursor: pointer;
   }
 }
 
