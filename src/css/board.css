@@ -1,15 +1,16 @@
 :root {
-  --cell-size: 4.5rem;
-  --cell-gap: 0.25rem;
-  --cell-border-radius: 0.25rem;
-  --horizontal-slide-duration: 125ms;
-  --vertical-slide-duration: 125ms;
-  --zoomin-duration: 125ms;
+  /* Define custom options here */
+  /* --cell-size: 4.5rem; */
+  /* --cell-gap: 0.25rem; */
+  /* --cell-border-radius: 0.25rem; */
+  /* --horizontal-slide-duration: 125ms; */
+  /* --vertical-slide-duration: 125ms; */
+  /* --zoomin-duration: 125ms; */
 }
 
 .grid {
-  --_cell-size: var(--cell-size, 5rem);
-  --_cell-gap: var(--cell-gap, calc(var(--_cell-size) / 20));
+  --_cell-size: var(--cell-size, 4.5rem);
+  --_cell-gap: var(--cell-gap, calc(var(--_cell-size) / 18));
   display: grid;
   grid-template-columns: repeat(var(--grid-columns), var(--_cell-size));
   grid-template-rows: repeat(var(--grid-rows), var(--_cell-size));
@@ -47,24 +48,24 @@
 .cell,
 .tile,
 .game-status-container {
-  --_border-radius: var(--cell-border-radius, calc(var(--_cell-size) / 20));
+  --_border-radius: var(--cell-border-radius, calc(var(--_cell-size) / 18));
   border-radius: var(--_border-radius);
 }
 
 .horizontal-slide {
-  --_duration: var(--horizontal-slide-duration, 100ms);
+  --_duration: var(--horizontal-slide-duration, 125ms);
   transform: translateX(calc((var(--_cell-size) + var(--_cell-gap)) * (var(--cell-column) - var(--tile-column))));
   transition: transform var(--_duration) ease-out;
 }
 
 .vertical-slide {
-  --_duration: var(--vertical-slide-duration, 100ms);
+  --_duration: var(--vertical-slide-duration, 125ms);
   transform: translateY(calc((var(--_cell-size) + var(--_cell-gap)) * (var(--cell-row) - var(--tile-row))));
   transition: transform var(--_duration) ease-out;
 }
 
 .zoomin {
-  --_duration: var(--zoomin-duration, 100ms);
+  --_duration: var(--zoomin-duration, 125ms);
   animation: zoomin var(--_duration) ease-out;
 }
 
