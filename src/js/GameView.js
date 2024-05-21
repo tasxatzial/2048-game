@@ -87,24 +87,24 @@ export default class GameView {
   }
 
   _onKeydown(e) {
-    if (!this.slidePermitted) {
-      return;
-    }
     if (['ArrowLeft', 'ArrowUp', 'ArrowRight', 'ArrowDown'].includes(e.code)) {
-      this.slidePermitted = false;
-      switch(e.code) {
-        case 'ArrowLeft':
-          this.slideHandlers.slideLeft();
-          break;
-        case 'ArrowUp':
-          this.slideHandlers.slideUp();
-          break;
-        case 'ArrowRight':
-          this.slideHandlers.slideRight();
-          break;
-        case 'ArrowDown':
-          this.slideHandlers.slideDown();
-          break;
+      e.preventDefault()
+      if (this.slidePermitted) {
+        this.slidePermitted = false;
+        switch(e.code) {
+          case 'ArrowLeft':
+            this.slideHandlers.slideLeft();
+            break;
+          case 'ArrowUp':
+            this.slideHandlers.slideUp();
+            break;
+          case 'ArrowRight':
+            this.slideHandlers.slideRight();
+            break;
+          case 'ArrowDown':
+            this.slideHandlers.slideDown();
+            break;
+        }
       }
     }
   }
