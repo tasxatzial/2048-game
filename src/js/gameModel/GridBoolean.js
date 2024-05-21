@@ -5,10 +5,6 @@ export default class GridBoolean {
     return this._createFullRectangle(4, 4);
   }
 
-  static threeByThree() {
-    return this._createFullRectangle(3, 3);
-  }
-
   static _createFullRectangle(rowCount, columnCount) {
     const rows = [];
     for (let i = 0; i < rowCount; i++) {

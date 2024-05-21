@@ -57,7 +57,10 @@ export default class Cell {
   }
 
   canMergeTile(cell) {
-    return this.tile && !cell.mergeTile && !this.mergeTile && this.mergeConditionFn(this.tile.getValue(), cell.tile.getValue());
+    return this.tile
+           && !cell.mergeTile
+           && !this.mergeTile
+           && this.mergeConditionFn(this.tile.getValue(), cell.tile.getValue());
   }
 
   //currently unused
@@ -72,8 +75,11 @@ export default class Cell {
       this.tile.setColumn(this.col);
     }
     if (this.mergeTile) {
-      score = this.mergeScoreFn(this.tile.getValue(), this.mergeTile.getValue());
-      this.tile.setValue(this.mergeResultFn(this.tile.getValue(), this.mergeTile.getValue()));
+      const val1 = this.tile.getValue();
+      const val2 = this.mergeTile.getValue();
+      score = this.mergeScoreFn(val1, val2);
+      const newVal = this.mergeResultFn(val1, val2);
+      this.tile.setValue(newVal);
       this.mergeTile = null;
       this.merged = true;
     } else {

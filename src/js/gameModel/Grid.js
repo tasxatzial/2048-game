@@ -233,9 +233,7 @@ export default class Grid {
 
   //currently unused
   willMergeCells() {
-    return this.getCells().some(cell => {
-      return cell.willMergeTiles();
-    });
+    return this.getCells().some(cell => cell.willMergeTiles());
   }
 
   mergeCells() {
@@ -261,6 +259,7 @@ export default class Grid {
 
   hasTile(value) {
     return this.getCells().some(cell => {
+      // double equality is intentionally used here in case value is a string that represents a number
       return cell.hasTile() && cell.getTile().getValue() == value;
     });
   }
