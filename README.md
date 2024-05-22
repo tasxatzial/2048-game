@@ -25,7 +25,7 @@ The main game class is [GameModel.js](src/js/GameModel.js), which supports passi
 
 * `gameOptions`: An object with possible keys:
   * `winConditionFnName`: The function name in [WinCondition.js](src/js/gameModel/WinCondition.js). Specifies the win condition of a game.
-  * `lostConditionFnName`:The function name in [LoseCondition.js](src/js/gameModel/LoseCondition.js). Specifies the lose condition of a game.
+  * `loseConditionFnName`:The function name in [LoseCondition.js](src/js/gameModel/LoseCondition.js). Specifies the lose condition of a game.
 * `gridOptions`: An object with possible keys:
   * `newTileFnName`: The function name in [NewTile.js](src/js/gameModel/NewTile.js). Specifies how to add new tiles after each move, supporting the addition of multiple tiles.
   * `mergeResultFnName`: The function name in [MergeResult.js](src/js/gameModel/MergeResult.js). Specifies the new value of two merged tiles.
@@ -37,9 +37,11 @@ The main game class is [GameModel.js](src/js/GameModel.js), which supports passi
   * `column`: Column of the tile.
   * `value`: The tile value.
 
-If a key isn't defined, the values will default to those of the classic 2048 game. These functions are listed in the files mentioned above under the `original2048` name.
+If a key isn't defined, the values will default to those of the classic 2048 game. The corresponding functions are listed in the files mentioned above under the `original2048` name.
 
 Edit line 31 of [script.js](src/js/script.js) to pass an object in the constructor, then press 'New Game' to generate a game with your options.
+
+**Note**: If either the `winConditionFnName` or `loseConditionFnName` is modified during gameplay, the changes won't be reflected until the next move.
 
 ### Board
 
