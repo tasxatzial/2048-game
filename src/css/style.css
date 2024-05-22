@@ -6,16 +6,19 @@
   --site-max-width: 50rem;
   --site-content-max-width: 35rem;
   --primary-color-dark-accent: darkslategray;
-  --primary-button-color: #aeefd2;
-  --primary-button-border-color: #95cdb4;
-  --primary-button-color-hover: #b8ffdf;
+  --btn-color: #b9e9b9;
+  --btn-color-hover: #bffabb;
+  --bg-color: linen;
+  --score-color: #fff1d6;
+  --score-border-color: #dcc8aa;
 }
 
 body {
+  background-color: var(--bg-color);
   font-family: 'Segoe UI', Geneva, Verdana, sans-serif;
   min-height: 100vh;
   margin: 0;
-  padding-top: 5vh;
+  padding-top: 3vh;
   padding-bottom: 2rem;
 }
 
@@ -47,21 +50,26 @@ p {
 }
 
 .score {
-  background-color:rgb(255, 245, 225);
-  border: 2px solid rgb(220, 200, 170);
-  border-radius: 0.25em;
+  background-color: var(--score-color);
+  border: 1px solid  var(--score-border-color);
+  border-radius: 0.2em;
   color: var(--primary-color-dark-accent);
-  font-size: 1.25rem;
+  font-size: 1.375rem;
   font-weight: bold;
   letter-spacing: 0.025em;
   padding: 0.25em;
-  min-width: 8em;
+  min-width: 7em;
   text-align: center;
   text-transform: uppercase;
 }
 
+.score-header-text {
+  font-size: 1.125rem;
+}
+
 .instructions {
   font-size: 1.25rem;
+  line-height: 1.35;
   margin-bottom: 2rem;
 }
 
@@ -94,6 +102,8 @@ p {
 }
 
 .best-score-header {
+  display: flex;
+  justify-content: center;
   position: relative;
 }
 
@@ -111,38 +121,48 @@ p {
   padding: 0.5em 1.25em;
 }
 
-.btn:active {
-  box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.2);
-  position: relative;
-  top: 1px;
-}
-
-.new-game-btn,
-.hide-overlay-btn {
-  background-color: var(--primary-button-color);
-  border: 1px solid var(--primary-button-border-color);
-  color: var(--primary-color-dark-accent);
-}
-
 .new-game-btn {
+  background-color: var(--btn-color);
+  border: none;
+  color: var(--primary-color-dark-accent);
   font-size: 1.25rem;
   margin: 0 auto 2rem;
+  transition: 0.25s;
+}
+
+.new-game-btn:focus-visible {
+  outline: 2px solid black;
 }
 
 .hide-overlay-btn {
-  font-size: 1rem;
+  background-color: white;
+  border: 1px solid silver;
+  font-size: 1.125rem;
   margin: 0 auto 1rem;
+}
+
+.hide-overlay-btn:focus-visible {
+  outline: 2px solid black;
+  outline-offset: -1px;
+}
+
+.new-game-btn:focus-visible {
+  transition-duration: 0s;
 }
 
 .best-score-trash-btn {
   background-color: transparent;
   border: none;
-  display: inline-flex;
+  border-radius: 0.2rem;
   padding: 0.2rem;
   position: absolute;
   right: 0;
-  transform: translateY(-50%);
   top: 50%;
+  transform: translateY(-50%);
+}
+
+.best-score-trash-btn:focus-visible {
+  outline: 2px solid black;
 }
 
 .best-score-trash-btn > img {
@@ -150,9 +170,12 @@ p {
 }
 
 @media (hover:hover) {
-  .new-game-btn:hover,
+  .new-game-btn:hover {
+    background-color: var(--btn-color-hover);
+  }
+
   .hide-overlay-btn:hover {
-    background-color: var(--primary-button-color-hover);
+    background-color: whitesmoke;
   }
 
   .best-score-trash-btn:hover {
@@ -161,8 +184,15 @@ p {
   }
 }
 
+.btn:active {
+  box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.2);
+  position: relative;
+  top: 1px;
+}
+
 .best-score-trash-btn:active {
-  --icon-color: #ED4F32;
+  --icon-color: #e0455e;
+  cursor: pointer;
 }
 
 /*------------------------------------*\
@@ -171,7 +201,8 @@ p {
 
 .end-game-overlay {
   align-items: center;
-  background-color: rgba(255, 255, 255, 0.9);
+  background-color: rgba(255, 255, 240, 0.9);
+  border-radius: inherit;
   display: flex;
   flex-direction: column;
   justify-content: center;
