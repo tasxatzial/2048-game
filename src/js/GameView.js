@@ -112,8 +112,11 @@ export default class GameView {
   }
 
   _onPointerDown(e) {
-    if (!e.target.closest('button')) {
+    if (!e.target.closest('div').classList.contains('js-end-game-overlay')) {
       e.preventDefault();
+    }
+    else {
+      return;
     }
     if (e.type === 'mousedown') {
       this.pointerDownPos = {
