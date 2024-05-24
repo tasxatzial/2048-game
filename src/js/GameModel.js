@@ -3,7 +3,7 @@ import WinCondition from "./gameModel/WinCondition.js";
 import LoseCondition from "./gameModel/LoseCondition.js";
 import EventEmitter from "./EventEmitter.js";
 
-export default class Game extends EventEmitter {
+export default class GameModel extends EventEmitter {
   constructor(obj) {
     super();
     if (!obj) {

@@ -3,6 +3,7 @@ export default class EventEmitter {
 
   addChangeListener(name, listener) {
       const listeners = this[name];
+
       if (!listeners) {
           this[name] = [listener];
       } else {

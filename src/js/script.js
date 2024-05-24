@@ -1,80 +1,73 @@
-import GameModel from "./GameModel.js";
-import GameView from "./GameView.js";
+import Model from "./Model.js";
+import View from "./View.js";
 
+let view = new View();
+let model = new Model();
 
-let game;
-let view;
-let slideHandlers;
-const bestScoreEl = document.querySelector('.js-best-score');
+model.addChangeListener('updateBestScoreEvent', () => {
+  view.setBestScore(model.getBestScore());
+});
+
+view.bindResetBestScore(() => {
+  model.resetBestScore();
+  localStorage.setItem('game-2048-best-score', JSON.stringify(model.getBestScore()));
+});
+
+view.bindStartNewGame(() => {
+  startGame(null);
+});
 
 startGame(JSON.parse(localStorage.getItem('game-2048')));
 
-document.querySelector('.js-new-game-btn')
-        .addEventListener('click', () => startGame(null));
-document.querySelector('.js-best-score-trash-btn')
-        .addEventListener('click', () => {
-          bestScoreEl.textContent = 0;
-          localStorage.setItem('game-2048-best-score', JSON.stringify(0));
-        });
+/* ---------------------------------------------- */
 
 function startGame(savedGame) {
-  if (view) {
-    view.removeHandlers(slideHandlers);
-  }
+  view.getGameView() && view.getGameView().removeHandlers();
 
   const bestScore = JSON.parse(localStorage.getItem('game-2048-best-score'));
-  if (savedGame) {
-    game = new GameModel(savedGame);
-    bestScoreEl.textContent = bestScore;
-  }
-  else {
-    game = new GameModel();
-    if (!bestScore) {
-      bestScoreEl.textContent = '0';
-    }
-  }
-  
-  view = new GameView();
-  
-  game.addChangeListener("addTilesEvent", () => {
-    const gameJSON = game.toJSON();
-    localStorage.setItem('game-2048', JSON.stringify(gameJSON));
-    localStorage.setItem('game-2048-best-score', JSON.stringify(bestScoreEl.textContent));
-    const promises = view.addTiles(gameJSON);
-    Promise.all(promises).then(() => view.updateGameStatus(gameJSON));
+  model.initialize(savedGame, bestScore);
+  const gameModel = model.getGameModel();
+  view.initializeGameView();
+  const gameView = view.getGameView();
+
+  gameModel.addChangeListener("addTilesEvent", () => {
+    const game = gameModel.toJSON();
+    localStorage.setItem('game-2048', JSON.stringify(game));
+    const promises = gameView.addTiles(game);
+    Promise.all(promises).then(() => gameView.updateGameStatus(game));
   });
+
+  gameModel.addChangeListener("slideTilesEvent", () => {
+    const game = gameModel.toJSON();
+    const promises = gameView.slideTiles(game);
+    Promise.all(promises).then(() => gameModel.mergeTiles());
+  });
+
+  gameModel.addChangeListener("mergeTilesEvent", () => {
+    const game = gameModel.toJSON();
+    model.updateBestScore(game);
+    gameView.updateScore(game);
+    localStorage.setItem('game-2048-best-score', JSON.stringify(model.getBestScore()));
+    const promises = gameView.mergeTiles(game);
+    Promise.all(promises).then(() => gameModel.addTiles());
+  });
+
+  gameModel.addChangeListener("noOpEvent", () => gameView.setReady());
 
   if (savedGame) {
-    view.initialize(savedGame);
-    view.updateGameStatus(savedGame);
+    gameView.initialize(savedGame);
+    gameView.updateGameStatus(savedGame);
   }
   else {
-    view.initialize(game.toJSON());
-    game.initTiles();
+    gameView.initialize(gameModel.toJSON());
+    gameModel.initTiles();
   }
 
-  game.addChangeListener("slideTilesEvent", () => {
-    const promises = view.slideTiles(game.toJSON());
-    Promise.all(promises).then(() => game.mergeTiles());
-  });
-  
-  game.addChangeListener("mergeTilesEvent", () => {
-    const gameJSON = game.toJSON();
-    view.updateScore(gameJSON);
-    if (gameJSON.score > bestScoreEl.textContent) {
-      bestScoreEl.textContent = gameJSON.score;
-    }
-    const promises = view.mergeTiles(gameJSON);
-    Promise.all(promises).then(() => game.addTiles());
-  });
-  
-  game.addChangeListener("noOpEvent", () => view.setReady());
-
-  slideHandlers = {
-    slideUp: game.slideUp.bind(game),
-    slideRight: game.slideRight.bind(game),
-    slideDown: game.slideDown.bind(game),
-    slideLeft: game.slideLeft.bind(game)
+  const slideHandlers = {
+    slideUp: gameModel.slideUp.bind(gameModel),
+    slideRight: gameModel.slideRight.bind(gameModel),
+    slideDown: gameModel.slideDown.bind(gameModel),
+    slideLeft: gameModel.slideLeft.bind(gameModel)
   }
-  view.bindHandlers(slideHandlers);
+  gameView.bindHandlers(slideHandlers);
 }
