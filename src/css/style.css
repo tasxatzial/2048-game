@@ -9,8 +9,8 @@
   --btn-color: #b9e9b9;
   --btn-color-hover: #bffabb;
   --bg-color: linen;
-  --score-color: #fff1d6;
-  --score-border-color: #dcc8aa;
+  --score-container-color: ivory;
+  --score-border-color: #f1e3cf;
 }
 
 body {
@@ -50,7 +50,7 @@ p {
 }
 
 .score {
-  background-color: var(--score-color);
+  background-color: var(--score-container-color);
   border: 1px solid  var(--score-border-color);
   border-radius: 0.2em;
   color: var(--primary-color-dark-accent);
