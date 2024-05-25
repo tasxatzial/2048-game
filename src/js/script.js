@@ -14,8 +14,35 @@ const gameHandlers = {
 
 /* ---------------------------------------------- */
 
-model.addChangeListener('updateBestScoreEvent', () => {
+model.addChangeListener('resetBestScoreEvent', () => {
   view.setBestScore(model.getBestScore());
+  localStorage.setItem('game-2048-best-score', JSON.stringify(model.getBestScore()));
+});
+
+model.addChangeListener('updateBestScoreEvent', () => {
+  if (model.hasBestScoreChanged()) {
+    view.setBestScore(model.getBestScore());
+    localStorage.setItem('game-2048-best-score', JSON.stringify(model.getBestScore()));
+  }
+  model.addGameTiles();
+});
+
+model.addChangeListener('initializeModelEvent', () => {
+  const game = model.getGame();
+  if (model.hasBestScoreChanged()) {
+    view.setBestScore(model.getBestScore());
+  }
+  view.removeGameHandlers();
+  view.initializeGameView();
+  view.updateGameScore(game);
+  view.initializeGame(game);
+  view.bindGameHandlers(gameHandlers);
+  if (model.hasInitialGame()) {
+    view.updateGameStatus(game);
+  }
+  else {
+    model.initializeGameTiles();
+  }
 });
 
 model.addChangeListener("addTilesEvent", () => {
@@ -33,11 +60,9 @@ model.addChangeListener("slideTilesEvent", () => {
 
 model.addChangeListener("mergeTilesEvent", () => {
   const game = model.getGame();
-  model.updateBestScore(game);
+  view.mergeGameTiles(game);
   view.updateGameScore(game);
-  localStorage.setItem('game-2048-best-score', JSON.stringify(model.getBestScore()));
-  const promises = view.mergeGameTiles(game);
-  Promise.all(promises).then(() => model.addGameTiles());
+  model.updateBestScore(game);
 });
 
 model.addChangeListener("noOpEvent", () => view.setGameReady());
@@ -46,7 +71,6 @@ model.addChangeListener("noOpEvent", () => view.setGameReady());
 
 view.bindResetBestScore(() => {
   model.resetBestScore();
-  localStorage.setItem('game-2048-best-score', JSON.stringify(model.getBestScore()));
 });
 
 view.bindStartNewGame(() => {
@@ -57,21 +81,6 @@ view.bindStartNewGame(() => {
 
 startGame(JSON.parse(localStorage.getItem('game-2048')));
 
-/* ---------------------------------------------- */
-
 function startGame(game) {
   model.initialize(game, JSON.parse(localStorage.getItem('game-2048-best-score')));
-  view.removeGameHandlers();
-  view.initializeGameView();
-  
-  if (game) {
-    view.initializeGame(game);
-    view.updateGameStatus(game);
-  }
-  else {
-    view.initializeGame(model.getGame());
-    model.initializeGameTiles();
-  }
-
-  view.bindGameHandlers(gameHandlers);
 }

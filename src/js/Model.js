@@ -6,6 +6,8 @@ export default class Model extends EventEmitter {
     super();
     this.gameModel = null;
     this.bestScore = 0;
+    this.bestScoreChanged = true;
+    this.initialGamePresent = null;
   }
 
   addGameTiles() {
@@ -20,12 +22,22 @@ export default class Model extends EventEmitter {
     return this.gameModel.toJSON();
   }
 
+  hasBestScoreChanged() {
+    return this.bestScoreChanged;
+  }
+
+  hasInitialGame() {
+    return this.initialGamePresent;
+  }
+
   initialize(game, bestScore) {
     if (game) {
+      this.initialGamePresent = true;
       this.gameModel = new GameModel(game);
       this.bestScore = bestScore;
     }
     else {
+      this.initialGamePresent = false;
       this.gameModel = new GameModel();
     }
     this.gameModel.addChangeListener('addTilesEvent', () => {
@@ -40,7 +52,7 @@ export default class Model extends EventEmitter {
     this.gameModel.addChangeListener('noOpEvent', () => {
       this.raiseChange('noOpEvent');
     });
-    this.raiseChange('updateBestScoreEvent');
+    this.raiseChange('initializeModelEvent');
   }
 
   initializeGameTiles() {
@@ -53,7 +65,7 @@ export default class Model extends EventEmitter {
 
   resetBestScore() {
     this.bestScore = 0;
-    this.raiseChange('updateBestScoreEvent');
+    this.raiseChange('resetBestScoreEvent');
   }
 
   slideUp() {
@@ -73,9 +85,11 @@ export default class Model extends EventEmitter {
   }
 
   updateBestScore(game) {
+    this.bestScoreChanged = false;
     if (game.score > this.bestScore) {
       this.bestScore = game.score;
-      this.raiseChange('updateBestScoreEvent');
+      this.bestScoreChanged = true;
     }
+    this.raiseChange('updateBestScoreEvent');
   }
 }
