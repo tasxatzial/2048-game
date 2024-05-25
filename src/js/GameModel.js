@@ -65,7 +65,7 @@ export default class GameModel extends EventEmitter {
     return JSON;
   }
 
-  initTiles() {
+  initializeTiles() {
     if (this.initialTiles) {
       this.grid.initTiles(this.initialTiles);
     }

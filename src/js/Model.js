@@ -8,6 +8,18 @@ export default class Model extends EventEmitter {
     this.bestScore = 0;
   }
 
+  addGameTiles() {
+    this.gameModel.addTiles();
+  }
+
+  getBestScore() {
+    return this.bestScore;
+  }
+
+  getGame() {
+    return this.gameModel.toJSON();
+  }
+
   initialize(game, bestScore) {
     if (game) {
       this.gameModel = new GameModel(game);
@@ -16,15 +28,48 @@ export default class Model extends EventEmitter {
     else {
       this.gameModel = new GameModel();
     }
+    this.gameModel.addChangeListener('addTilesEvent', () => {
+      this.raiseChange('addTilesEvent');
+    });
+    this.gameModel.addChangeListener('mergeTilesEvent', () => {
+      this.raiseChange('mergeTilesEvent');
+    });
+    this.gameModel.addChangeListener('slideTilesEvent', () => {
+      this.raiseChange('slideTilesEvent');
+    });
+    this.gameModel.addChangeListener('noOpEvent', () => {
+      this.raiseChange('noOpEvent');
+    });
     this.raiseChange('updateBestScoreEvent');
   }
 
-  getGameModel() {
-    return this.gameModel;
+  initializeGameTiles() {
+    this.gameModel.initializeTiles();
   }
 
-  getBestScore() {
-    return this.bestScore;
+  mergeGameTiles() {
+    this.gameModel.mergeTiles();
+  }
+
+  resetBestScore() {
+    this.bestScore = 0;
+    this.raiseChange('updateBestScoreEvent');
+  }
+
+  slideUp() {
+    this.gameModel.slideUp();
+  }
+
+  slideDown() {
+    this.gameModel.slideDown();
+  }
+  
+  slideLeft() {
+    this.gameModel.slideLeft();
+  }
+
+  slideRight() {
+    this.gameModel.slideRight();
   }
 
   updateBestScore(game) {
@@ -32,10 +77,5 @@ export default class Model extends EventEmitter {
       this.bestScore = game.score;
       this.raiseChange('updateBestScoreEvent');
     }
-  }
-
-  resetBestScore() {
-    this.bestScore = 0;
-    this.raiseChange('updateBestScoreEvent');
   }
 }
