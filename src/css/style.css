@@ -223,6 +223,6 @@ p {
 .end-game-msg {
   font-size: 2rem;
   font-weight: bold;
-  margin-bottom: 1rem;
+  margin-bottom: 0.75em;
   text-align: center;
 }
