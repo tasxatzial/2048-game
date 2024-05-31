@@ -75,7 +75,7 @@ We would like to create a game with the following options:
 To accomplish this, we define in [WinCondition.js](src/js/gameModel/WinCondition.js):
 
 ```js
-static f(grid) {
+static hasTile32(grid) {
   return grid.hasTile(32);
 }
 ```
@@ -83,8 +83,8 @@ static f(grid) {
 and in [GridBoolean.js](src/js/gameModel/GridBoolean.js):
 
 ```js
-static g() {
-  return [[1, 1, 1], [1, 0, 1], [1, 0, 1]];
+static threeByThreeNoCenter() {
+  return [[1, 1, 1], [1, 0, 1], [1, 1, 1]];
 }
 ```
 
@@ -93,15 +93,15 @@ Finally, we edit line 31 of [script.js](src/js/script.js):
 ```js
 game = new GameModel({
   gameOptions: {
-    winConditionFnName: 'f'
+    winConditionFnName: 'hasTile32'
   },
   gridOptions: {
-    gridBooleanFnName: 'g'
+    gridBooleanFnName: 'threeByThreeNoCenter'
   },
   initialTiles: [
     {row: 0, column: 0, value: 2}
   ]
-});
+})
 ```
 
 ## Dependencies
