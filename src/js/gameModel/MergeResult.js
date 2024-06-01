@@ -1,7 +1,7 @@
 export default class MergeResult {
   constructor() {}
 
-  static original2048(val1, val2) {
-    return val1 + val2;
+  static original2048(tileVal, mergeTilesVals) {
+    return tileVal + mergeTilesVals.reduce((x, y) => x + y, 0);
   }
 }

@@ -11,7 +11,7 @@ export default class Grid {
       obj = {};
     }
     if (obj.grid) {
-      const {gridArray, newTileFnName, mergeResultFnName, mergeScoreFnName, mergeConditionFnName, gridBooleanFnName} = obj.grid;
+      const {gridArray, newTileFnName, mergeResultFnName, mergeScoreFnName, mergeConditionFnName, gridBooleanFnName, mergeAll} = obj.grid;
       this.newTileFnName = newTileFnName;
       this.newTileFn = NewTile[newTileFnName];
       this.mergeResultFnName = mergeResultFnName;
@@ -21,6 +21,7 @@ export default class Grid {
       this.mergeConditionFnName = mergeConditionFnName;
       this.mergeConditionFn = MergeCondition[mergeConditionFnName];
       this.gridBooleanFnName = gridBooleanFnName;
+      this.mergeAll = mergeAll;
       const {gridBoolean, cells} =  this._createCellsFromGrid(gridArray);
       this.cells = cells;
       this.gridBoolean = gridBoolean;
@@ -29,7 +30,7 @@ export default class Grid {
     }
     else {
       const options = obj.options || {};
-      const {newTileFnName, mergeResultFnName, mergeScoreFnName, mergeConditionFnName, gridBooleanFnName} = options;
+      const {newTileFnName, mergeResultFnName, mergeScoreFnName, mergeConditionFnName, gridBooleanFnName, mergeAll} = options;
       if (gridBooleanFnName) {
         this.gridBoolean = GridBoolean[gridBooleanFnName]();
         this.gridBooleanFnName = gridBooleanFnName;
@@ -69,6 +70,12 @@ export default class Grid {
       else {
         this.mergeConditionFn = MergeCondition.original2048;
         this.mergeConditionFnName = "original2048";
+      }
+      if (mergeAll) {
+        this.mergeAll = mergeAll;
+      }
+      else {
+        this.mergeAll = false;
       }
       this.cells = this._createCellsFromGridBoolean(this.gridBoolean);
       this.rows = this._createRows(this.gridBoolean);
@@ -131,6 +138,7 @@ export default class Grid {
           cells[idx].mergeResultFn = this.mergeResultFn;
           cells[idx].mergeScoreFn = this.mergeScoreFn;
           cells[idx].mergeConditionFn = this.mergeConditionFn;
+          cells[idx].mergeAll = this.mergeAll;
         }
       }
     }
@@ -150,6 +158,7 @@ export default class Grid {
           cells[idx].mergeResultFn = this.mergeResultFn;
           cells[idx].mergeScoreFn = this.mergeScoreFn;
           cells[idx].mergeConditionFn = this.mergeConditionFn;
+          cells[idx].mergeAll = this.mergeAll;
           row.push(1);
         } else {
           row.push(0);
@@ -305,7 +314,8 @@ export default class Grid {
       mergeResultFnName: this.mergeResultFnName,
       mergeScoreFnName: this.mergeResultFnName,
       mergeConditionFnName: this.mergeConditionFnName,
-      gridBooleanFnName: this.gridBooleanFnName
+      gridBooleanFnName: this.gridBooleanFnName,
+      mergeAll: this.mergeAll
     };
   }
 

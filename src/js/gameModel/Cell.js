@@ -5,7 +5,7 @@ export default class Cell {
     this.row = row;
     this.col = column;
     this.tile = null;
-    this.mergeTile = null;
+    this.mergeTiles = [];
     this.merged = false;
   }
 
@@ -21,16 +21,17 @@ export default class Cell {
     return !!this.tile;
   }
 
+  //currently unused
   hasMergeTile() {
-    return !!this.mergeTile;
+    return !!this.mergeTiles.length;
   }
 
   getTile() {
     return this.tile;
   }
 
-  getMergeTile() {
-    return this.mergeTile;
+  getMergeTiles() {
+    return this.mergeTiles;
   }
 
   setTileFrom(cell) {
@@ -49,23 +50,35 @@ export default class Cell {
   }
 
   setMergeTileFrom(cell) {
-    if (this.mergeTile) {
-      throw new Error("target cell already has a merge tile");
+    if (this.mergeAll) {
+      this.mergeTiles.push(cell.tile);
     }
-    this.mergeTile = cell.tile;
+    else {
+      if (!this.mergeTiles.length) {
+        this.mergeTiles.push(cell.tile);
+      }
+      else {
+        throw new Error("target cell already has a merge tile");
+      }
+    }
     cell.tile = null;
   }
 
   canMergeTile(cell) {
-    return this.tile
-           && !cell.mergeTile
-           && !this.mergeTile
-           && this.mergeConditionFn(this.tile.getValue(), cell.tile.getValue());
+    if (this.mergeAll) {
+      return this.tile
+             && this.mergeConditionFn(this.tile.getValue(), cell.tile.getValue());
+    }
+    else {
+      return this.tile
+             && !this.mergeTiles.length
+             && this.mergeConditionFn(this.tile.getValue(), cell.tile.getValue());
+    }
   }
 
   //currently unused
   willMergeTiles() {
-    return this.tile && this.mergeTile;
+    return this.tile && this.mergeTiles.length;
   }
 
   merge() {
@@ -74,13 +87,19 @@ export default class Cell {
       this.tile.setRow(this.row);
       this.tile.setColumn(this.col);
     }
-    if (this.mergeTile) {
-      const val1 = this.tile.getValue();
-      const val2 = this.mergeTile.getValue();
-      score = this.mergeScoreFn(val1, val2);
-      const newVal = this.mergeResultFn(val1, val2);
+    if (this.mergeTiles.length) {
+      const tileVal = this.tile.getValue();
+      let mergeTilesVals;
+      if (this.mergeAll) {
+        mergeTilesVals = this.mergeTiles.map(tile => tile.getValue());
+      }
+      else {
+        mergeTilesVals = [this.mergeTiles[0].getValue()];
+      }
+      score = this.mergeScoreFn(tileVal, mergeTilesVals);
+      const newVal = this.mergeResultFn(tileVal, mergeTilesVals);
       this.tile.setValue(newVal);
-      this.mergeTile = null;
+      this.mergeTiles = [];
       this.merged = true;
     } else {
       this.merged = false;
@@ -93,17 +112,17 @@ export default class Cell {
       row: this.row,
       column: this.col,
       tile: this.tile ? this.tile.toJSON() : null,
-      mergeTile: this.mergeTile ? this.mergeTile.toJSON() : null,
+      mergeTiles:  this.mergeTiles.map(tile => tile.toJSON()),
       merged: this.merged
     }
   }
 
   static fromJSON(json) {
     if (json) {
-      const {row, column, tile, mergeTile, merged} = json;
+      const {row, column, tile, mergeTiles, merged} = json;
       const cell = new Cell(row, column);
       cell.tile = Tile.fromJSON(tile);
-      cell.mergeTile = Tile.fromJSON(mergeTile);
+      cell.mergeTiles = mergeTiles.map(tile => Tile.fromJSON(tile));
       cell.merged = merged;
       return cell;
     }

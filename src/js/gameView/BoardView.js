@@ -92,7 +92,7 @@ export default class BoardView {
         if (!cellObj) {
           continue;
         }
-        [cellObj.tile, cellObj.mergeTile].forEach((tileObj) => {
+        [cellObj.tile, ...cellObj.mergeTiles].forEach((tileObj) => {
           if (tileObj) {
             const slidingTile = cells.item(tileObj.row * gridArray[0].length + tileObj.column).children[0];
             if (cellObj.column != tileObj.column) {
