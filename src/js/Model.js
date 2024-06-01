@@ -40,18 +40,10 @@ export default class Model extends EventEmitter {
       this.initialGamePresent = false;
       this.gameModel = new GameModel();
     }
-    this.gameModel.addChangeListener('addTilesEvent', () => {
-      this.raiseChange('addTilesEvent');
-    });
-    this.gameModel.addChangeListener('mergeTilesEvent', () => {
-      this.raiseChange('mergeTilesEvent');
-    });
-    this.gameModel.addChangeListener('slideTilesEvent', () => {
-      this.raiseChange('slideTilesEvent');
-    });
-    this.gameModel.addChangeListener('noOpEvent', () => {
-      this.raiseChange('noOpEvent');
-    });
+    this.bubbleChange(this.gameModel, 'addTilesEvent');
+    this.bubbleChange(this.gameModel, 'mergeTilesEvent');
+    this.bubbleChange(this.gameModel, 'slideTilesEvent');
+    this.bubbleChange(this.gameModel, 'noOpEvent');
     this.raiseChange('initializeModelEvent');
   }
 

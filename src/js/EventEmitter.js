@@ -17,4 +17,8 @@ export default class EventEmitter {
           listeners.forEach(listener => listener());
       }
   }
+
+  bubbleChange(model, name) {
+    model.addChangeListener(name, () => this.raiseChange(name));
+  }
 }
