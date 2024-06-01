@@ -5,7 +5,7 @@
   /* --cell-border-radius: 0.25rem; */
   /* --horizontal-slide-duration: 125ms; */
   /* --vertical-slide-duration: 125ms; */
-  /* --zoomin-duration: 125ms; */
+  /* --zoomin-duration: 100ms; */
 }
 
 .grid {
@@ -65,7 +65,7 @@
 }
 
 .zoomin {
-  --_duration: var(--zoomin-duration, 125ms);
+  --_duration: var(--zoomin-duration, 100ms);
   animation: zoomin var(--_duration) ease-out;
 }
 
