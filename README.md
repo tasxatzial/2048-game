@@ -1,10 +1,9 @@
 # 2048 game
 
-This repository contains my implementation of the popular 2048 game, where the objective is to combine tiles with the same numbers to reach the 2048 tile.
+This repository contains my implementation of the [2048 game](https://en.wikipedia.org/wiki/2048_(video_game)) by Gabriele Cirulli, where the objective is to combine tiles with the same numbers to reach the 2048 tile.
 
 ## Features
 
-* Classic 2048 gameplay.
 * Supports keyboard controls (arrow keys).
 * Supports swipe motions for touch devices (mouse or finger).
 * Remembers game progress even if browser is closed.
@@ -12,7 +11,7 @@ This repository contains my implementation of the popular 2048 game, where the o
 ## Implementation
 
 * Variation of the [MVC](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller) pattern.
-* Promises are used to ensure correct functionality and that animations complete properly, preventing the user from making the next move until the animations are finished.
+* Promises are used to ensure correct functionality and that animations complete properly.
 
 ## Customization
 
@@ -29,8 +28,9 @@ The main game class is [GameModel.js](src/js/GameModel.js), which supports passi
   * `newTileFnName`: The function name in [NewTile.js](src/js/gameModel/NewTile.js). Specifies how to add new tiles after each move, supporting the addition of multiple tiles.
   * `mergeResultFnName`: The function name in [MergeResult.js](src/js/gameModel/MergeResult.js). Specifies the new value of two merged tiles.
   * `mergeScoreFnName`: The function name in [MergeScore.js](src/js/gameModel/MergeScore.js). Specifies the extra score from merging two tiles.
-  * `mergeConditionFnName`: The function name in [MergeCondition.js](src/js/gameModel/MergeCondition.js). Specifies when two tiles can merge.
+  * `mergeConditionFnName`: The function name in [MergeCondition.js](src/js/gameModel/MergeCondition.js). Specifies when two tiles can merge. The first parameter corresponds to the tile into which the other tile will merge.
   * `gridBooleanFnName`: The function name in [GridBoolean.js](src/js/gameModel/GridBoolean.js). Specifies a two dimensional boolean array that represents the rows of the board. A value of 1 indicates that the corresponding cell is enabled and can accept tiles, while a value of 0 indicates a disabled cell where tiles cannot occupy or slide through. Disabled cells will display as squares with black background and a white border.
+  * `mergeAll`: `true` if want multiple tiles to merge, else `false`.
 
   **Note**: Do not create a grid with only one row or column, as this will cause overflow issues when the game is won or lost.
 
@@ -50,11 +50,11 @@ You can also customize the appearance and behavior of the board by defining the 
 * `--cell-border-radius`: Border radius of cells and board. Default is `--cell-size / 18`;
 * `--horizontal-slide-duration`: Duration of a slide across the horizontal axis: Default is `125ms`.
 * `--vertical-slide-duration`: Duration of a slide across the vertical axis: Default is `125ms`.
-* `--zoomin-duration`: Duration of the animation for merging and adding new tiles: Default is `125ms`.
+* `--zoomin-duration`: Duration of the animation for merging and adding new tiles: Default is `100ms`.
 
 #### Tile fonts
 
-The font size of each tile is handled automatically based on the length of the tile value, with a maximum supported length of 10. This setting can be modified by adding extra classes in [board.css](src/css/board.css) and modifying line 21 in [BoardView.js](src/js/gameView/BoardView.js).
+The font size of each tile is handled automatically based on the length of the tile value, with a maximum supported length of 10. This setting can be modified by adding extra classes in [board.css](src/css/board.css) and modifying function `_initializeTile` in [BoardView.js](src/js/gameView/BoardView.js).
 
 #### Tile colors
 
@@ -88,7 +88,7 @@ static threeByThreeNoCenter() {
 }
 ```
 
-Finally, we edit line 31 of [script.js](src/js/script.js):
+Finally, we create the game:
 
 ```js
 game = new GameModel({
