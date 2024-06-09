@@ -56,7 +56,7 @@ export default class BoardViewColorModel {
   }
 }
 
-const COLORS = [
+export const COLORS = [
   ['black', 'hsl(50, 77%, 75%)'],
   ['black', 'hsl(25, 88%, 74%)'],
   ['black', 'hsl(120, 87%, 78%)'],

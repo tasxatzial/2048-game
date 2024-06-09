@@ -1,0 +1,17 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: linen;
+}
+
+.grid-colors {
+  --grid-rows: 6;
+  --grid-columns: 7;
+}

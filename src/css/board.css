@@ -1,12 +1,14 @@
 :root {
   /* Define custom options here */
-  /* --cell-size: 4.5rem; */
-  /* --cell-gap: 0.25rem; */
+  --cell-size: 4.5rem;
+  --cell-gap: 0.25rem;
   /* --cell-border-radius: 0.25rem; */
   /* --horizontal-slide-duration: 125ms; */
   /* --vertical-slide-duration: 125ms; */
   /* --zoomin-duration: 100ms; */
 }
+
+
 
 .grid {
   --_cell-size: var(--cell-size, 4.5rem);
