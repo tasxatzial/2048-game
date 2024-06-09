@@ -30,7 +30,7 @@ The main game class is [GameModel.js](src/js/GameModel.js), which supports passi
   * `mergeScoreFnName`: The function name in [MergeScore.js](src/js/gameModel/MergeScore.js). Specifies the extra score from merging two tiles.
   * `mergeConditionFnName`: The function name in [MergeCondition.js](src/js/gameModel/MergeCondition.js). Specifies when two tiles can merge. The first parameter corresponds to the tile into which the other tile will merge.
   * `gridBooleanFnName`: The function name in [GridBoolean.js](src/js/gameModel/GridBoolean.js). Specifies a two dimensional boolean array that represents the rows of the board. A value of 1 indicates that the corresponding cell is enabled and can accept tiles, while a value of 0 indicates a disabled cell where tiles cannot occupy or slide through. Disabled cells will display as squares with black background and a white border.
-  * `mergeAll`: `true` if want multiple tiles to merge, else `false`.
+  * `mergeAll`: `true` if we want multiple tiles to merge, else `false`.
 
   **Note**: Do not create a grid with only one row or column, as this will cause overflow issues when the game is won or lost.
 
@@ -43,7 +43,7 @@ If a key isn't defined, the values will default to those of the classic 2048 gam
 
 ### Board
 
-You can also customize the appearance and behavior of the board by defining the following custom properties in the root element of [board.css](src/css/board.css).
+You can customize the appearance and behavior of the board by defining the following custom properties in the root element of [board.css](src/css/board.css).
 
 * `--cell-size`: Size of each cell. Default is `4.5rem`;
 * `--cell-gap`: Gap size between cells. Default is `--cell-size / 18`;
@@ -58,11 +58,11 @@ The font size of each tile is handled automatically based on the length of the t
 
 #### Tile colors
 
-Tile colors are also handled automatically. Instead of always assigning the same color to a specific value, the program only ensures that all tiles with the same value share the same color. As a result, the board's coloring works properly in custom-defined games that use different tile values than those in the classic 2048 game.
+Tile colors are handled automatically. Instead of always assigning the same color to a specific value, the program only ensures that all tiles with the same value share the same color. As a result, the board's coloring works properly in custom-defined games that use different tile values than those in the classic 2048 game.
 
 All colors are defined in [BoardViewColorModel.js](src/js/gameView/BoardViewColorModel.js) as an array. Currently, there are 20 light background colors that use a black font color and 18 dark background colors that use a white font color. The last value in the array corresponds to a tile with a white background and black font color. This entry is used for a tile in a board that is already using all 38 colors, meaning a board that has 38 tiles with different values.
 
-Feel free to add, remove, or adjust the colors as needed.
+Feel free to edit [BoardViewColorModel.js](src/js/gameView/BoardViewColorModel.js) if you want to add, remove, or adjust any of them.
 
 ## Creating a custom game - Example
 
@@ -104,6 +104,8 @@ game = new GameModel({
 })
 ```
 
+Replace line 41 in [Model.js](src/js/Model.js) with the above code, and press 'new game' to start the custom game.
+
 ## Dependencies
 
 None. The project uses only HTML, CSS, JavaScript.
@@ -111,6 +113,8 @@ None. The project uses only HTML, CSS, JavaScript.
 ## Run locally
 
 Download the `src` folder and use a local web server to serve its contents.
+
+Open [colors.html](src/colors.html) to see how each color looks.
 
 ## Screenshots
 
