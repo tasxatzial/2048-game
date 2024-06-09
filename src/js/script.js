@@ -22,16 +22,14 @@ model.addChangeListener('resetBestScoreEvent', () => {
 model.addChangeListener('updateBestScoreEvent', () => {
   if (model.hasBestScoreChanged()) {
     view.setBestScore(model.getBestScore());
-    localStorage.setItem('game-2048-best-score', JSON.stringify(model.getBestScore()));
   }
+  localStorage.setItem('game-2048-best-score', JSON.stringify(model.getBestScore()));
   model.addGameTiles();
 });
 
 model.addChangeListener('initializeModelEvent', () => {
   const game = model.getGame();
-  if (model.hasBestScoreChanged()) {
-    view.setBestScore(model.getBestScore());
-  }
+  view.setBestScore(model.getBestScore());
   view.removeGameHandlers();
   view.initializeGameView();
   view.updateGameScore(game);
@@ -50,6 +48,10 @@ model.addChangeListener("addTilesEvent", () => {
   localStorage.setItem('game-2048', JSON.stringify(game));
   const promises = view.addGameTiles(game);
   Promise.all(promises).then(() => view.updateGameStatus(game));
+});
+
+model.addChangeListener("initializeTilesEvent", () => {
+  localStorage.setItem('game-2048-best-score', JSON.stringify(model.getBestScore()));
 });
 
 model.addChangeListener("slideTilesEvent", () => {

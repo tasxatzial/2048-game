@@ -5,7 +5,8 @@ export default class Model extends EventEmitter {
   constructor() {
     super();
     this.gameModel = null;
-    this.bestScore = 0;
+    this.initialBestScore = 0;
+    this.bestScore = this.initialBestScore;
     this.bestScoreChanged = true;
     this.initialGamePresent = null;
   }
@@ -34,12 +35,13 @@ export default class Model extends EventEmitter {
     if (game) {
       this.initialGamePresent = true;
       this.gameModel = new GameModel(game);
-      this.bestScore = bestScore;
     }
     else {
       this.initialGamePresent = false;
       this.gameModel = new GameModel();
     }
+    this.bestScore = bestScore || this.initialBestScore;
+    this.bubbleChange(this.gameModel, 'initializeTilesEvent');
     this.bubbleChange(this.gameModel, 'addTilesEvent');
     this.bubbleChange(this.gameModel, 'mergeTilesEvent');
     this.bubbleChange(this.gameModel, 'slideTilesEvent');

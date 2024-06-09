@@ -74,6 +74,7 @@ export default class GameModel extends EventEmitter {
       this.grid.addTiles();
     }
     this.raiseChange("addTilesEvent");
+    this.raiseChange("initializeTilesEvent");
   }
 
   addTiles() {
