@@ -114,7 +114,7 @@ None. The project uses only HTML, CSS, JavaScript.
 
 Download the `src` folder and use a local web server to serve its contents.
 
-Open [colors.html](src/colors.html) to see how each color looks.
+Navigate to [/colors.html](src/colors.html) to see how each color looks.
 
 ## Screenshots
 
