@@ -1,10 +1,7 @@
 import BoardView from "./gameView/BoardView.js";
 
 export default class GameView {
-  constructor(obj) {
-    if (!obj) {
-      obj = {};
-    }
+  constructor(game) {
     this.boardView = new BoardView();
     this.score = document.querySelector('.js-current-score');
     this._onKeydown = this._onKeydown.bind(this);
@@ -15,10 +12,8 @@ export default class GameView {
     this.slidePermitted = false;
     this.grid = null;
     this.pointerDownPos = null;
-    this.slideTriggerDistance = obj.slideTriggerDistance || 40;
-  }
+    this.slideTriggerDistance = 40;
 
-  initialize(game) {
     this.updateScore(game);
     this.grid = this.boardView.initialize(game.grid);
     const boardContainer = document.querySelector('.js-board-container');

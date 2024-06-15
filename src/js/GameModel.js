@@ -44,6 +44,13 @@ export default class GameModel extends EventEmitter {
       this.score = 0;
       this.slideCount = 0;
     }
+    if (this.initialTiles) {
+      this.grid.initTiles(this.initialTiles);
+    }
+    else {
+      this.grid.addTiles();
+      this.grid.addTiles();
+    }
   }
 
   toJSON() {
@@ -65,26 +72,9 @@ export default class GameModel extends EventEmitter {
     return JSON;
   }
 
-  initializeTiles() {
-    if (this.initialTiles) {
-      this.grid.initTiles(this.initialTiles);
-    }
-    else {
-      this.grid.addTiles();
-      this.grid.addTiles();
-    }
-    this.raiseChange("addTilesEvent");
-    this.raiseChange("initializeTilesEvent");
-  }
-
-  addTiles() {
-    this.grid.addTiles();
-    this.raiseChange("addTilesEvent");
-  }
-
-  mergeTiles() {
-    this.score += this.grid.mergeCells();
-    this.raiseChange("mergeTilesEvent");
+  purge() {
+    //purge grid
+    this.raiseChange("purgeModelEvent");
   }
 
   slideLeft() {
@@ -111,6 +101,7 @@ export default class GameModel extends EventEmitter {
     if (this.grid.hasChangedAfterSlide()) {
       this.raiseChange("slideTilesEvent");
       this.slideCount++;
+      //update score
     }
     else {
       this.raiseChange("noOpEvent");

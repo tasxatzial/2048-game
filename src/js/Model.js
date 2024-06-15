@@ -11,26 +11,6 @@ export default class Model extends EventEmitter {
     this.initialGamePresent = null;
   }
 
-  addGameTiles() {
-    this.gameModel.addTiles();
-  }
-
-  getBestScore() {
-    return this.bestScore;
-  }
-
-  getGame() {
-    return this.gameModel.toJSON();
-  }
-
-  hasBestScoreChanged() {
-    return this.bestScoreChanged;
-  }
-
-  hasInitialGame() {
-    return this.initialGamePresent;
-  }
-
   initialize(game, bestScore) {
     if (game) {
       this.initialGamePresent = true;
@@ -40,21 +20,35 @@ export default class Model extends EventEmitter {
       this.initialGamePresent = false;
       this.gameModel = new GameModel();
     }
-    this.bestScore = bestScore || this.initialBestScore;
-    this.bubbleChange(this.gameModel, 'initializeTilesEvent');
-    this.bubbleChange(this.gameModel, 'addTilesEvent');
-    this.bubbleChange(this.gameModel, 'mergeTilesEvent');
-    this.bubbleChange(this.gameModel, 'slideTilesEvent');
+    this.bestScore = bestScore || this.bestScore || this.initialBestScore;
+    this.gameModel.addChangeListener('slideTilesEvent', () => {
+      const game = this.gameModel.toJSON();
+      this.bestScoreChanged = false;
+      if (game.score > this.bestScore) {
+        this.bestScore = game.score;
+        this.bestScoreChanged = true;
+      }
+      this.raiseChange('slideTilesEvent');
+    });
     this.bubbleChange(this.gameModel, 'noOpEvent');
+    this.bubbleChange(this.gameModel, 'purgeGameModelEvent');
     this.raiseChange('initializeModelEvent');
   }
 
-  initializeGameTiles() {
-    this.gameModel.initializeTiles();
+  purgeGameModel() {
+    this.gameModel.purge();
   }
 
-  mergeGameTiles() {
-    this.gameModel.mergeTiles();
+  getGame() {
+    return this.gameModel.toJSON();
+  }
+
+  getBestScore() {
+    return this.bestScore;
+  }
+
+  hasBestScoreChanged() {
+    return this.bestScoreChanged;
   }
 
   resetBestScore() {
@@ -76,14 +70,5 @@ export default class Model extends EventEmitter {
 
   slideRight() {
     this.gameModel.slideRight();
-  }
-
-  updateBestScore(game) {
-    this.bestScoreChanged = false;
-    if (game.score > this.bestScore) {
-      this.bestScore = game.score;
-      this.bestScoreChanged = true;
-    }
-    this.raiseChange('updateBestScoreEvent');
   }
 }

@@ -19,52 +19,22 @@ model.addChangeListener('resetBestScoreEvent', () => {
   localStorage.setItem('game-2048-best-score', JSON.stringify(model.getBestScore()));
 });
 
-model.addChangeListener('updateBestScoreEvent', () => {
-  if (model.hasBestScoreChanged()) {
-    view.setBestScore(model.getBestScore());
-  }
-  localStorage.setItem('game-2048-best-score', JSON.stringify(model.getBestScore()));
-  model.addGameTiles();
-});
-
 model.addChangeListener('initializeModelEvent', () => {
   const game = model.getGame();
   view.setBestScore(model.getBestScore());
-  view.removeGameHandlers();
-  view.initializeGameView();
-  view.updateGameScore(game);
   view.initializeGame(game);
   view.bindGameHandlers(gameHandlers);
-  if (model.hasInitialGame()) {
-    view.updateGameStatus(game);
-  }
-  else {
-    model.initializeGameTiles();
-  }
-});
-
-model.addChangeListener("addTilesEvent", () => {
-  const game = model.getGame();
-  localStorage.setItem('game-2048', JSON.stringify(game));
-  const promises = view.addGameTiles(game);
-  Promise.all(promises).then(() => view.updateGameStatus(game));
-});
-
-model.addChangeListener("initializeTilesEvent", () => {
-  localStorage.setItem('game-2048-best-score', JSON.stringify(model.getBestScore()));
+  view.updateGameStatus(game);
 });
 
 model.addChangeListener("slideTilesEvent", () => {
-  const game = model.getGame();
-  const promises = view.slideGameTiles(game);
-  Promise.all(promises).then(() => model.mergeGameTiles());
+  //update view
+  //model purge
 });
 
-model.addChangeListener("mergeTilesEvent", () => {
-  const game = model.getGame();
-  view.mergeGameTiles(game);
-  view.updateGameScore(game);
-  model.updateBestScore(game);
+model.addChangeListener("purgeGameModelEvent", () => {
+  //update localstorage
+  //set view ready
 });
 
 model.addChangeListener("noOpEvent", () => view.setGameReady());

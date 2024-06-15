@@ -24,30 +24,15 @@ export default class View {
             .addEventListener('click', callback);
   }
 
-  getGameView() {
-    return this.gameView;
-  }
-
-  hasGameView() {
-    return this.gameView != null;
-  }
-
   initializeGame(game) {
-    this.gameView.initialize(game);
-  }
-
-  initializeGameView() {
-    this.gameView = new GameView();
+    if (this.gameView) {
+      this.gameView.removeHandlers();
+    }
+    this.gameView = new GameView(game);
   }
 
   mergeGameTiles(game) {
     return this.gameView.mergeTiles(game);
-  }
-
-  removeGameHandlers() {
-    if (this.gameView) {
-      this.gameView.removeHandlers();
-    }
   }
 
   setBestScore(bestScore) {
