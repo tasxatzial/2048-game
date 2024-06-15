@@ -73,7 +73,7 @@ export default class GameModel extends EventEmitter {
   }
 
   purge() {
-    //purge grid
+    this.grid.purge();
     this.raiseChange("purgeModelEvent");
   }
 

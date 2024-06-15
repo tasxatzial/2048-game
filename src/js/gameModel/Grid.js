@@ -210,6 +210,9 @@ export default class Grid {
         this.rows.forEach(x => this._slideTilesToEnd(x));
         break;
     }
+
+    this._setCellsMergeScore();
+    this.addTiles();
   }
 
   slideRight() {
@@ -240,24 +243,19 @@ export default class Grid {
     return this.rows.some(_canSlide) || this.cols.some(_canSlide);
   }
 
-  //currently unused
-  willMergeCells() {
-    return this.getCells().some(cell => cell.willMergeTiles());
-  }
-
-  mergeCells() {
-    let mergeScore = 0;
+  _setCellsMergeScore() {
     this.getCells().forEach(cell => {
-      mergeScore += cell.merge();
+      cell.setMergeScore();
     });
-    return mergeScore;
   }
 
   addTiles() {
     const newTiles = this.newTileFn(this);
     newTiles.forEach(tile => {
-      this.cells[tile.row * this.gridBoolean[0].length + tile.column].setTile(tile.value);
-    })
+      const idx = tile.row * this.gridBoolean[0].length + tile.column;
+      this.cells[idx].setTile(tile.value);
+      this.cells[idx].setHasNewTile();
+    });
   }
 
   initTiles(tiles) {
@@ -275,6 +273,12 @@ export default class Grid {
 
   hasChangedAfterSlide() {
     return this.changedAfterSlide;
+  }
+
+  purge() {
+    this.getCells().forEach(cell => {
+      cell.purge();
+    });
   }
 
   getMaxTileLength() {

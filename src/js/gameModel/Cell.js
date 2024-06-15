@@ -6,7 +6,9 @@ export default class Cell {
     this.col = column;
     this.tile = null;
     this.mergeTiles = [];
-    this.merged = false;
+    this.mergedScore = null;
+    this.mergedValue = null;
+    this.hasNewTile = false;
   }
 
   getRow() {
@@ -21,17 +23,16 @@ export default class Cell {
     return !!this.tile;
   }
 
-  //currently unused
-  hasMergeTile() {
-    return !!this.mergeTiles.length;
-  }
-
   getTile() {
     return this.tile;
   }
 
   getMergeTiles() {
     return this.mergeTiles;
+  }
+
+  setHasNewTile() {
+    this.hasNewTile = true;
   }
 
   setTileFrom(cell) {
@@ -76,35 +77,27 @@ export default class Cell {
     }
   }
 
-  //currently unused
-  willMergeTiles() {
-    return this.tile && this.mergeTiles.length;
+  setMergeScore() {
+    if (this.mergeTiles.length) {
+      const tileVal = this.tile.getValue();
+      const mergeTilesVals = this.mergeTiles.map(tile => tile.getValue());
+      this.mergedScore = this.mergeScoreFn(tileVal, mergeTilesVals);
+      this.mergedValue = this.mergeResultFn(tileVal, mergeTilesVals);
+    }
   }
 
-  merge() {
-    let score = 0;
+  purge() {
+    this.hasNewTile = false;
     if (this.tile) {
       this.tile.setRow(this.row);
       this.tile.setColumn(this.col);
     }
     if (this.mergeTiles.length) {
-      const tileVal = this.tile.getValue();
-      let mergeTilesVals;
-      if (this.mergeAll) {
-        mergeTilesVals = this.mergeTiles.map(tile => tile.getValue());
-      }
-      else {
-        mergeTilesVals = [this.mergeTiles[0].getValue()];
-      }
-      score = this.mergeScoreFn(tileVal, mergeTilesVals);
-      const newVal = this.mergeResultFn(tileVal, mergeTilesVals);
-      this.tile.setValue(newVal);
+      this.tile.setValue(this.mergedValue);
+      this.mergedScore = null;
+      this.mergedValue = null;
       this.mergeTiles = [];
-      this.merged = true;
-    } else {
-      this.merged = false;
     }
-    return score;
   }
 
   toJSON() {
@@ -113,17 +106,21 @@ export default class Cell {
       column: this.col,
       tile: this.tile ? this.tile.toJSON() : null,
       mergeTiles:  this.mergeTiles.map(tile => tile.toJSON()),
-      merged: this.merged
+      mergedScore: this.mergedScore,
+      mergedValue: this.mergedValue,
+      hasNewTile: this.hasNewTile
     }
   }
 
   static fromJSON(json) {
     if (json) {
-      const {row, column, tile, mergeTiles, merged} = json;
+      const {row, column, tile, mergeTiles, mergedScore, mergedValue, hasNewTile} = json;
       const cell = new Cell(row, column);
       cell.tile = Tile.fromJSON(tile);
       cell.mergeTiles = mergeTiles.map(tile => Tile.fromJSON(tile));
-      cell.merged = merged;
+      cell.mergedScore = mergedScore;
+      cell.mergedValue = mergedValue;
+      cell.hasNewTile = hasNewTile;
       return cell;
     }
     else {

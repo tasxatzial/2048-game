@@ -28,6 +28,9 @@ model.addChangeListener('initializeModelEvent', () => {
 });
 
 model.addChangeListener("slideTilesEvent", () => {
+  model.purgeGameModel();
+  console.log(model.gameModel.grid.toString())
+  view.setGameReady();
   //update view
   //model purge
 });
