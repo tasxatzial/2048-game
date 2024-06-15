@@ -40,6 +40,7 @@ model.addChangeListener('initializeModelEvent', () => {
   }
   else {
     model.initializeGameTiles();
+    localStorage.setItem('game-2048-best-score', JSON.stringify(model.getBestScore()));
   }
 });
 
@@ -48,10 +49,6 @@ model.addChangeListener("addTilesEvent", () => {
   localStorage.setItem('game-2048', JSON.stringify(game));
   const promises = view.addGameTiles(game);
   Promise.all(promises).then(() => view.updateGameStatus(game));
-});
-
-model.addChangeListener("initializeTilesEvent", () => {
-  localStorage.setItem('game-2048-best-score', JSON.stringify(model.getBestScore()));
 });
 
 model.addChangeListener("slideTilesEvent", () => {

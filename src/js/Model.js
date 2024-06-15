@@ -41,7 +41,6 @@ export default class Model extends EventEmitter {
       this.gameModel = new GameModel();
     }
     this.bestScore = bestScore || this.initialBestScore;
-    this.bubbleChange(this.gameModel, 'initializeTilesEvent');
     this.bubbleChange(this.gameModel, 'addTilesEvent');
     this.bubbleChange(this.gameModel, 'mergeTilesEvent');
     this.bubbleChange(this.gameModel, 'slideTilesEvent');
