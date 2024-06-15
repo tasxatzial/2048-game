@@ -30,6 +30,8 @@ model.addChangeListener('initializeModelEvent', () => {
 model.addChangeListener("slideTilesEvent", () => {
   model.purgeGameModel();
   console.log(model.gameModel.grid.toString())
+  console.log(model.getGame().score)
+  console.log(model.getBestScore())
   view.setGameReady();
   //update view
   //model purge

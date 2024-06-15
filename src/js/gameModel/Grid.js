@@ -81,6 +81,8 @@ export default class Grid {
       this.rows = this._createRows(this.gridBoolean);
       this.cols = this._createColumns(this.gridBoolean);
     }
+    this.changedAfterSlide = null;
+    this.mergedScore = null;
   }
 
   _createRows(booleanArray) {
@@ -210,7 +212,6 @@ export default class Grid {
         this.rows.forEach(x => this._slideTilesToEnd(x));
         break;
     }
-
     this._setCellsMergeScore();
     this.addTiles();
   }
@@ -243,10 +244,20 @@ export default class Grid {
     return this.rows.some(_canSlide) || this.cols.some(_canSlide);
   }
 
+  hasChangedAfterSlide() {
+    return this.changedAfterSlide;
+  }
+
   _setCellsMergeScore() {
+    this.mergedScore = 0;
     this.getCells().forEach(cell => {
       cell.setMergeScore();
+      this.mergedScore += cell.getMergedScore();
     });
+  }
+
+  getMergedScore() {
+    return this.mergedScore;
   }
 
   addTiles() {
@@ -271,14 +282,12 @@ export default class Grid {
     });
   }
 
-  hasChangedAfterSlide() {
-    return this.changedAfterSlide;
-  }
-
   purge() {
     this.getCells().forEach(cell => {
       cell.purge();
     });
+    this.changedAfterSlide = null;
+    this.mergedScore = null;
   }
 
   getMaxTileLength() {

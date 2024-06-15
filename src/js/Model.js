@@ -7,7 +7,7 @@ export default class Model extends EventEmitter {
     this.gameModel = null;
     this.initialBestScore = 0;
     this.bestScore = this.initialBestScore;
-    this.bestScoreChanged = true;
+    this.bestScoreChanged = null;
     this.initialGamePresent = null;
   }
 
@@ -22,10 +22,10 @@ export default class Model extends EventEmitter {
     }
     this.bestScore = bestScore || this.bestScore || this.initialBestScore;
     this.gameModel.addChangeListener('slideTilesEvent', () => {
-      const game = this.gameModel.toJSON();
+      const score = this.gameModel.getScore();
       this.bestScoreChanged = false;
-      if (game.score > this.bestScore) {
-        this.bestScore = game.score;
+      if (score > this.bestScore) {
+        this.bestScore = score;
         this.bestScoreChanged = true;
       }
       this.raiseChange('slideTilesEvent');

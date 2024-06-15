@@ -72,6 +72,10 @@ export default class GameModel extends EventEmitter {
     return JSON;
   }
 
+  getScore() {
+    return this.score;
+  }
+
   purge() {
     this.grid.purge();
     this.raiseChange("purgeModelEvent");
@@ -99,9 +103,9 @@ export default class GameModel extends EventEmitter {
 
   _raiseEventAfterSlide() {
     if (this.grid.hasChangedAfterSlide()) {
-      this.raiseChange("slideTilesEvent");
       this.slideCount++;
-      //update score
+      this.score += this.grid.getMergedScore();
+      this.raiseChange("slideTilesEvent");
     }
     else {
       this.raiseChange("noOpEvent");
