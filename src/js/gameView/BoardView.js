@@ -6,6 +6,15 @@ export default class BoardView {
     this.grid = null;
   }
 
+  _getEndGameOverlayHTML() {
+    return (
+      `<div class="end-game-overlay js-end-game-overlay">
+        <p class="end-game-msg js-end-game-msg"></p>
+        <button class="btn hide-overlay-btn js-hide-overlay-btn">Dismiss</button>
+      </div>`
+    )
+  }
+
   _waitForEvent(element, eventType) {
     return new Promise(resolve => {
       element.addEventListener(eventType, resolve, {once: true})
@@ -19,19 +28,6 @@ export default class BoardView {
     tileElement.style.backgroundColor = backgroundColor;
     const valueLength = tileObj.value.toString().length;
     tileElement.classList.add(valueLength > 10 ? 'tile-font-size-10' : 'tile-font-size-' + valueLength);
-  }
-
-  _initializeEndGameOverlay() {
-    const endGameOverlay =
-      `<div class="end-game-overlay js-end-game-overlay">
-        <p class="end-game-msg js-end-game-msg"></p>
-        <button class="btn hide-overlay-btn js-hide-overlay-btn">Dismiss</button>
-      </div>`
-    this.grid.insertAdjacentHTML('beforeend', endGameOverlay);
-    this.endGameOverlay = this.grid.lastChild;
-    this.endGameMsg = this.endGameOverlay.querySelector('.js-end-game-msg');
-    this.endGameOverlay.querySelector('.js-hide-overlay-btn')
-                       .addEventListener('click', () => this._hideEndGameOverlay());
   }
 
   _showEndGameOverlay() {
@@ -79,7 +75,12 @@ export default class BoardView {
         this.grid.appendChild(cell);
       }
     }
-    this._initializeEndGameOverlay();
+    const endGameOverlay = this._getEndGameOverlayHTML();
+    this.grid.insertAdjacentHTML('beforeend', endGameOverlay);
+    this.endGameOverlay = this.grid.lastChild;
+    this.endGameMsg = this.endGameOverlay.querySelector('.js-end-game-msg');
+    this.endGameOverlay.querySelector('.js-hide-overlay-btn')
+                       .addEventListener('click', () => this._hideEndGameOverlay());
     return this.grid;
   }
 

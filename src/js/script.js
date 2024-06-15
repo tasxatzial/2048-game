@@ -30,9 +30,6 @@ model.addChangeListener('updateBestScoreEvent', () => {
 model.addChangeListener('initializeModelEvent', () => {
   const game = model.getGame();
   view.setBestScore(model.getBestScore());
-  view.removeGameHandlers();
-  view.initializeGameView();
-  view.updateGameScore(game);
   view.initializeGame(game);
   view.bindGameHandlers(gameHandlers);
   if (model.hasInitialGame()) {
