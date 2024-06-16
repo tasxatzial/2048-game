@@ -28,7 +28,8 @@ export default class View {
     if (this.gameView) {
       this.gameView.removeHandlers();
     }
-    this.gameView = new GameView(game);
+    this.gameView = new GameView();
+    return this.gameView.initialize(game);
   }
 
   mergeGameTiles(game) {

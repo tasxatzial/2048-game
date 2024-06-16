@@ -35,8 +35,8 @@ export default class Cell {
     return this.mergedScore;
   }
 
-  setHasNewTile() {
-    this.hasNewTile = true;
+  setHasNewTile(bool) {
+    this.hasNewTile = bool;
   }
 
   setTileFrom(cell) {

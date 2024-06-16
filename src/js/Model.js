@@ -8,18 +8,10 @@ export default class Model extends EventEmitter {
     this.initialBestScore = 0;
     this.bestScore = this.initialBestScore;
     this.bestScoreChanged = null;
-    this.initialGamePresent = null;
   }
 
   initialize(game, bestScore) {
-    if (game) {
-      this.initialGamePresent = true;
-      this.gameModel = new GameModel(game);
-    }
-    else {
-      this.initialGamePresent = false;
-      this.gameModel = new GameModel();
-    }
+    this.gameModel = new GameModel(game);
     this.bestScore = bestScore || this.bestScore || this.initialBestScore;
     this.gameModel.addChangeListener('slideTilesEvent', () => {
       const score = this.gameModel.getScore();

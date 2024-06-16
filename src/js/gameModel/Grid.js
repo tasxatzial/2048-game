@@ -22,7 +22,7 @@ export default class Grid {
       this.mergeConditionFn = MergeCondition[mergeConditionFnName];
       this.gridBooleanFnName = gridBooleanFnName;
       this.mergeAll = mergeAll;
-      const {gridBoolean, cells} =  this._createCellsFromGrid(gridArray);
+      const {gridBoolean, cells} =  this._createCellsFromGrid(gridArray, true);
       this.cells = cells;
       this.gridBoolean = gridBoolean;
       this.rows = this._createRows(this.gridBoolean);
@@ -77,7 +77,7 @@ export default class Grid {
       else {
         this.mergeAll = false;
       }
-      this.cells = this._createCellsFromGridBoolean(this.gridBoolean);
+      this.cells = this._createCellsFromGridBoolean(this.gridBoolean, false);
       this.rows = this._createRows(this.gridBoolean);
       this.cols = this._createColumns(this.gridBoolean);
     }
@@ -130,7 +130,7 @@ export default class Grid {
     return cols;
   }
 
-  _createCellsFromGridBoolean(booleanArray) {
+  _createCellsFromGridBoolean(booleanArray, initialGamePresent) {
     const cells = {};
     for (let i = 0; i < booleanArray.length; i++) {
       for (let j = 0; j < booleanArray[0].length; j++) {
@@ -141,13 +141,16 @@ export default class Grid {
           cells[idx].mergeScoreFn = this.mergeScoreFn;
           cells[idx].mergeConditionFn = this.mergeConditionFn;
           cells[idx].mergeAll = this.mergeAll;
+          if (initialGamePresent) {
+            cells[idx].setHasNewTile(false);
+          }
         }
       }
     }
     return cells;
   }
 
-  _createCellsFromGrid(gridArray) {
+  _createCellsFromGrid(gridArray, initialGamePresent) {
     const gridBoolean = [];
     const cells = {};
     for (let i = 0; i < gridArray.length; i++) {
@@ -161,6 +164,9 @@ export default class Grid {
           cells[idx].mergeScoreFn = this.mergeScoreFn;
           cells[idx].mergeConditionFn = this.mergeConditionFn;
           cells[idx].mergeAll = this.mergeAll;
+          if (initialGamePresent) {
+            cells[idx].setHasNewTile(false);
+          }
           row.push(1);
         } else {
           row.push(0);
@@ -265,13 +271,15 @@ export default class Grid {
     newTiles.forEach(tile => {
       const idx = tile.row * this.gridBoolean[0].length + tile.column;
       this.cells[idx].setTile(tile.value);
-      this.cells[idx].setHasNewTile();
+      this.cells[idx].setHasNewTile(true);
     });
   }
 
   initTiles(tiles) {
     tiles.forEach(tile => {
-      this.cells[tile.row * this.gridBoolean[0].length + tile.column].setTile(tile.value);
+      const idx = tile.row * this.gridBoolean[0].length + tile.column;
+      this.cells[idx].setTile(tile.value);
+      this.cells[idx].setHasNewTile(true);
     })
   }
 

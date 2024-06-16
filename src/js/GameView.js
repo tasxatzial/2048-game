@@ -1,7 +1,7 @@
 import BoardView from "./gameView/BoardView.js";
 
 export default class GameView {
-  constructor(game) {
+  constructor() {
     this.boardView = new BoardView();
     this.score = document.querySelector('.js-current-score');
     this._onKeydown = this._onKeydown.bind(this);
@@ -10,15 +10,13 @@ export default class GameView {
     this._onPointerUp = this._onPointerUp.bind(this);
     this.slideHandlers = null;
     this.slidePermitted = false;
-    this.grid = null;
     this.pointerDownPos = null;
     this.slideTriggerDistance = 40;
+  }
 
+  initialize(game) {
     this.updateScore(game);
-    this.grid = this.boardView.initialize(game.grid);
-    const boardContainer = document.querySelector('.js-board-container');
-    boardContainer.innerHTML = "";
-    boardContainer.appendChild(this.grid);
+    return this.boardView.initialize(game.grid);
   }
 
   slideTiles(game) {
@@ -40,10 +38,10 @@ export default class GameView {
   bindHandlers(slideHandlers) {
     this.slideHandlers = slideHandlers;
     window.addEventListener('keydown', this._onKeydown);
-    this.grid.addEventListener('mousedown', this._onPointerDown);
+    this.boardView.getGrid().addEventListener('mousedown', this._onPointerDown);
     document.addEventListener('mouseup', this._onPointerUp);
     document.addEventListener('mousemove', this._onPointerMove);
-    this.grid.addEventListener('touchstart', this._onPointerDown, {passive: false});
+    this.boardView.getGrid().addEventListener('touchstart', this._onPointerDown, {passive: false});
     document.addEventListener('touchend', this._onPointerUp);
     document.addEventListener('touchmove', this._onPointerMove);
   }
@@ -51,10 +49,10 @@ export default class GameView {
   removeHandlers() {
     this.slideHandlers = null;
     window.removeEventListener('keydown', this._onKeydown);
-    this.grid.removeEventListener('mousedown', this._onPointerDown);
+    this.boardView.getGrid().removeEventListener('mousedown', this._onPointerDown);
     document.removeEventListener('mouseup', this._onPointerUp);
     document.removeEventListener('mousemove', this._onPointerMove);
-    this.grid.removeEventListener('touchstart', this._onPointerDown);
+    this.boardView.getGrid().removeEventListener('touchstart', this._onPointerDown);
     document.removeEventListener('touchend', this._onPointerUp);
     document.removeEventListener('touchmove', this._onPointerMove);
   }

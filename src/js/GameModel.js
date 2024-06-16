@@ -43,13 +43,13 @@ export default class GameModel extends EventEmitter {
       }
       this.score = 0;
       this.slideCount = 0;
-    }
-    if (this.initialTiles) {
-      this.grid.initTiles(this.initialTiles);
-    }
-    else {
-      this.grid.addTiles();
-      this.grid.addTiles();
+      if (this.initialTiles) {
+        this.grid.initTiles(this.initialTiles);
+      }
+      else {
+        this.grid.addTiles();
+        this.grid.addTiles();
+      }
     }
   }
 

@@ -21,10 +21,15 @@ model.addChangeListener('resetBestScoreEvent', () => {
 
 model.addChangeListener('initializeModelEvent', () => {
   const game = model.getGame();
-  view.setBestScore(model.getBestScore());
-  view.initializeGame(game);
-  view.bindGameHandlers(gameHandlers);
-  view.updateGameStatus(game);
+  const bestScore = model.getBestScore();
+  view.setBestScore(bestScore);
+  localStorage.setItem('game-2048', JSON.stringify(game));
+  localStorage.setItem('game-2048-best-score', JSON.stringify(bestScore));
+  const promises = view.initializeGame(game);
+  Promise.all(promises).then(() => {
+    view.bindGameHandlers(gameHandlers);
+    view.updateGameStatus(game);
+  });
 });
 
 model.addChangeListener("slideTilesEvent", () => {
