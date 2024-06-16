@@ -3,7 +3,7 @@ import BoardViewColorModel from "./BoardViewColorModel.js";
 export default class BoardView {
   constructor() {
     this.boardViewColorModel = new BoardViewColorModel();
-    this.grid = null;
+    this.grid = document.createElement('div');
     this.pointerHandlers = null;
   }
 
@@ -53,13 +53,13 @@ export default class BoardView {
     this._showEndGameOverlay();
   }
 
-  bindPointerHandlers(handlers) {
+  addPointerListeners(handlers) {
     this.grid.addEventListener('mousedown', handlers.onMouseDown);
     this.grid.addEventListener('touchstart', handlers.onTouchStart, {passive: false});
     this.pointerHandlers = handlers;
   }
 
-  removePointerHandlers() {
+  removePointerListeners() {
     this.grid.removeEventListener('mousedown', this.pointerHandlers.onMouseDown);
     this.grid.removeEventListener('touchstart', this.pointerHandlers.onTouchStart);
     this.pointerHandlers = null;
@@ -70,7 +70,6 @@ export default class BoardView {
     this.boardViewColorModel.updateTileColors(gridArray);
     this.gridRows = gridArray.length;
     this.gridCols = this.gridRows? gridArray[0].length : 0;
-    this.grid = document.createElement('div');
     this.grid.classList.add('grid');
     this.grid.style.setProperty('--grid-rows', this.gridRows);
     this.grid.style.setProperty('--grid-columns', this.gridCols);

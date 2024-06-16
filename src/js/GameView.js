@@ -8,7 +8,7 @@ export default class GameView {
     this._onPointerDown = this._onPointerDown.bind(this);
     this._onPointerMove = this._onPointerMove.bind(this);
     this._onPointerUp = this._onPointerUp.bind(this);
-    this.slideHandlers = null;
+    this.modelSlideHandlers = null;
     this.slidePermitted = false;
     this.pointerDownPos = null;
     this.slideTriggerDistance = 40;
@@ -35,10 +35,17 @@ export default class GameView {
     this.score.textContent = game.score;
   }
 
-  bindHandlers(slideHandlers) {
-    this.slideHandlers = slideHandlers;
+  bindModelSlideHandlers(modelHandlers) {
+    this.modelSlideHandlers = modelHandlers;
+  }
+
+  unbindModelSlideHandlers() {
+    this.modelSlideHandlers = null;
+  }
+
+  addSlideListeners() {
     window.addEventListener('keydown', this._onKeydown);
-    this.boardView.bindPointerHandlers({
+    this.boardView.addPointerListeners({
       onMouseDown: this._onPointerDown,
       onTouchStart: this._onPointerDown
     });
@@ -48,10 +55,9 @@ export default class GameView {
     document.addEventListener('touchmove', this._onPointerMove);
   }
 
-  removeHandlers() {
-    this.slideHandlers = null;
+  removeSlideListeners() {
     window.removeEventListener('keydown', this._onKeydown);
-    this.boardView.removePointerHandlers();
+    this.boardView.removePointerListeners();
     document.removeEventListener('mouseup', this._onPointerUp);
     document.removeEventListener('mousemove', this._onPointerMove);
     document.removeEventListener('touchend', this._onPointerUp);
@@ -89,16 +95,16 @@ export default class GameView {
         this.slidePermitted = false;
         switch(e.code) {
           case 'ArrowLeft':
-            this.slideHandlers.slideLeft();
+            this.modelSlideHandlers.slideLeft();
             break;
           case 'ArrowUp':
-            this.slideHandlers.slideUp();
+            this.modelSlideHandlers.slideUp();
             break;
           case 'ArrowRight':
-            this.slideHandlers.slideRight();
+            this.modelSlideHandlers.slideRight();
             break;
           case 'ArrowDown':
-            this.slideHandlers.slideDown();
+            this.modelSlideHandlers.slideDown();
             break;
         }
       }
@@ -149,16 +155,16 @@ export default class GameView {
           this.slidePermitted = false;
           this.pointerDownPos = null;
           if (horizontalDistance > this.slideTriggerDistance) {
-            this.slideHandlers.slideRight();
+            this.modelSlideHandlers.slideRight();
           }
           else if (horizontalDistance < -this.slideTriggerDistance) {
-            this.slideHandlers.slideLeft();
+            this.modelSlideHandlers.slideLeft();
           }
           else if (verticalDistance > this.slideTriggerDistance) {
-            this.slideHandlers.slideDown();
+            this.modelSlideHandlers.slideDown();
           }
           else if (verticalDistance < -this.slideTriggerDistance) {
-            this.slideHandlers.slideUp();
+            this.modelSlideHandlers.slideUp();
           }
         }
   }

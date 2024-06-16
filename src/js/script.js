@@ -5,7 +5,7 @@ import View from "./View.js";
 const model = new Model();
 const view = new View();
 
-const gameHandlers = {
+const modelSlideHandlers = {
   slideUp: model.slideUp.bind(model),
   slideRight: model.slideRight.bind(model),
   slideDown: model.slideDown.bind(model),
@@ -23,13 +23,9 @@ model.addChangeListener('initializeModelEvent', () => {
   const game = model.getGame();
   const bestScore = model.getBestScore();
   view.setBestScore(bestScore);
+  view.initializeGame(game, modelSlideHandlers);
   localStorage.setItem('game-2048', JSON.stringify(game));
   localStorage.setItem('game-2048-best-score', JSON.stringify(bestScore));
-  const promises = view.initializeGame(game);
-  Promise.all(promises).then(() => {
-    view.bindGameHandlers(gameHandlers);
-    view.updateGameStatus(game);
-  });
 });
 
 model.addChangeListener("slideTilesEvent", () => {

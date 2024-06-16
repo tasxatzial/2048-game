@@ -11,7 +11,7 @@ export default class View {
   }
 
   bindGameHandlers(handlers) {
-    this.gameView.bindHandlers(handlers);
+    this.gameView.bindModelSlideHandlers(handlers);
   }
 
   bindResetBestScore(callback) {
@@ -24,12 +24,18 @@ export default class View {
             .addEventListener('click', callback);
   }
 
-  initializeGame(game) {
+  initializeGame(game, modelSlideHandlers) {
     if (this.gameView) {
-      this.gameView.removeHandlers();
+      this.gameView.unbindModelSlideHandlers();
+      this.gameView.removeSlideListeners();
     }
     this.gameView = new GameView();
-    return this.gameView.initialize(game);
+    this.gameView.bindModelSlideHandlers(modelSlideHandlers);
+    this.gameView.addSlideListeners();
+    const promises = this.gameView.initialize(game);
+    Promise.all(promises).then(() => {
+      this.updateGameStatus(game);
+    });
   }
 
   mergeGameTiles(game) {
