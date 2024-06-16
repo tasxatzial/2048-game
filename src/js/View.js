@@ -6,10 +6,6 @@ export default class View {
     this.bestScoreEl = document.querySelector('.js-best-score');
   }
 
-  addGameTiles(game) {
-    return this.gameView.addTiles(game);
-  }
-
   bindGameHandlers(handlers) {
     this.gameView.bindModelSlideHandlers(handlers);
   }
@@ -38,20 +34,24 @@ export default class View {
     });
   }
 
-  mergeGameTiles(game) {
-    return this.gameView.mergeTiles(game);
-  }
-
-  setBestScore(bestScore) {
-    this.bestScoreEl.textContent = bestScore;
-  }
-
   setGameReady() {
     this.gameView.setReady();
   }
 
   slideGameTiles(game) {
     return this.gameView.slideTiles(game);
+  }
+
+  mergeGameTiles(game) {
+    return this.gameView.mergeTiles(game);
+  }
+
+  addGameTiles(game) {
+    return this.gameView.addTiles(game);
+  }
+
+  setBestScore(bestScore) {
+    this.bestScoreEl.textContent = bestScore;
   }
 
   updateGameScore(game) {

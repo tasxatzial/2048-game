@@ -23,11 +23,11 @@ export default class Model extends EventEmitter {
       this.raiseChange('slideTilesEvent');
     });
     this.bubbleChange(this.gameModel, 'noOpEvent');
-    this.bubbleChange(this.gameModel, 'purgeGameModelEvent');
+    this.bubbleChange(this.gameModel, 'purgeModelEvent');
     this.raiseChange('initializeModelEvent');
   }
 
-  purgeGameModel() {
+  purgeModel() {
     this.gameModel.purge();
   }
 

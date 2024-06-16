@@ -22,14 +22,15 @@ export default class BoardViewColorModel {
       for (let j = 0; j < gridArray[0].length; j++) {
         const cellObj = gridArray[i][j];
         if (cellObj && cellObj.tile) {
-          tileValues.add(cellObj.tile.value);
-          if (this.tileColors.get(cellObj.tile.value) == undefined) {
-            newTileValues.push(cellObj.tile.value);
+          const tileValue = cellObj.mergedValue != null ? cellObj.mergedValue : cellObj.tile.value;
+          if (this.tileColors.get(tileValue) == undefined && !tileValues.has(tileValue)) {
+            newTileValues.push(tileValue);
           }
+          tileValues.add(tileValue);
         }
       } 
     }
-    
+
     this.tileColors.forEach((colorIndex, tileValue) => {
       if (!tileValues.has(tileValue)) {
         this.tileColors.delete(tileValue);

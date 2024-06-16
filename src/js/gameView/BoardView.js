@@ -13,12 +13,12 @@ export default class BoardView {
     });
   }
 
-  _initializeTile(tileElement, tileObj) {
-    tileElement.textContent = tileObj.value;
-    const {color, backgroundColor} = this.boardViewColorModel.getTileColor(tileObj.value);
+  _initializeTile(tileElement, value) {
+    tileElement.textContent = value;
+    const {color, backgroundColor} = this.boardViewColorModel.getTileColor(value);
     tileElement.style.color = color;
     tileElement.style.backgroundColor = backgroundColor;
-    const valueLength = tileObj.value.toString().length;
+    const valueLength = value.toString().length;
     tileElement.classList.add(valueLength > 10 ? 'tile-font-size-10' : 'tile-font-size-' + valueLength);
   }
 
@@ -81,7 +81,7 @@ export default class BoardView {
           cell.classList.add('cell');
           const innerCell = document.createElement('div');
           if (cellObj.tile) {
-            this._initializeTile(innerCell, cellObj.tile);
+            this._initializeTile(innerCell, cellObj.tile.value);
             innerCell.classList.add('tile');
             if (cellObj.hasNewTile) {
               promises.push(this._waitForEvent(innerCell, 'animationend'));
@@ -149,10 +149,11 @@ export default class BoardView {
         const innerCell = cell.children[0];
         innerCell.removeAttribute('style');
         innerCell.classList = '';
-        if (cellObj.tile) {
+        if (cellObj.tile && !cellObj.hasNewTile) {
           innerCell.classList.add('tile');
-          this._initializeTile(innerCell, cellObj.tile);
-          if (cellObj.merged) {
+          const tileValue = cellObj.mergedValue != null ? cellObj.mergedValue : cellObj.tile.value;
+          this._initializeTile(innerCell, tileValue);
+          if (cellObj.mergedValue != null) {
             promises.push(this._waitForEvent(innerCell, 'animationend'));
             innerCell.addEventListener('animationend', () => innerCell.classList.remove('zoomin'), {once: true});
             innerCell.classList.add('zoomin');
@@ -167,7 +168,6 @@ export default class BoardView {
   }
 
   addTiles({gridArray}) {
-    this.boardViewColorModel.updateTileColors(gridArray);
     const promises = [];
     const cells = this.grid.children;
     for (let i = 0; i < this.gridRows; i++) {
@@ -178,9 +178,9 @@ export default class BoardView {
         }
         const cell = cells.item(i * gridArray[0].length + j);
         const innerCell = cell.children[0];
-        if (cellObj.tile && innerCell.textContent == '') {
+        if (cellObj.hasNewTile) {
           promises.push(this._waitForEvent(innerCell, 'animationend'));
-          this._initializeTile(innerCell, cellObj.tile);
+          this._initializeTile(innerCell, cellObj.tile.value);
           innerCell.addEventListener('animationend', () => innerCell.classList.remove('zoomin'), {once: true});
           innerCell.classList.add('tile', 'zoomin');
         }

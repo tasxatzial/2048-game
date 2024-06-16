@@ -28,19 +28,17 @@ model.addChangeListener('initializeModelEvent', () => {
   localStorage.setItem('game-2048-best-score', JSON.stringify(bestScore));
 });
 
-model.addChangeListener("slideTilesEvent", () => {
-  model.purgeGameModel();
-  console.log(model.gameModel.grid.toString())
-  console.log(model.getGame().score)
-  console.log(model.getBestScore())
-  view.setGameReady();
-  //update view
-  //model purge
+model.addChangeListener("slideTilesEvent", async () => {
+  const game = model.getGame();
+  await Promise.all(view.slideGameTiles(game));
+  view.mergeGameTiles(game);
+  await Promise.all(view.addGameTiles(game));
+  model.purgeModel();
 });
 
-model.addChangeListener("purgeGameModelEvent", () => {
+model.addChangeListener("purgeModelEvent", () => {
   //update localstorage
-  //set view ready
+  view.setGameReady();
 });
 
 model.addChangeListener("noOpEvent", () => view.setGameReady());

@@ -218,6 +218,8 @@ export default class Grid {
         this.rows.forEach(x => this._slideTilesToEnd(x));
         break;
     }
+
+    this._clearHasNewTileFlags();
     this._setCellsMergeScore();
     this.addTiles();
   }
@@ -252,6 +254,12 @@ export default class Grid {
 
   hasChangedAfterSlide() {
     return this.changedAfterSlide;
+  }
+
+  _clearHasNewTileFlags() {
+    this.getCells().forEach(cell => {
+      cell.setHasNewTile(false);
+    });
   }
 
   _setCellsMergeScore() {
