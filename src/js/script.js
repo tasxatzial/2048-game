@@ -39,7 +39,8 @@ model.addChangeListener("slideTilesEvent", async () => {
 });
 
 model.addChangeListener("purgeGameModelEvent", () => {
-  //update localstorage
+  localStorage.setItem('game-2048', JSON.stringify(model.getGameJSON()));
+  localStorage.setItem('game-2048-best-score', JSON.stringify(model.getBestScore()));
   view.setGameReady();
 });
 
