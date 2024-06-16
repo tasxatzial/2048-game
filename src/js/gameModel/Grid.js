@@ -293,8 +293,7 @@ export default class Grid {
 
   hasTile(value) {
     return this.getCells().some(cell => {
-      // double equality is intentionally used here in case value is a string that represents a number
-      return cell.hasTile() && cell.getTile().getValue() == value;
+      return cell.hasTile() && cell.getTile().getValue() === value;
     });
   }
 
