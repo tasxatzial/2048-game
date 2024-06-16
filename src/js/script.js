@@ -6,10 +6,10 @@ const model = new Model();
 const view = new View();
 
 const modelSlideHandlers = {
-  slideUp: model.slideUp.bind(model),
-  slideRight: model.slideRight.bind(model),
-  slideDown: model.slideDown.bind(model),
-  slideLeft: model.slideLeft.bind(model)
+  slideUp: model.slideTilesUp.bind(model),
+  slideRight: model.slideTilesRight.bind(model),
+  slideDown: model.slideTilesDown.bind(model),
+  slideLeft: model.slideTilesLeft.bind(model)
 }
 
 /* ---------------------------------------------- */
@@ -20,7 +20,7 @@ model.addChangeListener('resetBestScoreEvent', () => {
 });
 
 model.addChangeListener('initializeModelEvent', () => {
-  const game = model.getGame();
+  const game = model.getGameJSON();
   const bestScore = model.getBestScore();
   view.setBestScore(bestScore);
   view.initializeGame(game, modelSlideHandlers);
@@ -29,14 +29,14 @@ model.addChangeListener('initializeModelEvent', () => {
 });
 
 model.addChangeListener("slideTilesEvent", async () => {
-  const game = model.getGame();
+  const game = model.getGameJSON();
   await Promise.all(view.slideGameTiles(game));
   view.mergeGameTiles(game);
   await Promise.all(view.addGameTiles(game));
-  model.purgeModel();
+  model.purgeGameModel();
 });
 
-model.addChangeListener("purgeModelEvent", () => {
+model.addChangeListener("purgeGameModelEvent", () => {
   //update localstorage
   view.setGameReady();
 });

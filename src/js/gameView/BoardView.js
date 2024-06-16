@@ -83,7 +83,7 @@ export default class BoardView {
           if (cellObj.tile) {
             this._initializeTile(innerCell, cellObj.tile.value);
             innerCell.classList.add('tile');
-            if (cellObj.hasNewTile) {
+            if (cellObj.newTileAdded) {
               promises.push(this._waitForEvent(innerCell, 'animationend'));
               innerCell.addEventListener('animationend', () => innerCell.classList.remove('zoomin'), {once: true});
               innerCell.classList.add('zoomin');
@@ -149,7 +149,7 @@ export default class BoardView {
         const innerCell = cell.children[0];
         innerCell.removeAttribute('style');
         innerCell.classList = '';
-        if (cellObj.tile && !cellObj.hasNewTile) {
+        if (cellObj.tile && !cellObj.newTileAdded) {
           innerCell.classList.add('tile');
           const tileValue = cellObj.mergedValue != null ? cellObj.mergedValue : cellObj.tile.value;
           this._initializeTile(innerCell, tileValue);
@@ -178,7 +178,7 @@ export default class BoardView {
         }
         const cell = cells.item(i * gridArray[0].length + j);
         const innerCell = cell.children[0];
-        if (cellObj.hasNewTile) {
+        if (cellObj.newTileAdded) {
           promises.push(this._waitForEvent(innerCell, 'animationend'));
           this._initializeTile(innerCell, cellObj.tile.value);
           innerCell.addEventListener('animationend', () => innerCell.classList.remove('zoomin'), {once: true});

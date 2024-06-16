@@ -82,7 +82,7 @@ export default class Grid {
       this.cols = this._createColumns(this.gridBoolean);
     }
     this.changedAfterSlide = null;
-    this.mergedScore = null;
+    this.mergeScore = null;
   }
 
   _createRows(booleanArray) {
@@ -142,7 +142,7 @@ export default class Grid {
           cells[idx].mergeConditionFn = this.mergeConditionFn;
           cells[idx].mergeAll = this.mergeAll;
           if (initialGamePresent) {
-            cells[idx].setHasNewTile(false);
+            cells[idx].setNewTileAdded(false);
           }
         }
       }
@@ -165,7 +165,7 @@ export default class Grid {
           cells[idx].mergeConditionFn = this.mergeConditionFn;
           cells[idx].mergeAll = this.mergeAll;
           if (initialGamePresent) {
-            cells[idx].setHasNewTile(false);
+            cells[idx].setNewTileAdded(false);
           }
           row.push(1);
         } else {
@@ -219,8 +219,8 @@ export default class Grid {
         break;
     }
 
-    this._clearHasNewTileFlags();
-    this._setCellsMergeScore();
+    this._clearNewTileAddedFlags();
+    this._updateCellsMergeScore();
     this.addTiles();
   }
 
@@ -256,22 +256,22 @@ export default class Grid {
     return this.changedAfterSlide;
   }
 
-  _clearHasNewTileFlags() {
+  _clearNewTileAddedFlags() {
     this.getCells().forEach(cell => {
-      cell.setHasNewTile(false);
+      cell.setNewTileAdded(false);
     });
   }
 
-  _setCellsMergeScore() {
-    this.mergedScore = 0;
+  _updateCellsMergeScore() {
+    this.mergeScore = 0;
     this.getCells().forEach(cell => {
       cell.setMergeScore();
-      this.mergedScore += cell.getMergedScore();
+      this.mergeScore += cell.getMergeScore();
     });
   }
 
-  getMergedScore() {
-    return this.mergedScore;
+  getMergeScore() {
+    return this.mergeScore;
   }
 
   addTiles() {
@@ -279,7 +279,7 @@ export default class Grid {
     newTiles.forEach(tile => {
       const idx = tile.row * this.gridBoolean[0].length + tile.column;
       this.cells[idx].setTile(tile.value);
-      this.cells[idx].setHasNewTile(true);
+      this.cells[idx].setNewTileAdded(true);
     });
   }
 
@@ -287,7 +287,7 @@ export default class Grid {
     tiles.forEach(tile => {
       const idx = tile.row * this.gridBoolean[0].length + tile.column;
       this.cells[idx].setTile(tile.value);
-      this.cells[idx].setHasNewTile(true);
+      this.cells[idx].setNewTileAdded(true);
     })
   }
 
@@ -303,7 +303,7 @@ export default class Grid {
       cell.purge();
     });
     this.changedAfterSlide = null;
-    this.mergedScore = null;
+    this.mergeScore = null;
   }
 
   getMaxTileLength() {

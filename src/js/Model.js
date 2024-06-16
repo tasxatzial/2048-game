@@ -23,15 +23,15 @@ export default class Model extends EventEmitter {
       this.raiseChange('slideTilesEvent');
     });
     this.bubbleChange(this.gameModel, 'noOpEvent');
-    this.bubbleChange(this.gameModel, 'purgeModelEvent');
+    this.bubbleChange(this.gameModel, 'purgeGameModelEvent');
     this.raiseChange('initializeModelEvent');
   }
 
-  purgeModel() {
+  purgeGameModel() {
     this.gameModel.purge();
   }
 
-  getGame() {
+  getGameJSON() {
     return this.gameModel.toJSON();
   }
 
@@ -48,19 +48,19 @@ export default class Model extends EventEmitter {
     this.raiseChange('resetBestScoreEvent');
   }
 
-  slideUp() {
+  slideTilesUp() {
     this.gameModel.slideUp();
   }
 
-  slideDown() {
+  slideTilesDown() {
     this.gameModel.slideDown();
   }
   
-  slideLeft() {
+  slideTilesLeft() {
     this.gameModel.slideLeft();
   }
 
-  slideRight() {
+  slideTilesRight() {
     this.gameModel.slideRight();
   }
 }
