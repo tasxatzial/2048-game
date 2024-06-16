@@ -4,10 +4,7 @@ export default class BoardView {
   constructor() {
     this.boardViewColorModel = new BoardViewColorModel();
     this.grid = null;
-  }
-
-  getGrid() {
-    return this.grid;
+    this.pointerHandlers = null;
   }
 
   _waitForEvent(element, eventType) {
@@ -54,6 +51,18 @@ export default class BoardView {
   showLoseMsg() {
     this.endGameMsg.textContent = 'Game is Lost!';
     this._showEndGameOverlay();
+  }
+
+  bindPointerHandlers(handlers) {
+    this.grid.addEventListener('mousedown', handlers.onMouseDown);
+    this.grid.addEventListener('touchstart', handlers.onTouchStart, {passive: false});
+    this.pointerHandlers = handlers;
+  }
+
+  removePointerHandlers() {
+    this.grid.removeEventListener('mousedown', this.pointerHandlers.onMouseDown);
+    this.grid.removeEventListener('touchstart', this.pointerHandlers.onTouchStart);
+    this.pointerHandlers = null;
   }
 
   initialize({gridArray}) {

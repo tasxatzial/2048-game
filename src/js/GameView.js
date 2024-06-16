@@ -38,10 +38,12 @@ export default class GameView {
   bindHandlers(slideHandlers) {
     this.slideHandlers = slideHandlers;
     window.addEventListener('keydown', this._onKeydown);
-    this.boardView.getGrid().addEventListener('mousedown', this._onPointerDown);
+    this.boardView.bindPointerHandlers({
+      onMouseDown: this._onPointerDown,
+      onTouchStart: this._onPointerDown
+    });
     document.addEventListener('mouseup', this._onPointerUp);
     document.addEventListener('mousemove', this._onPointerMove);
-    this.boardView.getGrid().addEventListener('touchstart', this._onPointerDown, {passive: false});
     document.addEventListener('touchend', this._onPointerUp);
     document.addEventListener('touchmove', this._onPointerMove);
   }
@@ -49,10 +51,9 @@ export default class GameView {
   removeHandlers() {
     this.slideHandlers = null;
     window.removeEventListener('keydown', this._onKeydown);
-    this.boardView.getGrid().removeEventListener('mousedown', this._onPointerDown);
+    this.boardView.removePointerHandlers();
     document.removeEventListener('mouseup', this._onPointerUp);
     document.removeEventListener('mousemove', this._onPointerMove);
-    this.boardView.getGrid().removeEventListener('touchstart', this._onPointerDown);
     document.removeEventListener('touchend', this._onPointerUp);
     document.removeEventListener('touchmove', this._onPointerMove);
   }
