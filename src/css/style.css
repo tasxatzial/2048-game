@@ -7,6 +7,7 @@
   --site-content-max-width: 35rem;
   --primary-color-dark-accent: darkslategray;
   --btn-color: #b9e9b9;
+  --btn-border-color: #a5dea5;
   --btn-color-hover: #bffabb;
   --bg-color: linen;
   --score-container-color: ivory;
@@ -123,11 +124,11 @@ p {
 
 .new-game-btn {
   background-color: var(--btn-color);
-  border: none;
+  border: 1px solid var(--btn-border-color);
   color: var(--primary-color-dark-accent);
   font-size: 1.25rem;
   margin: 0 auto 2rem;
-  transition: 0.25s;
+  transition: 0.15s;
 }
 
 .new-game-btn:focus-visible {
