@@ -218,9 +218,8 @@ export default class Grid {
         this.rows.forEach(x => this._slideTilesToEnd(x));
         break;
     }
-
     this._clearNewTileAddedFlags();
-    this._updateCellsMergeScore();
+    this._updateMergeScore();
     this.addTiles();
   }
 
@@ -262,12 +261,18 @@ export default class Grid {
     });
   }
 
-  _updateCellsMergeScore() {
-    this.mergeScore = 0;
+  _updateMergeScore() {
+    let hasMergedTiles = false;
+    let totalScore = 0;
     this.getCells().forEach(cell => {
-      cell.setMergeScore();
-      this.mergeScore += cell.getMergeScore();
+      cell.updateMergeResults();
+      const score = cell.getMergeScore();
+      if (score) {
+        hasMergedTiles = true;
+        totalScore += cell.getMergeScore();
+      }
     });
+    this.mergeScore = hasMergedTiles ? totalScore : null;
   }
 
   getMergeScore() {

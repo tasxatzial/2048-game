@@ -151,9 +151,9 @@ export default class BoardView {
         innerCell.classList = '';
         if (cellObj.tile && !cellObj.newTileAdded) {
           innerCell.classList.add('tile');
-          const tileValue = cellObj.mergedValue != null ? cellObj.mergedValue : cellObj.tile.value;
+          const tileValue = cellObj.mergeValue != null ? cellObj.mergeValue : cellObj.tile.value;
           this._initializeTile(innerCell, tileValue);
-          if (cellObj.mergedValue != null) {
+          if (cellObj.mergeValue != null && cellObj.mergeValue != undefined) {
             promises.push(this._waitForEvent(innerCell, 'animationend'));
             innerCell.addEventListener('animationend', () => innerCell.classList.remove('zoomin'), {once: true});
             innerCell.classList.add('zoomin');

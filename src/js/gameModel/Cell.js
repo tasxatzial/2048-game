@@ -81,12 +81,16 @@ export default class Cell {
     }
   }
 
-  setMergeScore() {
+  updateMergeResults() {
     if (this.mergeTiles.length) {
       const tileVal = this.tile.getValue();
       const mergeTilesVals = this.mergeTiles.map(tile => tile.getValue());
       this.mergeScore = this.mergeScoreFn(tileVal, mergeTilesVals);
       this.mergeValue = this.mergeResultFn(tileVal, mergeTilesVals);
+    }
+    else {
+      this.mergeScore = null;
+      this.mergeValue = null;
     }
   }
 
@@ -110,20 +114,20 @@ export default class Cell {
       column: this.col,
       tile: this.tile ? this.tile.toJSON() : null,
       mergeTiles:  this.mergeTiles.map(tile => tile.toJSON()),
-      mergedScore: this.mergeScore,
-      mergedValue: this.mergeValue,
+      mergeScore: this.mergeScore,
+      mergeValue: this.mergeValue,
       newTileAdded: this.newTileAdded
     }
   }
 
   static fromJSON(json) {
     if (json) {
-      const {row, column, tile, mergeTiles, mergedScore, mergedValue, newTileAdded} = json;
+      const {row, column, tile, mergeTiles, mergeScore, mergeValue, newTileAdded} = json;
       const cell = new Cell(row, column);
       cell.tile = Tile.fromJSON(tile);
       cell.mergeTiles = mergeTiles.map(tile => Tile.fromJSON(tile));
-      cell.mergeScore = mergedScore;
-      cell.mergeValue = mergedValue;
+      cell.mergeScore = mergeScore;
+      cell.mergeValue = mergeValue;
       cell.newTileAdded = newTileAdded;
       return cell;
     }
