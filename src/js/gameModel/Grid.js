@@ -220,7 +220,9 @@ export default class Grid {
     }
     this._clearNewTileAddedFlags();
     this._updateMergeScore();
-    this.addTiles();
+    if (this.changedAfterSlide) {
+      this.addTiles();
+    }
   }
 
   slideRight() {
