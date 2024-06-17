@@ -31,10 +31,10 @@ model.addChangeListener('initializeModelEvent', () => {
 model.addChangeListener("slideTilesEvent", async () => {
   const game = model.getGameJSON();
   await Promise.all(view.slideGameTiles(game));
-  view.mergeGameTiles(game);
+  const mergePromises = view.mergeGameTiles(game);
   view.setBestScore(model.getBestScore());
   view.updateGameScore(game);
-  await Promise.all(view.addGameTiles(game));
+  await Promise.all([...view.addGameTiles(game), ...mergePromises]);
   model.purgeGameModel();
 });
 
