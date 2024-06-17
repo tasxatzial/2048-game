@@ -36,6 +36,7 @@
 
 .tile {
   --_font-scale-factor: var(--font-scale-factor, 1);
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;

@@ -93,9 +93,11 @@ export default class BoardView {
         if (!cellObj) {
           continue;
         }
+        let zIndex = 100;
         [cellObj.tile, ...cellObj.mergeTiles].forEach((tileObj) => {
           if (tileObj) {
             const slidingTile = cells.item(tileObj.row * gridArray[0].length + tileObj.column).children[0];
+            slidingTile.style.zIndex = zIndex--;
             if (cellObj.column != tileObj.column) {
               promises.push(this._waitForEvent(slidingTile, 'transitionend'));
               slidingTile.style.setProperty('--cell-column', cellObj.column);
