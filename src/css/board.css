@@ -11,16 +11,16 @@
 .grid {
   --_cell-size: var(--cell-size, 4.5rem);
   --_cell-gap: var(--cell-gap, calc(var(--_cell-size) / 18));
+  background-color: black;
   display: grid;
+  gap: var(--_cell-gap);
   grid-template-columns: repeat(var(--grid-columns), var(--_cell-size));
   grid-template-rows: repeat(var(--grid-rows), var(--_cell-size));
-  gap: var(--_cell-gap);
-  padding: var(--_cell-gap);
-  background-color: black;
-  width: calc(var(--grid-columns) * (var(--_cell-size) + var(--cell-gap)) + var(--cell-gap));
   height: calc(var(--grid-rows) * (var(--_cell-size) + var(--cell-gap)) + var(--cell-gap));
+  padding: var(--_cell-gap);
   position: relative;
   user-select: none;
+  width: calc(var(--grid-columns) * (var(--_cell-size) + var(--cell-gap)) + var(--cell-gap));
 }
 
 .cell {
@@ -34,15 +34,15 @@
 
 .tile {
   --_font-scale-factor: var(--font-scale-factor, 1);
-  display: flex;
-  justify-content: center;
   align-items: center;
-  width: var(--_cell-size);
-  height: var(--_cell-size);
-  position: relative;
+  display: flex;
   font-family: Verdana, Geneva, sans-serif;
   font-size: calc(var(--_cell-size) / 2.6 / var(--_font-scale-factor));
   font-weight: bold;
+  height: var(--_cell-size);
+  justify-content: center;
+  position: relative;
+  width: var(--_cell-size);
 }
 
 .grid,

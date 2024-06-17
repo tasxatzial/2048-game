@@ -17,10 +17,10 @@
 body {
   background-color: var(--bg-color);
   font-family: 'Segoe UI', Geneva, Verdana, sans-serif;
-  min-height: 100vh;
   margin: 0;
-  padding-top: 3vh;
+  min-height: 100vh;
   padding-bottom: 2rem;
+  padding-top: 3vh;
 }
 
 /*------------------------------------*\
@@ -58,8 +58,8 @@ p {
   font-size: 1.375rem;
   font-weight: bold;
   letter-spacing: 0.025em;
-  padding: 0.25em;
   min-width: 7em;
+  padding: 0.25em;
   text-align: center;
   text-transform: uppercase;
 }
@@ -97,8 +97,8 @@ p {
 
 .scores-container {
   display: flex;
-  justify-content: center;
   gap: 1em;
+  justify-content: center;
   margin-bottom: 1.5rem;
 }
 
@@ -206,8 +206,8 @@ p {
   border-radius: inherit;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   height: 100%;
+  justify-content: center;
   opacity: 0;
   position: absolute;
   transition: opacity 50ms ease-out, visibility 0s 50ms;

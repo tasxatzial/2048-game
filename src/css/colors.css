@@ -3,12 +3,12 @@
 }
 
 body {
-  margin: 0;
-  display: flex;
-  justify-content: center;
   align-items: center;
-  height: 100vh;
   background-color: linen;
+  display: flex;
+  height: 100vh;
+  justify-content: center;
+  margin: 0;
 }
 
 .grid-colors {
