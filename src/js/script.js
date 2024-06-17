@@ -70,7 +70,7 @@ view.bindResetBestScore(() => {
 });
 
 view.bindStartNewGame(() => {
-  startGame(null);
+  startGame();
 });
 
 /* ---------------------------------------------- */

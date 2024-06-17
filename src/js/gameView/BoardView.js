@@ -98,13 +98,13 @@ export default class BoardView {
           if (tileObj) {
             const slidingTile = cells.item(tileObj.row * gridArray[0].length + tileObj.column).children[0];
             slidingTile.style.zIndex = zIndex--;
-            if (cellObj.column != tileObj.column) {
+            if (cellObj.column !== tileObj.column) {
               promises.push(this._waitForEvent(slidingTile, 'transitionend'));
               slidingTile.style.setProperty('--cell-column', cellObj.column);
               slidingTile.style.setProperty('--tile-column', tileObj.column);
               slidingTile.classList.add('horizontal-slide');
             }
-            else if (cellObj.row != tileObj.row) {
+            else if (cellObj.row !== tileObj.row) {
               promises.push(this._waitForEvent(slidingTile, 'transitionend'));
               slidingTile.style.setProperty('--cell-row', cellObj.row);
               slidingTile.style.setProperty('--tile-row', tileObj.row);
@@ -160,7 +160,7 @@ export default class BoardView {
         }
         const cell = cells.item(i * gridArray[0].length + j);
         const innerCell = cell.children[0];
-        if (cellObj.tile && innerCell.textContent == '') {
+        if (cellObj.tile && innerCell.textContent === '') {
           promises.push(this._waitForEvent(innerCell, 'animationend'));
           this._initializeTile(innerCell, cellObj.tile);
           innerCell.addEventListener('animationend', () => innerCell.classList.remove('zoomin'), {once: true});

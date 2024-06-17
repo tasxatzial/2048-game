@@ -3,7 +3,7 @@ export default class NewTile {
 
   static original2048(grid) {
     const emptyCells = grid.getCells().filter(cell => !cell.hasTile());
-    if (emptyCells.length == 0) {
+    if (emptyCells.length === 0) {
       return [];
     }
     const randCell = emptyCells[Math.floor(Math.random() * emptyCells.length)];
