@@ -28,11 +28,11 @@ The main game class is [GameModel.js](src/js/GameModel.js), which supports passi
   * `newTileFnName`: The function name in [NewTile.js](src/js/gameModel/NewTile.js). Specifies how to add new tiles after each move, supporting the addition of multiple tiles.
   * `mergeResultFnName`: The function name in [MergeResult.js](src/js/gameModel/MergeResult.js). Specifies the new value of two merged tiles.
   * `mergeScoreFnName`: The function name in [MergeScore.js](src/js/gameModel/MergeScore.js). Specifies the extra score from merging two tiles.
-  * `mergeConditionFnName`: The function name in [MergeCondition.js](src/js/gameModel/MergeCondition.js). Specifies when two tiles can merge. The first parameter corresponds to the tile into which the other tile will merge.
+  * `mergeConditionFnName`: The function name in [MergeCondition.js](src/js/gameModel/MergeCondition.js). Specifies when two tiles can merge. The first parameter corresponds to the tile closest to the edge in the slide direction.
   * `gridBooleanFnName`: The function name in [GridBoolean.js](src/js/gameModel/GridBoolean.js). Specifies a two dimensional boolean array that represents the rows of the board. A value of 1 indicates that the corresponding cell is enabled and can accept tiles, while a value of 0 indicates a disabled cell where tiles cannot occupy or slide through. Disabled cells will display as squares with black background and a white border.
-  * `mergeAll`: `true` if we want multiple tiles to merge, else `false`.
+  * `mergeAll`: `false` if we want only two tiles to merge, else `true`. When `true`, the tile closest to the edge in the slide direction will be compared against each of the other tiles.
 
-  **Note**: Do not create a grid with only one row or column, as this will cause overflow issues when the game is won or lost.
+  **Note**: Do not create a grid with only one row or column, as this will cause text overflow issues when the grid overlay is shown.
 
 * `initialTiles`: An array of initial tiles. Each tile should be an object with the following required keys:
   * `row`: Row of the tile.
@@ -48,13 +48,13 @@ You can customize the appearance and behavior of the board by defining the follo
 * `--cell-size`: Size of each cell. Default is `4.5rem`;
 * `--cell-gap`: Gap size between cells. Default is `--cell-size / 18`;
 * `--cell-border-radius`: Border radius of cells and board. Default is `--cell-size / 18`;
-* `--horizontal-slide-duration`: Duration of a slide across the horizontal axis: Default is `125ms`.
-* `--vertical-slide-duration`: Duration of a slide across the vertical axis: Default is `125ms`.
-* `--zoomin-duration`: Duration of the animation for merging and adding new tiles: Default is `100ms`.
+* `--horizontal-slide-duration`: Duration of a slide across the horizontal axis: Default is `150ms`.
+* `--vertical-slide-duration`: Duration of a slide across the vertical axis: Default is `150ms`.
+* `--zoomin-duration`: Duration of the animation for merging and adding new tiles: Default is `125ms`.
 
 #### Tile fonts
 
-The font size of each tile is handled automatically based on the length of the tile value, with a maximum supported length of 10. This setting can be modified by adding extra classes in [board.css](src/css/board.css) and modifying function `_initializeTile` in [BoardView.js](src/js/gameView/BoardView.js).
+The font size of each tile is handled automatically based on the length of the tile value, with a maximum supported length of 10. This setting can be modified by adding extra classes in [board.css](src/css/board.css) and modifying the function `_initializeTile` in [BoardView.js](src/js/gameView/BoardView.js).
 
 #### Tile colors
 
