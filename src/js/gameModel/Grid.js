@@ -269,7 +269,7 @@ export default class Grid {
     this.getCells().forEach(cell => {
       cell.updateMergeResults();
       const score = cell.getMergeScore();
-      if (score) {
+      if (score != null) {
         hasMergedTiles = true;
         totalScore += cell.getMergeScore();
       }
