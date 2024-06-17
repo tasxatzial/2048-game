@@ -8,8 +8,6 @@
   /* --zoomin-duration: 125ms; */
 }
 
-
-
 .grid {
   --_cell-size: var(--cell-size, 4.5rem);
   --_cell-gap: var(--cell-gap, calc(var(--_cell-size) / 18));
@@ -19,9 +17,9 @@
   gap: var(--_cell-gap);
   padding: var(--_cell-gap);
   background-color: black;
-  position: relative;
   width: calc(var(--grid-columns) * (var(--_cell-size) + var(--cell-gap)) + var(--cell-gap));
   height: calc(var(--grid-rows) * (var(--_cell-size) + var(--cell-gap)) + var(--cell-gap));
+  position: relative;
   user-select: none;
 }
 
@@ -41,6 +39,7 @@
   align-items: center;
   width: var(--_cell-size);
   height: var(--_cell-size);
+  position: relative;
   font-family: Verdana, Geneva, sans-serif;
   font-size: calc(var(--_cell-size) / 2.6 / var(--_font-scale-factor));
   font-weight: bold;
