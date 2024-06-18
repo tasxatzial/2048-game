@@ -56,25 +56,27 @@
 .horizontal-slide {
   --_duration: var(--horizontal-slide-duration, 150ms);
   transform: translateX(calc((var(--_cell-size) + var(--_cell-gap)) * (var(--cell-column) - var(--tile-column))));
-  transition: transform var(--_duration) ease-out;
+  transition: transform var(--_duration) linear;
 }
 
 .vertical-slide {
   --_duration: var(--vertical-slide-duration, 150ms);
   transform: translateY(calc((var(--_cell-size) + var(--_cell-gap)) * (var(--cell-row) - var(--tile-row))));
-  transition: transform var(--_duration) ease-out;
+  transition: transform var(--_duration) linear;
 }
 
 .zoomin {
   --_duration: var(--zoomin-duration, 125ms);
-  animation: zoomin var(--_duration) ease-out;
+  animation: zoomin var(--_duration) linear;
 }
 
 @keyframes zoomin {
   from {
+    opacity: 0.2;
     transform: scale(0.2);
   }
   to {
+    opacity: 1;
     transform: scale(1);
   }
 }
