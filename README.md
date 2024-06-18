@@ -104,7 +104,7 @@ game = new GameModel({
 })
 ```
 
-Replace line 41 in [Model.js](src/js/Model.js) with the above code, and press 'new game' to start the custom game.
+Pass the above object as an argument to the `startGame` function on line 57 of [script.js](src/js/script.js), and press 'New Game' to start the custom game.
 
 ## Dependencies
 
