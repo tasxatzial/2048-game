@@ -3,7 +3,7 @@ import BoardView from "./gameView/BoardView.js";
 export default class GameView {
   constructor() {
     this.boardView = new BoardView();
-    this.score = document.querySelector('.js-current-score');
+    this.scoreEl = document.querySelector('.js-current-score');
     this._onKeydown = this._onKeydown.bind(this);
     this._onPointerDown = this._onPointerDown.bind(this);
     this._onPointerMove = this._onPointerMove.bind(this);
@@ -32,7 +32,7 @@ export default class GameView {
   }
 
   updateScore(game) {
-    this.score.textContent = game.score;
+    this.scoreEl.textContent = game.score;
   }
 
   bindModelSlideHandlers(modelHandlers) {

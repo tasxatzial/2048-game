@@ -151,6 +151,7 @@ export default class BoardView {
         const innerCell = cell.children[0];
         innerCell.removeAttribute('style');
         innerCell.classList = '';
+        innerCell.textContent = '';
         if (cellObj.tile && !cellObj.newTileAdded) {
           innerCell.classList.add('tile');
           const tileValue = cellObj.mergeValue != null ? cellObj.mergeValue : cellObj.tile.value;
@@ -160,9 +161,6 @@ export default class BoardView {
             innerCell.addEventListener('animationend', () => innerCell.classList.remove('zoomin'), {once: true});
             innerCell.classList.add('zoomin');
           }
-        }
-        else {
-          innerCell.textContent = '';
         }
       }
     }
