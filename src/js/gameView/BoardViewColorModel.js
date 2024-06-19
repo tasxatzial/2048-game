@@ -22,7 +22,10 @@ export default class BoardViewColorModel {
       for (let j = 0; j < gridArray[0].length; j++) {
         const cellObj = gridArray[i][j];
         if (cellObj && cellObj.tile) {
-          const tileValue = cellObj.mergeValue !== null ? cellObj.mergeValue : cellObj.tile.value;
+          const tileValue =
+              cellObj.mergeValue !== null && cellObj.mergeValue !== undefined
+              ? cellObj.mergeValue
+              : cellObj.tile.value;
           if (this.tileColors.get(tileValue) === undefined && !tileValues.has(tileValue)) {
             newTileValues.push(tileValue);
           }
