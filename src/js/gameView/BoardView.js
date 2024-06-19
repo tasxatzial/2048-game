@@ -118,13 +118,13 @@ export default class BoardView {
           if (tileObj) {
             const slidingTile = cells.item(tileObj.row * gridArray[0].length + tileObj.column).children[0];
             slidingTile.style.zIndex = zIndex--;
-            if (cellObj.column != tileObj.column) {
+            if (cellObj.column !== tileObj.column) {
               promises.push(this._waitForEvent(slidingTile, 'transitionend'));
               slidingTile.style.setProperty('--cell-column', cellObj.column);
               slidingTile.style.setProperty('--tile-column', tileObj.column);
               slidingTile.classList.add('horizontal-slide');
             }
-            else if (cellObj.row != tileObj.row) {
+            else if (cellObj.row !== tileObj.row) {
               promises.push(this._waitForEvent(slidingTile, 'transitionend'));
               slidingTile.style.setProperty('--cell-row', cellObj.row);
               slidingTile.style.setProperty('--tile-row', tileObj.row);
@@ -154,9 +154,9 @@ export default class BoardView {
         innerCell.textContent = '';
         if (cellObj.tile && !cellObj.newTileAdded) {
           innerCell.classList.add('tile');
-          const tileValue = cellObj.mergeValue != null ? cellObj.mergeValue : cellObj.tile.value;
+          const tileValue = cellObj.mergeValue !== null ? cellObj.mergeValue : cellObj.tile.value;
           this._initializeTile(innerCell, tileValue);
-          if (cellObj.mergeValue != null && cellObj.mergeValue != undefined) {
+          if (cellObj.mergeValue !== null && cellObj.mergeValue !== undefined) {
             promises.push(this._waitForEvent(innerCell, 'animationend'));
             innerCell.addEventListener('animationend', () => innerCell.classList.remove('zoomin'), {once: true});
             innerCell.classList.add('zoomin');

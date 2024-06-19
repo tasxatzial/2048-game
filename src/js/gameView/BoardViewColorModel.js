@@ -22,8 +22,8 @@ export default class BoardViewColorModel {
       for (let j = 0; j < gridArray[0].length; j++) {
         const cellObj = gridArray[i][j];
         if (cellObj && cellObj.tile) {
-          const tileValue = cellObj.mergeValue != null ? cellObj.mergeValue : cellObj.tile.value;
-          if (this.tileColors.get(tileValue) == undefined && !tileValues.has(tileValue)) {
+          const tileValue = cellObj.mergeValue !== null ? cellObj.mergeValue : cellObj.tile.value;
+          if (this.tileColors.get(tileValue) === undefined && !tileValues.has(tileValue)) {
             newTileValues.push(tileValue);
           }
           tileValues.add(tileValue);
@@ -39,7 +39,7 @@ export default class BoardViewColorModel {
     });
 
     newTileValues.forEach(tileValue => {
-      if (this.tileColors.get(tileValue) != undefined) {
+      if (this.tileColors.get(tileValue) !== undefined) {
         return;
       }
       let i;
@@ -50,7 +50,7 @@ export default class BoardViewColorModel {
           break;
         }
       }
-      if (i == this.colors.length) {
+      if (i === this.colors.length) {
         this.tileColors.set(tileValue, i - 1);
       }
     });

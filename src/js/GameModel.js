@@ -105,7 +105,7 @@ export default class GameModel extends EventEmitter {
     if (this.grid.hasChangedAfterSlide()) {
       this.slideCount++;
       const mergeScore = this.grid.getMergeScore();
-      if (mergeScore != null) {
+      if (mergeScore !== null) {
         this.score += mergeScore;
       }
       this.raiseChange("slideTilesEvent");

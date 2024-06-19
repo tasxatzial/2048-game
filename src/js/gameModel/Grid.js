@@ -91,7 +91,7 @@ export default class Grid {
     for (let i = 0; i < booleanArray.length; i++) {
       let row = [];
       for (let j = 0; j < booleanArray[0].length; j++) {
-        if (booleanArray[i][j] == 1) {
+        if (booleanArray[i][j] === 1) {
           isRowNonEmpty = true;
           row.push(this.cells[i * booleanArray[0].length + j]);
         }
@@ -115,7 +115,7 @@ export default class Grid {
     for (let j = 0; j < booleanArray[0].length; j++) {
       let col = [];
       for (let i = 0; i < booleanArray.length; i++) {
-        if (booleanArray[i][j] == 1) {
+        if (booleanArray[i][j] === 1) {
           isRowNonEmpty = true;
           col.push(this.cells[i * booleanArray[0].length + j]);
         }
@@ -134,7 +134,7 @@ export default class Grid {
     const cells = {};
     for (let i = 0; i < booleanArray.length; i++) {
       for (let j = 0; j < booleanArray[0].length; j++) {
-        if (booleanArray[i][j] == 1) {
+        if (booleanArray[i][j] === 1) {
           const idx = i * booleanArray[0].length + j;
           cells[idx] = new Cell(i, j);
           cells[idx].mergeResultFn = this.mergeResultFn;
@@ -188,12 +188,12 @@ export default class Grid {
             cellArray[j].setMergeTileFrom(cellArray[i]);
             this.changedAfterSlide = true;
           }
-          else if (j-1 != i) {
+          else if (j-1 !== i) {
             cellArray[j-1].setTileFrom(cellArray[i]);
             this.changedAfterSlide = true;
           }
           break;
-        } else if (j == cellArray.length - 1) {
+        } else if (j === cellArray.length - 1) {
             cellArray[j].setTileFrom(cellArray[i]);
             this.changedAfterSlide = true;
             break;
@@ -269,7 +269,7 @@ export default class Grid {
     this.getCells().forEach(cell => {
       cell.updateMergeResults();
       const score = cell.getMergeScore();
-      if (score != null) {
+      if (score !== null) {
         hasMergedTiles = true;
         totalScore += cell.getMergeScore();
       }
@@ -334,7 +334,7 @@ export default class Grid {
     for (let i = 0; i < this.gridBoolean.length; i++) {
       const row = [];
       for (let j = 0; j < this.gridBoolean[0].length; j++) {
-        if (this.gridBoolean[i][j] == 1) {
+        if (this.gridBoolean[i][j] === 1) {
           const cell = this.cells[i * this.gridBoolean[0].length + j];
           row.push(cell.toJSON());
         } else {
@@ -360,7 +360,7 @@ export default class Grid {
     const pad = ' '.repeat(entryLength);
     for (let i = 0; i < this.gridBoolean.length; i++) {
       for (let j = 0; j < this.gridBoolean[0].length; j++) {
-        if (this.gridBoolean[i][j] == 1) {
+        if (this.gridBoolean[i][j] === 1) {
           const cell = this.cells[i * this.gridBoolean[0].length + j];
           if (cell.hasTile()) {
             result += (pad + cell.getTile().getValue()).slice(-entryLength);
@@ -370,7 +370,7 @@ export default class Grid {
         } else {
           result += (pad + '◼').slice(-entryLength);
         }
-        if (j != this.gridBoolean[0].length - 1) {
+        if (j !== this.gridBoolean[0].length - 1) {
           result += ' ';
         }
       }
