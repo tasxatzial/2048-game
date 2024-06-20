@@ -28,7 +28,7 @@ model.addChangeListener('initializeModelEvent', () => {
   localStorage.setItem('game-2048-best-score', JSON.stringify(bestScore));
 });
 
-model.addChangeListener("slideTilesEvent", async () => {
+model.addChangeListener('slideTilesEvent', async () => {
   const game = model.getGameJSON();
   await Promise.all(view.slideGameTiles(game));
   const mergePromises = view.mergeGameTiles(game);
@@ -38,14 +38,14 @@ model.addChangeListener("slideTilesEvent", async () => {
   model.purgeGameModel();
 });
 
-model.addChangeListener("purgeGameModelEvent", () => {
+model.addChangeListener('purgeGameModelEvent', () => {
   const game = model.getGameJSON();
   localStorage.setItem('game-2048', JSON.stringify(game));
   localStorage.setItem('game-2048-best-score', JSON.stringify(model.getBestScore()));
   view.updateGameStatus(game);
 });
 
-model.addChangeListener("noOpEvent", () => view.setGameReady());
+model.addChangeListener('noOpEvent', () => view.setGameReady());
 
 /* ---------------------------------------------- */
 

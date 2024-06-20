@@ -12,15 +12,17 @@ export default class Model extends EventEmitter {
   initialize(game, bestScore) {
     this.gameModel = new GameModel(game);
     this.bestScore = bestScore || this.bestScore || this.initialBestScore;
-    this.gameModel.addChangeListener('slideTilesEvent', () => {
+    this.gameModel.addChangeListener('slideEvent', () => {
       const score = this.gameModel.getScore();
       if (score > this.bestScore) {
         this.bestScore = score;
       }
       this.raiseChange('slideTilesEvent');
     });
+    this.gameModel.addChangeListener('purgeModelEvent', () => {
+      this.raiseChange('purgeGameModelEvent');
+    })
     this.bubbleChange(this.gameModel, 'noOpEvent');
-    this.bubbleChange(this.gameModel, 'purgeGameModelEvent');
     this.raiseChange('initializeModelEvent');
   }
 

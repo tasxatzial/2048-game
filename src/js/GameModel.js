@@ -78,7 +78,7 @@ export default class GameModel extends EventEmitter {
 
   purge() {
     this.grid.purge();
-    this.raiseChange("purgeGameModelEvent");
+    this.raiseChange('purgeModelEvent');
   }
 
   slideLeft() {
@@ -108,7 +108,7 @@ export default class GameModel extends EventEmitter {
       if (mergeScore !== null) {
         this.score += mergeScore;
       }
-      this.raiseChange("slideTilesEvent");
+      this.raiseChange('slideEvent');
     }
     else {
       this.raiseChange("noOpEvent");
