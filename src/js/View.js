@@ -1,4 +1,4 @@
-import GameView from "./GameView.js";
+import GameView from './GameView.js';
 
 export default class View {
   constructor() {

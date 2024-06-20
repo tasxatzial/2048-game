@@ -1,4 +1,4 @@
-import BoardViewColorModel from "./BoardViewColorModel.js";
+import BoardViewColorModel from './BoardViewColorModel.js';
 
 export default class BoardView {
   constructor() {
@@ -99,7 +99,7 @@ export default class BoardView {
     }
     this._initializeEndGameOverlay();
     const boardContainer = document.querySelector('.js-board-container');
-    boardContainer.innerHTML = "";
+    boardContainer.innerHTML = '';
     boardContainer.appendChild(this.grid);
     return promises;
   }

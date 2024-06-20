@@ -1,7 +1,7 @@
-import Grid from "./gameModel/Grid.js";
-import WinCondition from "./gameModel/WinCondition.js";
-import LoseCondition from "./gameModel/LoseCondition.js";
-import EventEmitter from "./EventEmitter.js";
+import Grid from './gameModel/Grid.js';
+import WinCondition from './gameModel/WinCondition.js';
+import LoseCondition from './gameModel/LoseCondition.js';
+import EventEmitter from './EventEmitter.js';
 
 export default class GameModel extends EventEmitter {
   constructor(obj) {
@@ -30,7 +30,7 @@ export default class GameModel extends EventEmitter {
         this.winConditionFn = WinCondition[this.winConditionFnName];
       }
       else {
-        this.winConditionFnName = "original2048";
+        this.winConditionFnName = 'original2048';
         this.winConditionFn = WinCondition.original2048;
       }
       if (loseConditionFnName) {
@@ -38,7 +38,7 @@ export default class GameModel extends EventEmitter {
         this.loseConditionFn = LoseCondition[this.loseConditionFnName];
       }
       else {
-        this.loseConditionFnName = "original2048";
+        this.loseConditionFnName = 'original2048';
         this.loseConditionFn = LoseCondition.original2048;
       }
       this.score = 0;
@@ -111,7 +111,7 @@ export default class GameModel extends EventEmitter {
       this.raiseChange('slideEvent');
     }
     else {
-      this.raiseChange("noOpEvent");
+      this.raiseChange('noOpEvent');
     }
   }
 }

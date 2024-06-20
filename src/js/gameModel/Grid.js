@@ -1,9 +1,9 @@
-import Cell from "./Cell.js";
-import GridBoolean from "./GridBoolean.js";
-import MergeResult from "./MergeResult.js";
-import MergeScore from "./MergeScore.js";
-import MergeCondition from "./MergeCondition.js";
-import NewTile from "./NewTile.js";
+import Cell from './Cell.js';
+import GridBoolean from './GridBoolean.js';
+import MergeResult from './MergeResult.js';
+import MergeScore from './MergeScore.js';
+import MergeCondition from './MergeCondition.js';
+import NewTile from './NewTile.js';
 
 export default class Grid {
   constructor(obj) {
@@ -37,7 +37,7 @@ export default class Grid {
       }
       else {
         this.gridBoolean = GridBoolean.original2048();
-        this.gridBooleanFnName = "original2048";
+        this.gridBooleanFnName = 'original2048';
       }
       if (newTileFnName) {
         this.newTileFn = NewTile[newTileFnName];
@@ -45,7 +45,7 @@ export default class Grid {
       }
       else {
         this.newTileFn = NewTile.original2048;
-        this.newTileFnName = "original2048";
+        this.newTileFnName = 'original2048';
       }
       if (mergeResultFnName) {
         this.mergeResultFn = MergeResult[mergeResultFnName];
@@ -53,7 +53,7 @@ export default class Grid {
       }
       else {
         this.mergeResultFn = MergeResult.original2048;
-        this.mergeResultFnName = "original2048";
+        this.mergeResultFnName = 'original2048';
       }
       if (mergeScoreFnName) {
         this.mergeScoreFn = MergeScore[mergeScoreFnName];
@@ -61,7 +61,7 @@ export default class Grid {
       }
       else {
         this.mergeScoreFn = MergeScore.original2048;
-        this.mergeScoreFnName = "original2048";
+        this.mergeScoreFnName = 'original2048';
       }
       if (mergeConditionFnName) {
         this.mergeConditionFn = MergeCondition[mergeConditionFnName];
@@ -69,7 +69,7 @@ export default class Grid {
       }
       else {
         this.mergeConditionFn = MergeCondition.original2048;
-        this.mergeConditionFnName = "original2048";
+        this.mergeConditionFnName = 'original2048';
       }
       if (mergeAll) {
         this.mergeAll = mergeAll;
