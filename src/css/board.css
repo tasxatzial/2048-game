@@ -34,6 +34,8 @@
 
 .tile {
   --_font-scale-factor: var(--font-scale-factor, 1);
+  --_horizontal-slide-duration: var(--horizontal-slide-duration, 150ms);
+  --_vertical-slide-duration: var(--vertical-slide-duration, 150ms);
   align-items: center;
   display: flex;
   font-family: Verdana, Geneva, sans-serif;
@@ -54,15 +56,17 @@
 }
 
 .horizontal-slide {
-  --_duration: var(--horizontal-slide-duration, 150ms);
+  opacity: var(--final-opacity);
   transform: translateX(calc((var(--_cell-size) + var(--_cell-gap)) * (var(--cell-column) - var(--tile-column))));
-  transition: transform var(--_duration) linear;
+  transition: transform var(--_horizontal-slide-duration) linear,
+              opacity var(--opacity-duration) linear var(--opacity-delay);
 }
 
 .vertical-slide {
-  --_duration: var(--vertical-slide-duration, 150ms);
+  opacity: var(--final-opacity);
   transform: translateY(calc((var(--_cell-size) + var(--_cell-gap)) * (var(--cell-row) - var(--tile-row))));
-  transition: transform var(--_duration) linear;
+  transition: transform var(--_vertical-slide-duration) linear,
+              opacity var(--opacity-duration) linear var(--opacity-delay);
 }
 
 .zoomin {
