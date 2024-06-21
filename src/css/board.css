@@ -3,8 +3,8 @@
   --cell-size: 4.5rem;
   --cell-gap: 0.25rem;
   /* --cell-border-radius: 0.25rem; */
-  /* --horizontal-slide-duration: 150ms; */
-  /* --vertical-slide-duration: 150ms; */
+  /* --horizontal-slide-duration: 125ms; */
+  /* --vertical-slide-duration: 125ms; */
   /* --zoomin-duration: 125ms; */
 }
 
@@ -34,8 +34,8 @@
 
 .tile {
   --_font-scale-factor: var(--font-scale-factor, 1);
-  --_horizontal-slide-duration: var(--horizontal-slide-duration, 150ms);
-  --_vertical-slide-duration: var(--vertical-slide-duration, 150ms);
+  --_horizontal-slide-duration: var(--horizontal-slide-duration, 125ms);
+  --_vertical-slide-duration: var(--vertical-slide-duration, 125ms);
   align-items: center;
   display: flex;
   font-family: Verdana, Geneva, sans-serif;
