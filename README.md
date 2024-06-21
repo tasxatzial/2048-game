@@ -1,6 +1,8 @@
 # 2048 game
 
-This repository contains my implementation of the [2048 game](https://en.wikipedia.org/wiki/2048_(video_game)) by Gabriele Cirulli, where the objective is to combine tiles with the same numbers to reach the 2048 tile.
+[2048](https://en.wikipedia.org/wiki/2048_(video_game)) is a game created by Gabriele Cirulli. The objective is to combine tiles with the same numbers to reach the 2048 tile.
+
+This repo contains my own implementation from scratch.
 
 ## Features
 
@@ -32,7 +34,7 @@ The main game class is [GameModel.js](src/js/GameModel.js), which supports passi
   * `gridBooleanFnName`: The function name in [GridBoolean.js](src/js/gameModel/GridBoolean.js). Specifies a two dimensional boolean array that represents the rows of the board. A value of 1 indicates that the corresponding cell is enabled and can accept tiles, while a value of 0 indicates a disabled cell where tiles cannot occupy or slide through. Disabled cells will display as squares with black background and a white border.
   * `mergeAll`: `false` if we want only two tiles to merge, else `true`. When `true`, the tile closest to the edge in the slide direction will be compared against each of the other tiles.
 
-  **Note**: Do not create a grid with only one row or column, as this will cause text overflow issues when the grid overlay is shown.
+  **Note**: Do not create a grid with only one row or column, as this will cause text overflow issues when the end game overlay is shown.
 
 * `initialTiles`: An array of initial tiles. Each tile should be an object with the following required keys:
   * `row`: Row of the tile.
@@ -48,8 +50,8 @@ You can customize the appearance and behavior of the board by defining the follo
 * `--cell-size`: Size of each cell. Default is `4.5rem`;
 * `--cell-gap`: Gap size between cells. Default is `--cell-size / 18`;
 * `--cell-border-radius`: Border radius of cells and board. Default is `--cell-size / 18`;
-* `--horizontal-slide-duration`: Duration of a slide across the horizontal axis: Default is `150ms`.
-* `--vertical-slide-duration`: Duration of a slide across the vertical axis: Default is `150ms`.
+* `--horizontal-slide-duration`: Duration of a slide across the horizontal axis: Default is `125ms`.
+* `--vertical-slide-duration`: Duration of a slide across the vertical axis: Default is `125ms`.
 * `--zoomin-duration`: Duration of the animation for merging and adding new tiles: Default is `125ms`.
 
 #### Tile fonts
@@ -88,7 +90,7 @@ static threeByThreeNoCenter() {
 }
 ```
 
-Finally, we create the game:
+We create the game:
 
 ```js
 game = new GameModel({
@@ -104,7 +106,15 @@ game = new GameModel({
 })
 ```
 
-Pass the above object as an argument to the `startGame` function on line 57 of [script.js](src/js/script.js), and press 'New Game' to start the custom game.
+Finally, we pass the object above as an argument to the `startGame` game function in [script.js](src/js/script.js):
+
+```js
+view.bindStartNewGame(() => {
+  startGame(game);
+})
+```
+
+and press the new game button to start the custom game.
 
 ## Dependencies
 
@@ -114,7 +124,7 @@ None. The project uses only HTML, CSS, JavaScript.
 
 Download the `src` folder and use a local web server to serve its contents.
 
-Navigate to [/colors.html](src/colors.html) to see how each color looks.
+Navigate to `/colors.html` to see how each color looks.
 
 ## Screenshots
 
