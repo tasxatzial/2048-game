@@ -3,8 +3,8 @@
   --cell-size: 4.5rem;
   --cell-gap: 0.25rem;
   /* --cell-border-radius: 0.25rem; */
-  /* --horizontal-slide-duration: 150ms; */
-  /* --vertical-slide-duration: 150ms; */
+  /* --horizontal-slide-duration: 125ms; */
+  /* --vertical-slide-duration: 125ms; */
   /* --zoomin-duration: 125ms; */
 }
 
@@ -56,13 +56,13 @@
 }
 
 .horizontal-slide {
-  --_duration: var(--horizontal-slide-duration, 150ms);
+  --_duration: var(--horizontal-slide-duration, 125ms);
   transform: translateX(calc((var(--_cell-size) + var(--_cell-gap)) * (var(--cell-column) - var(--tile-column))));
   transition: transform var(--_duration) ease-out;
 }
 
 .vertical-slide {
-  --_duration: var(--vertical-slide-duration, 150ms);
+  --_duration: var(--vertical-slide-duration, 125ms);
   transform: translateY(calc((var(--_cell-size) + var(--_cell-gap)) * (var(--cell-row) - var(--tile-row))));
   transition: transform var(--_duration) ease-out;
 }
