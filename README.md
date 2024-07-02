@@ -78,7 +78,7 @@ To accomplish this, we define in [WinCondition.js](src/js/gameModel/WinCondition
 
 ```js
 static hasTile32(grid) {
-  return grid.hasTile(32);
+  return grid.hasTile(32)
 }
 ```
 
@@ -86,14 +86,14 @@ and in [GridBoolean.js](src/js/gameModel/GridBoolean.js):
 
 ```js
 static threeByThreeNoCenter() {
-  return [[1, 1, 1], [1, 0, 1], [1, 1, 1]];
+  return [[1, 1, 1], [1, 0, 1], [1, 1, 1]]
 }
 ```
 
-We create the game:
+We can now define the custom game as:
 
 ```js
-game = new GameModel({
+game = {
   gameOptions: {
     winConditionFnName: 'hasTile32'
   },
@@ -103,18 +103,16 @@ game = new GameModel({
   initialTiles: [
     {row: 0, column: 0, value: 2}
   ]
-})
+}
 ```
 
-Finally, we pass the object above as an argument to the `startGame` game function in [script.js](src/js/script.js):
+and pass it as an argument to the `startGame` game function in [script.js](src/js/script.js):
 
 ```js
 view.bindStartNewGame(() => {
-  startGame(game);
+  startGame(game)
 })
 ```
-
-and press the new game button to start the custom game.
 
 ## Dependencies
 
@@ -124,7 +122,7 @@ None. The project uses only HTML, CSS, JavaScript.
 
 Download the `src` folder and use a local web server to serve its contents.
 
-Navigate to `/colors.html` to see how each color looks.
+Navigate to `/colors.html` to see all possible tile colors.
 
 ## Screenshots
 
