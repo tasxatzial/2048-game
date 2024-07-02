@@ -75,8 +75,11 @@ view.bindStartNewGame(() => {
 
 /* ---------------------------------------------- */
 
-startGame(JSON.parse(localStorage.getItem('game-2048')));
+startGame({
+  game: JSON.parse(localStorage.getItem('game-2048')),
+  bestScore: JSON.parse(localStorage.getItem('game-2048-best-score'))
+});
 
-function startGame(game) {
-  model.initialize(game, JSON.parse(localStorage.getItem('game-2048-best-score')));
+function startGame(json) {
+  model.initialize(json);
 }

@@ -31,7 +31,11 @@ export default class Model extends EventEmitter {
     return this.initialGamePresent;
   }
 
-  initialize(game, bestScore) {
+  initialize(json) {
+    if (!json) {
+      json = {};
+    }
+    const {game, bestScore} = json;
     if (game) {
       this.initialGamePresent = true;
       this.gameModel = new GameModel(game);
