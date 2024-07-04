@@ -1,8 +1,12 @@
 import { COLORS } from './gameView/BoardViewColorModel.js';
 
-const tiles = document.querySelectorAll('.tile');
+const gridColorsEl = document.querySelector('.js-grid-colors');
 
-for (let i = 0; i < tiles.length; i++) {
-  tiles[i].style.color = COLORS[i].color;
-  tiles[i].style.backgroundColor = COLORS[i].backgroundColor;
-}
+COLORS.forEach(({color, backgroundColor, id}) => {
+  const tileEl = document.createElement('div');
+  tileEl.classList.add('tile');
+  tileEl.style.color = color;
+  tileEl.style.backgroundColor = backgroundColor;
+  tileEl.textContent = id;
+  gridColorsEl.appendChild(tileEl);
+});
