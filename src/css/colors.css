@@ -13,6 +13,6 @@ body {
 
 .grid-colors {
   --cell-size: 5rem;
-  --grid-rows: 7;
+  --grid-rows: 6;
   --grid-columns: 6;
 }
