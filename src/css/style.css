@@ -158,7 +158,7 @@ p {
   padding: 0.2rem;
   position: absolute;
   right: 0;
-  top: 54%;
+  top: 50%;
   transform: translateY(-50%);
 }
 
@@ -166,7 +166,9 @@ p {
   outline: 2px solid black;
 }
 
-.best-score-trash-btn > img {
+.best-score-trash-btn > svg {
+  display: block;
+  height: auto;
   width: 1.5rem;
 }
 
