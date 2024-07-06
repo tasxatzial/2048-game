@@ -4,14 +4,14 @@ import LoseCondition from './gameModel/LoseCondition.js';
 import EventEmitter from './EventEmitter.js';
 
 export default class GameModel extends EventEmitter {
-  constructor(obj) {
+  constructor(json) {
     super();
-    if (!obj) {
-      obj = {};
+    if (!json) {
+      json = {};
     }
-    if (obj.grid) {
-      const {grid, gameOptions, score, slideCount} = obj;
-      this.grid = new Grid({grid: grid});
+    if (json.grid) {
+      const {grid, gameOptions, score, slideCount} = json;
+      this.grid = new Grid({grid});
       this.score = score;
       this.slideCount = slideCount;
       this.winConditionFnName = gameOptions.winConditionFnName;
@@ -20,9 +20,8 @@ export default class GameModel extends EventEmitter {
       this.loseConditionFn = LoseCondition[this.loseConditionFnName];
     }
     else {
-      const {gridOptions, initialTiles} = obj;
-      this.initialTiles = initialTiles;
-      const gameOptions = obj.gameOptions || {};
+      const {gridOptions, initialTiles} = json;
+      const gameOptions = json.gameOptions || {};
       this.grid = new Grid({options: gridOptions});
       const {winConditionFnName, loseConditionFnName} = gameOptions;
       if (winConditionFnName) {
@@ -43,8 +42,8 @@ export default class GameModel extends EventEmitter {
       }
       this.score = 0;
       this.slideCount = 0;
-      if (this.initialTiles) {
-        this.grid.initTiles(this.initialTiles);
+      if (initialTiles) {
+        this.grid.initTiles(initialTiles);
       }
       else {
         this.grid.addTiles();
@@ -54,7 +53,7 @@ export default class GameModel extends EventEmitter {
   }
 
   toJSON() {
-    const JSON = {
+    const json = {
       grid: this.grid.toJSON(),
       gameOptions: {
         winConditionFnName: this.winConditionFnName,
@@ -64,12 +63,12 @@ export default class GameModel extends EventEmitter {
       slideCount: this.slideCount
     };
     if (this.winConditionFn(this.grid)) {
-      return {...JSON, isWon: true}
+      return {...json, isWon: true}
     }
     else if (this.loseConditionFn(this.grid)) {
-      return {...JSON, isLost: true}
+      return {...json, isLost: true}
     }
-    return JSON;
+    return json;
   }
 
   getScore() {
@@ -108,7 +107,7 @@ export default class GameModel extends EventEmitter {
       if (mergeScore !== null) {
         this.score += mergeScore;
       }
-      this.raiseChange('slideEvent');
+      this.raiseChange('moveEvent');
     }
     else {
       this.raiseChange('noOpEvent');

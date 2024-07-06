@@ -9,29 +9,48 @@ export default class Model extends EventEmitter {
     this.bestScore = this.initialBestScore;
   }
 
-  initialize(game, bestScore) {
-    this.gameModel = new GameModel(game);
-    this.bestScore = bestScore || this.bestScore || this.initialBestScore;
-    this.gameModel.addChangeListener('slideEvent', () => {
+  initialize(json) {
+    if (!json) {
+      json = {};
+    }
+    const { bestScore } = json;
+    if (bestScore !== null && bestScore !== undefined) {
+      this.bestScore = bestScore;
+    }
+    this.raiseChange('initializeModelEvent');
+  }
+
+  initializeGame(json) {
+    if (!json) {
+      json = {};
+    }
+    this.gameModel = new GameModel(json.game);
+    this.gameModel.addChangeListener('moveEvent', () => {
       const score = this.gameModel.getScore();
       if (score > this.bestScore) {
         this.bestScore = score;
       }
-      this.raiseChange('slideTilesEvent');
+      this.raiseChange('gameMoveEvent');
     });
     this.gameModel.addChangeListener('purgeModelEvent', () => {
       this.raiseChange('purgeGameModelEvent');
-    })
-    this.bubbleChange(this.gameModel, 'noOpEvent');
-    this.raiseChange('initializeModelEvent');
-  }
-
-  purgeGameModel() {
-    this.gameModel.purge();
+    });
+    this.gameModel.addChangeListener('noOpEvent', () => {
+      this.raiseChange('gameNoOpEvent');
+    });
+    this.raiseChange('initializeGameModelEvent');
   }
 
   getGameJSON() {
     return this.gameModel.toJSON();
+  }
+
+  getBestScore() {
+    return this.bestScore;
+  }
+
+  purgeGameModel() {
+    this.gameModel.purge();
   }
 
   getBestScore() {

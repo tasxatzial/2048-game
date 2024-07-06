@@ -6,12 +6,12 @@ import MergeCondition from './MergeCondition.js';
 import NewTile from './NewTile.js';
 
 export default class Grid {
-  constructor(obj) {
-    if (!obj) {
-      obj = {};
+  constructor(json) {
+    if (!json) {
+      json = {};
     }
-    if (obj.grid) {
-      const {gridArray, newTileFnName, mergeResultFnName, mergeScoreFnName, mergeConditionFnName, gridBooleanFnName, mergeAll} = obj.grid;
+    if (json.grid) {
+      const {gridArray, newTileFnName, mergeResultFnName, mergeScoreFnName, mergeConditionFnName, gridBooleanFnName, mergeAll} = json.grid;
       this.newTileFnName = newTileFnName;
       this.newTileFn = NewTile[newTileFnName];
       this.mergeResultFnName = mergeResultFnName;
@@ -29,7 +29,7 @@ export default class Grid {
       this.cols = this._createColumns(this.gridBoolean);
     }
     else {
-      const options = obj.options || {};
+      const options = json.options || {};
       const {newTileFnName, mergeResultFnName, mergeScoreFnName, mergeConditionFnName, gridBooleanFnName, mergeAll} = options;
       if (gridBooleanFnName) {
         this.gridBoolean = GridBoolean[gridBooleanFnName]();
@@ -71,7 +71,7 @@ export default class Grid {
         this.mergeConditionFn = MergeCondition.original2048;
         this.mergeConditionFnName = 'original2048';
       }
-      if (mergeAll) {
+      if (mergeAll === true) {
         this.mergeAll = mergeAll;
       }
       else {

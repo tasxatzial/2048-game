@@ -35,11 +35,11 @@ export default class GameView {
     this.scoreEl.textContent = game.score;
   }
 
-  bindModelSlideHandlers(modelHandlers) {
-    this.modelSlideHandlers = modelHandlers;
+  bindModelHandlers(handlers) {
+    this.modelSlideHandlers = handlers.slide;
   }
 
-  unbindModelSlideHandlers() {
+  unbindModelHandlers() {
     this.modelSlideHandlers = null;
   }
 
@@ -64,7 +64,7 @@ export default class GameView {
     document.removeEventListener('touchmove', this._onPointerMove);
   }
 
-  updateGameStatus(game) {
+  updateStatus(game) {
     if (game.isWon) {
       this._showWinMsg();
     }
@@ -90,7 +90,7 @@ export default class GameView {
 
   _onKeydown(e) {
     if (['ArrowLeft', 'ArrowUp', 'ArrowRight', 'ArrowDown'].includes(e.code)) {
-      e.preventDefault()
+      e.preventDefault();
       if (this.slidePermitted) {
         this.slidePermitted = false;
         switch(e.code) {
@@ -112,12 +112,10 @@ export default class GameView {
   }
 
   _onPointerDown(e) {
-    if (!e.target.closest('div').classList.contains('js-end-game-overlay')) {
-      e.preventDefault();
-    }
-    else {
+    if (e.target.closest('div').classList.contains('js-end-game-overlay')) {
       return;
     }
+    e.preventDefault();
     if (e.type === 'mousedown') {
       this.pointerDownPos = {
         x: e.clientX,
@@ -152,20 +150,20 @@ export default class GameView {
     }
     if (Math.abs(horizontalDistance) > this.slideTriggerDistance ||
         Math.abs(verticalDistance) > this.slideTriggerDistance) {
-          this.slidePermitted = false;
-          this.pointerDownPos = null;
-          if (horizontalDistance > this.slideTriggerDistance) {
-            this.modelSlideHandlers.slideRight();
-          }
-          else if (horizontalDistance < -this.slideTriggerDistance) {
-            this.modelSlideHandlers.slideLeft();
-          }
-          else if (verticalDistance > this.slideTriggerDistance) {
-            this.modelSlideHandlers.slideDown();
-          }
-          else if (verticalDistance < -this.slideTriggerDistance) {
-            this.modelSlideHandlers.slideUp();
-          }
-        }
+      this.slidePermitted = false;
+      this.pointerDownPos = null;
+      if (horizontalDistance > this.slideTriggerDistance) {
+        this.modelSlideHandlers.slideRight();
+      }
+      else if (horizontalDistance < -this.slideTriggerDistance) {
+        this.modelSlideHandlers.slideLeft();
+      }
+      else if (verticalDistance > this.slideTriggerDistance) {
+        this.modelSlideHandlers.slideDown();
+      }
+      else if (verticalDistance < -this.slideTriggerDistance) {
+        this.modelSlideHandlers.slideUp();
+      }
+    }
   }
 }

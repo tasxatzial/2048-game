@@ -6,10 +6,6 @@ export default class View {
     this.bestScoreEl = document.querySelector('.js-best-score');
   }
 
-  bindGameHandlers(handlers) {
-    this.gameView.bindModelSlideHandlers(handlers);
-  }
-
   bindResetBestScore(callback) {
     document.querySelector('.js-best-score-trash-btn')
             .addEventListener('click', callback);
@@ -20,22 +16,22 @@ export default class View {
             .addEventListener('click', callback);
   }
 
-  initializeGame(game, modelSlideHandlers) {
+  async initializeGame(json) {
+    const { game, modelHandlers } = json;
     if (this.gameView) {
-      this.gameView.unbindModelSlideHandlers();
+      this.gameView.unbindModelHandlers();
       this.gameView.removeSlideListeners();
     }
     this.gameView = new GameView();
-    this.gameView.bindModelSlideHandlers(modelSlideHandlers);
+    this.gameView.bindModelHandlers(modelHandlers);
     this.gameView.addSlideListeners();
-    const promises = this.gameView.initialize(game);
-    Promise.all(promises).then(() => {
-      this.updateGameStatus(game);
-    });
+    await Promise.all(this.gameView.initialize(game));
+    this.gameView.updateStatus(game);
   }
 
-  setGameReady() {
-    this.gameView.setReady();
+  initialize(json) {
+    const { bestScore } = json;
+    this.setBestScore(bestScore);
   }
 
   slideGameTiles(game) {
@@ -59,6 +55,10 @@ export default class View {
   }
 
   updateGameStatus(game) {
-    this.gameView.updateGameStatus(game);
+    this.gameView.updateStatus(game);
+  }
+
+  setGameReady() {
+    this.gameView.setReady();
   }
 }

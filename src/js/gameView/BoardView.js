@@ -65,7 +65,8 @@ export default class BoardView {
     this.pointerHandlers = null;
   }
 
-  initialize({gridArray}) {
+  initialize(grid) {
+    const { gridArray } = grid;
     const promises = [];
     this.boardViewColorModel.updateTileColors(gridArray);
     this.gridRows = gridArray.length;
@@ -104,8 +105,8 @@ export default class BoardView {
     return promises;
   }
 
-
-  slide({gridArray}) {
+  slide(grid) {
+    const { gridArray } = grid;
     const promises = [];
     const cells = this.grid.children;
     for (let i = 0; i < this.gridRows; i++) {
@@ -155,7 +156,8 @@ export default class BoardView {
     return promises;
   }
 
-  merge({gridArray}) {
+  merge(grid) {
+    const { gridArray } = grid;
     this.boardViewColorModel.updateTileColors(gridArray);
     const promises = [];
     const cells = this.grid.children;
@@ -185,7 +187,8 @@ export default class BoardView {
     return promises;
   }
 
-  addTiles({gridArray}) {
+  addTiles(grid) {
+    const { gridArray } = grid;
     const promises = [];
     const cells = this.grid.children;
     for (let i = 0; i < this.gridRows; i++) {
