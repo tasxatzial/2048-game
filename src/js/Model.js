@@ -62,19 +62,19 @@ export default class Model extends EventEmitter {
     this.raiseChange('resetBestScoreEvent');
   }
 
-  slideTilesUp() {
-    this.gameModel.slideUp();
+  gameMoveUp() {
+    this.gameModel.moveUp();
   }
 
-  slideTilesDown() {
-    this.gameModel.slideDown();
+  gameMoveDown() {
+    this.gameModel.moveDown();
   }
   
-  slideTilesLeft() {
-    this.gameModel.slideLeft();
+  gameMoveLeft() {
+    this.gameModel.moveLeft();
   }
 
-  slideTilesRight() {
-    this.gameModel.slideRight();
+  gameMoveRight() {
+    this.gameModel.moveRight();
   }
 }

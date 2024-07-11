@@ -6,11 +6,11 @@ const model = new Model();
 const view = new View();
 
 const modelHandlers = {
-  slide : {
-    slideUp: model.slideTilesUp.bind(model),
-    slideRight: model.slideTilesRight.bind(model),
-    slideDown: model.slideTilesDown.bind(model),
-    slideLeft: model.slideTilesLeft.bind(model)
+  gameMove : {
+    moveUp: model.gameMoveUp.bind(model),
+    moveRight: model.gameMoveRight.bind(model),
+    moveDown: model.gameMoveDown.bind(model),
+    moveLeft: model.gameMoveLeft.bind(model)
   }
 }
 

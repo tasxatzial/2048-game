@@ -218,11 +218,6 @@ export default class Grid {
         this.rows.forEach(x => this._slideTilesToEnd(x));
         break;
     }
-    this._clearNewTileAddedFlags();
-    this._updateMergeScore();
-    if (this.changedAfterSlide) {
-      this.addTiles();
-    }
   }
 
   slideRight() {
@@ -257,13 +252,13 @@ export default class Grid {
     return this.changedAfterSlide;
   }
 
-  _clearNewTileAddedFlags() {
+  clearNewTileFlags() {
     this.getCells().forEach(cell => {
       cell.setNewTileAdded(false);
     });
   }
 
-  _updateMergeScore() {
+  updateMergeScore() {
     let hasMergedTiles = false;
     let totalScore = 0;
     this.getCells().forEach(cell => {

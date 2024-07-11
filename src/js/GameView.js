@@ -8,7 +8,7 @@ export default class GameView {
     this._onPointerDown = this._onPointerDown.bind(this);
     this._onPointerMove = this._onPointerMove.bind(this);
     this._onPointerUp = this._onPointerUp.bind(this);
-    this.modelSlideHandlers = null;
+    this.modelMoveHandlers = null;
     this.slidePermitted = false;
     this.pointerDownPos = null;
     this.slideTriggerDistance = 40;
@@ -36,11 +36,11 @@ export default class GameView {
   }
 
   bindModelHandlers(handlers) {
-    this.modelSlideHandlers = handlers.slide;
+    this.modelMoveHandlers = handlers.gameMove;
   }
 
   unbindModelHandlers() {
-    this.modelSlideHandlers = null;
+    this.modelMoveHandlers = null;
   }
 
   addSlideListeners() {
@@ -95,16 +95,16 @@ export default class GameView {
         this.slidePermitted = false;
         switch(e.code) {
           case 'ArrowLeft':
-            this.modelSlideHandlers.slideLeft();
+            this.modelMoveHandlers.moveLeft();
             break;
           case 'ArrowUp':
-            this.modelSlideHandlers.slideUp();
+            this.modelMoveHandlers.moveUp();
             break;
           case 'ArrowRight':
-            this.modelSlideHandlers.slideRight();
+            this.modelMoveHandlers.moveRight();
             break;
           case 'ArrowDown':
-            this.modelSlideHandlers.slideDown();
+            this.modelMoveHandlers.moveDown();
             break;
         }
       }
@@ -153,16 +153,16 @@ export default class GameView {
       this.slidePermitted = false;
       this.pointerDownPos = null;
       if (horizontalDistance > this.slideTriggerDistance) {
-        this.modelSlideHandlers.slideRight();
+        this.modelMoveHandlers.moveRight();
       }
       else if (horizontalDistance < -this.slideTriggerDistance) {
-        this.modelSlideHandlers.slideLeft();
+        this.modelMoveHandlers.moveLeft();
       }
       else if (verticalDistance > this.slideTriggerDistance) {
-        this.modelSlideHandlers.slideDown();
+        this.modelMoveHandlers.moveDown();
       }
       else if (verticalDistance < -this.slideTriggerDistance) {
-        this.modelSlideHandlers.slideUp();
+        this.modelMoveHandlers.moveUp();
       }
     }
   }

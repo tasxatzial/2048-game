@@ -80,28 +80,31 @@ export default class GameModel extends EventEmitter {
     this.raiseChange('purgeModelEvent');
   }
 
-  slideLeft() {
+  moveLeft() {
     this.grid.slideLeft();
-    this._raiseEventAfterSlide();
+    this._postMove();
   }
 
-  slideRight() {
+  moveRight() {
     this.grid.slideRight();
-    this._raiseEventAfterSlide();
+    this._postMove();
   }
 
-  slideUp() {
+  moveUp() {
     this.grid.slideUp();
-    this._raiseEventAfterSlide();
+    this._postMove();
   }
 
-  slideDown() {
+  moveDown() {
     this.grid.slideDown();
-    this._raiseEventAfterSlide();
+    this._postMove();
   }
 
-  _raiseEventAfterSlide() {
+  _postMove() {
+    this.grid.clearNewTileFlags();
+    this.grid.updateMergeScore();
     if (this.grid.hasChangedAfterSlide()) {
+      this.grid.addTiles();
       this.slideCount++;
       const mergeScore = this.grid.getMergeScore();
       if (mergeScore !== null) {
