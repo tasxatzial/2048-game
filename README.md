@@ -17,11 +17,11 @@ This repo contains my own implementation from scratch.
 
 ## Customization
 
-Although the current UI features the classic 2048 game, you can easily edit the code to create a custom game or even add some of the options below directly to the UI.
+Although the current UI features the classic 2048 game, we can easily edit the code to create a custom game or even add some of the options below directly to the UI.
 
 ### Game
 
-The main game class is [GameModel.js](src/js/GameModel.js), which supports passing an object as an argument in its costructor. Possible keys of this object are:
+We can define a custom game by creating an object with the following possible keys:
 
 * `gameOptions`: An object with possible keys:
   * `winConditionFnName`: The function name in [WinCondition.js](src/js/gameModel/WinCondition.js). Specifies the win condition of a game.
@@ -42,7 +42,7 @@ If a key isn't defined, the values will default to those of the classic 2048 gam
 
 ### Board
 
-You can customize the appearance and behavior of the board by defining the following custom properties in the root element of [board.css](src/css/board.css).
+We can customize the appearance and behavior of the board by defining the following custom properties in the root element of [board.css](src/css/board.css).
 
 * `--cell-size`: Size of each cell. Default is `4.5rem`.
 * `--cell-gap`: Gap size between cells. Default is `0.25rem`.
@@ -57,11 +57,9 @@ The font size of each tile is handled automatically based on the length of the t
 
 #### Tile colors
 
-Tile colors are handled automatically. Instead of always assigning the same color to a specific value, the program only ensures that all tiles with the same value share the same color. As a result, the board's coloring works properly in custom-defined games that use different tile values than those in the classic 2048 game.
+Tile colors are handled automatically. Instead of always assigning the same color to a specific value, the app only ensures that all tiles with the same value share the same color. As a result, the board's coloring works properly in custom-defined games that use different tile values than those in the classic 2048 game.
 
 All colors are defined in [BoardViewColorModel.js](src/js/gameView/BoardViewColorModel.js) as an array. The last value in the array corresponds to a tile with a white background and black font color. This entry is used for a tile in a board that is already using all previous colors.
-
-Feel free to edit the file if you want to add, remove, or adjust any of them.
 
 ## Creating a custom game - Example
 
