@@ -1,6 +1,8 @@
 import Model from './Model.js';
 import View from './View.js';
 
+const pageLoadingEl = document.querySelector('.js-page-loading');
+pageLoadingEl.remove();
 
 const model = new Model();
 const view = new View();

@@ -74,6 +74,11 @@ p {
   margin-bottom: 2rem;
 }
 
+.page-loading {
+  font-size: 2rem;
+  text-align: center;
+}
+
 /*------------------------------------*\
   #CONTAINERS
 \*------------------------------------*/
