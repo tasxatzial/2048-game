@@ -44,9 +44,9 @@ If a key isn't defined, the values will default to those of the classic 2048 gam
 
 You can customize the appearance and behavior of the board by defining the following custom properties in the root element of [board.css](src/css/board.css).
 
-* `--cell-size`: Size of each cell. Default is `4.5rem`;
-* `--cell-gap`: Gap size between cells. Default is `--cell-size / 18`;
-* `--cell-border-radius`: Border radius of cells and board. Default is `--cell-size / 18`;
+* `--cell-size`: Size of each cell. Default is `4.5rem`.
+* `--cell-gap`: Gap size between cells. Default is `0.25rem`.
+* `--cell-border-radius`: Border radius of cells and board. Default is `0.25rem`.
 * `--horizontal-slide-duration`: Duration of a slide across the horizontal axis: Default is `125ms`.
 * `--vertical-slide-duration`: Duration of a slide across the vertical axis: Default is `125ms`.
 * `--zoomin-duration`: Duration of the animation for merging and adding new tiles: Default is `125ms`.
