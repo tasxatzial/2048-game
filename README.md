@@ -1,6 +1,6 @@
 # 2048 game
 
-[2048](https://en.wikipedia.org/wiki/2048_(video_game)) is a game created by Gabriele Cirulli. The objective is to combine tiles with the same numbers to reach the 2048 tile.
+[2048](https://en.wikipedia.org/wiki/2048_(video_game)) is a game created by [Gabriele Cirulli](https://github.com/gabrielecirulli). The objective is to combine tiles with the same numbers to reach the 2048 tile.
 
 This repo contains my own implementation from scratch.
 
@@ -25,7 +25,7 @@ The main game class is [GameModel.js](src/js/GameModel.js), which supports passi
 
 * `gameOptions`: An object with possible keys:
   * `winConditionFnName`: The function name in [WinCondition.js](src/js/gameModel/WinCondition.js). Specifies the win condition of a game.
-  * `loseConditionFnName`:The function name in [LoseCondition.js](src/js/gameModel/LoseCondition.js). Specifies the lose condition of a game.
+  * `loseConditionFnName`: The function name in [LoseCondition.js](src/js/gameModel/LoseCondition.js). Specifies the lose condition of a game.
 * `gridOptions`: An object with possible keys:
   * `newTileFnName`: The function name in [NewTile.js](src/js/gameModel/NewTile.js). Specifies how to add new tiles after each move, supporting the addition of multiple tiles.
   * `mergeResultFnName`: The function name in [MergeResult.js](src/js/gameModel/MergeResult.js). Specifies the new value of two merged tiles.
@@ -33,9 +33,6 @@ The main game class is [GameModel.js](src/js/GameModel.js), which supports passi
   * `mergeConditionFnName`: The function name in [MergeCondition.js](src/js/gameModel/MergeCondition.js). Specifies when two tiles can merge. The first parameter corresponds to the tile closest to the edge in the slide direction.
   * `gridBooleanFnName`: The function name in [GridBoolean.js](src/js/gameModel/GridBoolean.js). Specifies a two dimensional boolean array that represents the rows of the board. A value of 1 indicates that the corresponding cell is enabled and can accept tiles, while a value of 0 indicates a disabled cell where tiles cannot occupy or slide through. Disabled cells will display as squares with black background and a white border.
   * `mergeAll`: `false` if we want only two tiles to merge, else `true`. When `true`, the tile closest to the edge in the slide direction will be compared against each of the other tiles.
-
-  **Note**: Do not create a grid with only one row or column, as this will cause text overflow issues when the end game overlay is shown.
-
 * `initialTiles`: An array of initial tiles. Each tile should be an object with the following required keys:
   * `row`: Row of the tile.
   * `column`: Column of the tile.
@@ -62,9 +59,9 @@ The font size of each tile is handled automatically based on the length of the t
 
 Tile colors are handled automatically. Instead of always assigning the same color to a specific value, the program only ensures that all tiles with the same value share the same color. As a result, the board's coloring works properly in custom-defined games that use different tile values than those in the classic 2048 game.
 
-All colors are defined in [BoardViewColorModel.js](src/js/gameView/BoardViewColorModel.js) as an array. Currently, there are 20 light background colors that use a black font color and 18 dark background colors that use a white font color. The last value in the array corresponds to a tile with a white background and black font color. This entry is used for a tile in a board that is already using all 38 colors, meaning a board that has 38 tiles with different values.
+All colors are defined in [BoardViewColorModel.js](src/js/gameView/BoardViewColorModel.js) as an array. The last value in the array corresponds to a tile with a white background and black font color. This entry is used for a tile in a board that is already using all previous colors.
 
-Feel free to edit [BoardViewColorModel.js](src/js/gameView/BoardViewColorModel.js) if you want to add, remove, or adjust any of them.
+Feel free to edit the file if you want to add, remove, or adjust any of them.
 
 ## Creating a custom game - Example
 
@@ -86,7 +83,9 @@ and in [GridBoolean.js](src/js/gameModel/GridBoolean.js):
 
 ```js
 static threeByThreeNoCenter() {
-  return [[1, 1, 1], [1, 0, 1], [1, 1, 1]]
+  return [[1, 1, 1],
+          [1, 0, 1],
+          [1, 1, 1]]
 }
 ```
 
@@ -106,11 +105,11 @@ game = {
 }
 ```
 
-and pass it as an argument to the `startGame` game function in [script.js](src/js/script.js):
+and pass it as an argument to the `startGame` function in [script.js](src/js/script.js) like so:
 
 ```js
 view.bindStartNewGame(() => {
-  startGame(game)
+  startGame({game})
 })
 ```
 
