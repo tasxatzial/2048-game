@@ -125,12 +125,12 @@ export default class BoardView {
             if (cellObj.column !== tileObj.column || cellObj.row !== tileObj.row) {
               const finalOpacity = i > 0 && cellObj.mergeValue !== null ? 0 : 1;
               const tileStyle = window.getComputedStyle(slidingTile);
-              const cellSize = Number(tileStyle.getPropertyValue('--_cell-size').slice(0, -3));
-              const cellGap = Number(tileStyle.getPropertyValue('--_cell-gap').slice(0, -3));
+              const cellSize = Number(tileStyle.getPropertyValue('--cell-size').slice(0, -3));
+              const cellGap = Number(tileStyle.getPropertyValue('--cell-gap').slice(0, -3));
               slidingTile.style.setProperty('--final-opacity', finalOpacity);
               if (cellObj.column !== tileObj.column) {
                 const x = 1 - cellSize / (Math.abs(cellObj.column - tileObj.column) * (cellSize + cellGap));
-                const slideDuration = Number(tileStyle.getPropertyValue('--_horizontal-slide-duration').slice(0, -2));
+                const slideDuration = Number(tileStyle.getPropertyValue('--horizontal-slide-duration').slice(0, -2));
                 slidingTile.style.setProperty('--cell-column', cellObj.column);
                 slidingTile.style.setProperty('--tile-column', tileObj.column);
                 slidingTile.style.setProperty('--opacity-delay', slideDuration * x + 'ms');
@@ -140,7 +140,7 @@ export default class BoardView {
               }
               else if (cellObj.row !== tileObj.row) {
                 const x = 1 - cellSize / (Math.abs(cellObj.row - tileObj.row) * (cellSize + cellGap));
-                const slideDuration = Number(tileStyle.getPropertyValue('--_vertical-slide-duration').slice(0, -2));
+                const slideDuration = Number(tileStyle.getPropertyValue('--vertical-slide-duration').slice(0, -2));
                 slidingTile.style.setProperty('--cell-row', cellObj.row);
                 slidingTile.style.setProperty('--tile-row', tileObj.row);
                 slidingTile.style.setProperty('--opacity-delay', (x * slideDuration) + 'ms');

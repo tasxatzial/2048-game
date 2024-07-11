@@ -1,26 +1,23 @@
 :root {
-  /* Define custom options here */
   --cell-size: 4.5rem;
   --cell-gap: 0.25rem;
-  /* --cell-border-radius: 0.25rem; */
-  /* --horizontal-slide-duration: 125ms; */
-  /* --vertical-slide-duration: 125ms; */
-  /* --zoomin-duration: 125ms; */
+  --cell-border-radius: 0.25rem;
+  --horizontal-slide-duration: 125ms;
+  --vertical-slide-duration: 125ms;
+  --zoomin-duration: 125ms;
 }
 
 .grid {
-  --_cell-size: var(--cell-size, 4.5rem);
-  --_cell-gap: var(--cell-gap, calc(var(--_cell-size) / 18));
   background-color: black;
   display: grid;
-  gap: var(--_cell-gap);
-  grid-template-columns: repeat(var(--grid-columns), var(--_cell-size));
-  grid-template-rows: repeat(var(--grid-rows), var(--_cell-size));
-  height: calc(var(--grid-rows) * (var(--_cell-size) + var(--cell-gap)) + var(--cell-gap));
-  padding: var(--_cell-gap);
+  gap: var(--cell-gap);
+  grid-template-columns: repeat(var(--grid-columns), var(--cell-size));
+  grid-template-rows: repeat(var(--grid-rows), var(--cell-size));
+  height: calc(var(--grid-rows) * (var(--cell-size) + var(--cell-gap)) + var(--cell-gap));
+  padding: var(--cell-gap);
   position: relative;
   user-select: none;
-  width: calc(var(--grid-columns) * (var(--_cell-size) + var(--cell-gap)) + var(--cell-gap));
+  width: calc(var(--grid-columns) * (var(--cell-size) + var(--cell-gap)) + var(--cell-gap));
 }
 
 .cell {
@@ -33,45 +30,40 @@
 }
 
 .tile {
-  --_font-scale-factor: var(--font-scale-factor, 1);
-  --_horizontal-slide-duration: var(--horizontal-slide-duration, 125ms);
-  --_vertical-slide-duration: var(--vertical-slide-duration, 125ms);
+  --_font-scale-factor: 1;
   align-items: center;
   display: flex;
   font-family: Verdana, Geneva, sans-serif;
-  font-size: calc(var(--_cell-size) / 2.6 / var(--_font-scale-factor));
+  font-size: calc(var(--cell-size) / 2.6 / var(--_font-scale-factor));
   font-weight: bold;
-  height: var(--_cell-size);
+  height: var(--cell-size);
   justify-content: center;
   position: relative;
-  width: var(--_cell-size);
+  width: var(--cell-size);
 }
 
 .grid,
 .cell,
-.tile,
-.game-status-container {
-  --_border-radius: var(--cell-border-radius, calc(var(--_cell-size) / 18));
-  border-radius: var(--_border-radius);
+.tile {
+  border-radius: var(--cell-border-radius);
 }
 
 .horizontal-slide {
   opacity: var(--final-opacity);
-  transform: translateX(calc((var(--_cell-size) + var(--_cell-gap)) * (var(--cell-column) - var(--tile-column))));
-  transition: transform var(--_horizontal-slide-duration) linear,
+  transform: translateX(calc((var(--cell-size) + var(--cell-gap)) * (var(--cell-column) - var(--tile-column))));
+  transition: transform var(--horizontal-slide-duration) linear,
               opacity var(--opacity-duration) linear var(--opacity-delay);
 }
 
 .vertical-slide {
   opacity: var(--final-opacity);
-  transform: translateY(calc((var(--_cell-size) + var(--_cell-gap)) * (var(--cell-row) - var(--tile-row))));
-  transition: transform var(--_vertical-slide-duration) linear,
+  transform: translateY(calc((var(--cell-size) + var(--cell-gap)) * (var(--cell-row) - var(--tile-row))));
+  transition: transform var(--vertical-slide-duration) linear,
               opacity var(--opacity-duration) linear var(--opacity-delay);
 }
 
 .zoomin {
-  --_duration: var(--zoomin-duration, 125ms);
-  animation: zoomin var(--_duration) linear;
+  animation: zoomin var(--zoomin-duration) linear;
 }
 
 @keyframes zoomin {
@@ -130,12 +122,14 @@
 \*------------------------------------*/
 
 .end-game-overlay {
+  --_grid-rows: max(2, var(--grid-rows));
+  --_grid-columns: max(3, var(--grid-columns));
   align-items: center;
   background-color: rgba(255, 255, 240, 0.9);
   border-radius: inherit;
   display: flex;
   flex-direction: column;
-  height: max(calc(var(--grid-rows) * (var(--_cell-size) + var(--cell-gap)) + var(--cell-gap)), calc(2 * (var(--_cell-size) + var(--cell-gap)) + var(--cell-gap)));
+  height: calc(var(--_grid-rows) * (var(--cell-size) + var(--cell-gap)) + var(--cell-gap));
   justify-content: center;
   left: 50%;
   opacity: 0;
@@ -143,7 +137,7 @@
   transform: translateX(-50%);
   transition: opacity 50ms ease-out, visibility 0s 50ms;
   visibility: hidden;
-  width: max(calc(var(--grid-columns) * (var(--_cell-size) + var(--cell-gap)) + var(--cell-gap)), calc(3 * (var(--_cell-size) + var(--cell-gap)) + var(--cell-gap)));
+  width: calc(var(--_grid-columns) * (var(--cell-size) + var(--cell-gap)) + var(--cell-gap));
 }
 
 .js-visible.end-game-overlay {
