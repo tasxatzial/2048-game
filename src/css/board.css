@@ -124,3 +124,37 @@
 .tile-font-size-10 {
   --_font-scale-factor: 3.2;
 }
+
+/*------------------------------------*\
+  #END-GAME-OVERLAY
+\*------------------------------------*/
+
+.end-game-overlay {
+  align-items: center;
+  background-color: rgba(255, 255, 240, 0.9);
+  border-radius: inherit;
+  display: flex;
+  flex-direction: column;
+  height: max(calc(var(--grid-rows) * (var(--_cell-size) + var(--cell-gap)) + var(--cell-gap)), calc(2 * (var(--_cell-size) + var(--cell-gap)) + var(--cell-gap)));
+  justify-content: center;
+  left: 50%;
+  opacity: 0;
+  position: absolute;
+  transform: translateX(-50%);
+  transition: opacity 50ms ease-out, visibility 0s 50ms;
+  visibility: hidden;
+  width: max(calc(var(--grid-columns) * (var(--_cell-size) + var(--cell-gap)) + var(--cell-gap)), calc(3 * (var(--_cell-size) + var(--cell-gap)) + var(--cell-gap)));
+}
+
+.js-visible.end-game-overlay {
+  opacity: 1;
+  transition: opacity 300ms ease-out, visibility 0s 0s;
+  visibility: visible;
+}
+
+.end-game-msg {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 0.75em;
+  text-align: center;
+}
