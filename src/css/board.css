@@ -129,15 +129,16 @@
   border-radius: inherit;
   display: flex;
   flex-direction: column;
-  height: calc(var(--_grid-rows) * (var(--cell-size) + var(--cell-gap)) + var(--cell-gap));
+  height: calc(var(--_grid-rows) * (var(--cell-size) + var(--cell-gap)) + var(--cell-gap) + 1px);
   justify-content: center;
   left: 50%;
   opacity: 0;
   position: absolute;
-  transform: translateX(-50%);
+  top: 50%;
+  transform: translate(-50%, -50%);
   transition: opacity 50ms ease-out, visibility 0s 50ms;
   visibility: hidden;
-  width: calc(var(--_grid-columns) * (var(--cell-size) + var(--cell-gap)) + var(--cell-gap));
+  width: calc(var(--_grid-columns) * (var(--cell-size) + var(--cell-gap)) + var(--cell-gap) + 1px);
 }
 
 .js-visible.end-game-overlay {
