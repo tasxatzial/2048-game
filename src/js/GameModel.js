@@ -65,7 +65,7 @@ export default class GameModel extends EventEmitter {
     if (this.winConditionFn(this.grid)) {
       return {...json, isWon: true}
     }
-    else if (this.loseConditionFn(this.grid)) {
+    else if (this.loseConditionFn(this.grid) || LoseCondition.default(this.grid)) {
       return {...json, isLost: true}
     }
     return json;
