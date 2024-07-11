@@ -19,7 +19,7 @@ body {
   font-family: 'Segoe UI', Geneva, Verdana, sans-serif;
   margin: 0;
   min-height: 100vh;
-  padding-bottom: 2rem;
+  padding-bottom: 3rem;
   padding-top: 3vh;
 }
 
@@ -71,7 +71,6 @@ p {
 .instructions {
   font-size: 1.25rem;
   line-height: 1.35;
-  margin-bottom: 2rem;
 }
 
 .page-loading {
@@ -82,6 +81,10 @@ p {
 /*------------------------------------*\
   #CONTAINERS
 \*------------------------------------*/
+
+.header-content {
+  margin-bottom: 2rem;
+}
 
 .outer-container {
   margin: 0 auto;
