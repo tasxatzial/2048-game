@@ -69,7 +69,7 @@ export const COLORS = [
   {id:6,  color: 'black', backgroundColor: 'hsl(60, 75%, 50%)'},
   {id:7,  color: 'black', backgroundColor: 'hsl(0, 71%, 71%)'},
   {id:8,  color: 'black', backgroundColor: 'hsl(150, 88%, 44%)'},
-  {id:9,  color: 'black', backgroundColor: 'hsl(302, 55%, 70%)'},
+  {id:9,  color: 'black', backgroundColor: 'hsl(302, 55%, 75%)'},
   {id:10, color: 'black', backgroundColor: 'hsl(195, 53%, 79%)'},
   {id:11, color: 'black', backgroundColor: 'hsl(0, 29%, 72%)'},
   {id:12, color: 'black', backgroundColor: 'hsl(20, 85%, 57%)'},
