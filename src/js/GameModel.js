@@ -4,11 +4,8 @@ import LoseCondition from './gameModel/LoseCondition.js';
 import EventEmitter from './EventEmitter.js';
 
 export default class GameModel extends EventEmitter {
-  constructor(json) {
+  constructor(json = {}) {
     super();
-    if (!json) {
-      json = {};
-    }
     if (json.grid) {
       const {grid, gameOptions, score, slideCount} = json;
       this.grid = new Grid({grid});
@@ -21,8 +18,8 @@ export default class GameModel extends EventEmitter {
     }
     else {
       const {gridOptions, initialTiles} = json;
-      const gameOptions = json.gameOptions || {};
       this.grid = new Grid({options: gridOptions});
+      const gameOptions = json.gameOptions || {};
       const {winConditionFnName, loseConditionFnName} = gameOptions;
       if (winConditionFnName) {
         this.winConditionFnName = gameOptions.winConditionFnName;

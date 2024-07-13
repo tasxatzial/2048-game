@@ -6,10 +6,7 @@ import MergeCondition from './MergeCondition.js';
 import NewTile from './NewTile.js';
 
 export default class Grid {
-  constructor(json) {
-    if (!json) {
-      json = {};
-    }
+  constructor(json = {}) {
     if (json.grid) {
       const {gridArray, newTileFnName, mergeResultFnName, mergeScoreFnName, mergeConditionFnName, gridBooleanFnName, mergeAll} = json.grid;
       this.newTileFnName = newTileFnName;
