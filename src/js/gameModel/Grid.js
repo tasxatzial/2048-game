@@ -26,8 +26,8 @@ export default class Grid {
       this.cols = this._createColumns(this.gridBoolean);
     }
     else {
-      const options = json.options || {};
-      const {newTileFnName, mergeResultFnName, mergeScoreFnName, mergeConditionFnName, gridBooleanFnName, mergeAll} = options;
+      const gridOptions = json.gridOptions || {};
+      const {newTileFnName, mergeResultFnName, mergeScoreFnName, mergeConditionFnName, gridBooleanFnName, mergeAll} = gridOptions;
       if (gridBooleanFnName) {
         this.gridBoolean = GridBoolean[gridBooleanFnName]();
         this.gridBooleanFnName = gridBooleanFnName;

@@ -18,7 +18,7 @@ export default class GameModel extends EventEmitter {
     }
     else {
       const {gridOptions, initialTiles} = json;
-      this.grid = new Grid({options: gridOptions});
+      this.grid = new Grid({gridOptions});
       const gameOptions = json.gameOptions || {};
       const {winConditionFnName, loseConditionFnName} = gameOptions;
       if (winConditionFnName) {
