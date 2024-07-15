@@ -30,10 +30,10 @@ model.addChangeListener('initializeModelEvent', () => {
   view.initialize({bestScore});
 });
 
-model.addChangeListener('initializeGameModelEvent', () => {
+model.addChangeListener('initializeGameModelEvent', async () => {
   const game = model.getGameJSON();
   localStorage.setItem('game-2048', JSON.stringify(game));
-  view.initializeGame({game, modelHandlers});
+  await view.initializeGame({game, modelHandlers});
 });
 
 model.addChangeListener('gameMoveEvent', async () => {
