@@ -122,23 +122,20 @@
 \*------------------------------------*/
 
 .end-game-overlay {
-  --_grid-rows: max(2, var(--grid-rows));
-  --_grid-columns: max(3, var(--grid-columns));
   align-items: center;
   background-color: rgba(255, 255, 240, 0.9);
   border-radius: inherit;
   display: flex;
   flex-direction: column;
-  height: calc(var(--_grid-rows) * (var(--cell-size) + var(--cell-gap)) + var(--cell-gap) + 1px);
+  height: max(calc(100% + 1px), 11rem);
   justify-content: center;
   left: 50%;
   opacity: 0;
   position: absolute;
-  top: 50%;
-  transform: translate(-50%, -50%);
+  transform: translateX(-50%);
   transition: opacity 50ms ease-out, visibility 0s 50ms;
   visibility: hidden;
-  width: calc(var(--_grid-columns) * (var(--cell-size) + var(--cell-gap)) + var(--cell-gap) + 1px);
+  width: max(calc(100% + 1px), 11rem);
 }
 
 .js-visible.end-game-overlay {
