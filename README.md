@@ -13,7 +13,7 @@ This repo contains my own implementation from scratch.
 ## Implementation
 
 * Variation of the [MVC](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller) pattern.
-* Promises are used to ensure correct functionality and that animations complete properly.
+* Promises are used to ensure that animations complete properly and to prevent multiple moves before the animations finish.
 
 ## Customization
 
@@ -28,9 +28,9 @@ We can define a custom game by creating an object with the following possible ke
   * `loseConditionFnName`: The function name in [LoseCondition.js](src/js/gameModel/LoseCondition.js). Specifies the lose condition of a game.
 * `gridOptions`: An object with possible keys:
   * `newTileFnName`: The function name in [NewTile.js](src/js/gameModel/NewTile.js). Specifies how to add new tiles after each move, supporting the addition of multiple tiles.
-  * `mergeResultFnName`: The function name in [MergeResult.js](src/js/gameModel/MergeResult.js). Specifies the new value of two merged tiles.
-  * `mergeScoreFnName`: The function name in [MergeScore.js](src/js/gameModel/MergeScore.js). Specifies the extra score from merging two tiles.
-  * `mergeConditionFnName`: The function name in [MergeCondition.js](src/js/gameModel/MergeCondition.js). Specifies when two tiles can merge. The first parameter corresponds to the tile closest to the edge in the slide direction.
+  * `mergeResultFnName`: The function name in [MergeResult.js](src/js/gameModel/MergeResult.js). Specifies the new tile value obtained from merging all tiles in a cell.
+  * `mergeScoreFnName`: The function name in [MergeScore.js](src/js/gameModel/MergeScore.js). Specifies the extra score obtained from merging all tiles in a cell.
+  * `mergeConditionFnName`: The function name in [MergeCondition.js](src/js/gameModel/MergeCondition.js). Specifies when tiles can merge. The first parameter corresponds to the tile closest to the edge in the slide direction.
   * `gridBooleanFnName`: The function name in [GridBoolean.js](src/js/gameModel/GridBoolean.js). Specifies a two dimensional boolean array that represents the rows of the board. A value of 1 indicates that the corresponding cell is enabled and can accept tiles, while a value of 0 indicates a disabled cell where tiles cannot occupy or slide through. Disabled cells will display as squares with black background and a white border.
   * `mergeAll`: `false` if we want only two tiles to merge, else `true`. When `true`, the tile closest to the edge in the slide direction will be compared against each of the other tiles.
 * `initialTiles`: An array of initial tiles. Each tile should be an object with the following required keys:
