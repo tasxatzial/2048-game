@@ -181,7 +181,7 @@ export default class Grid {
       }
       for (let j = i + 1; j < cellArray.length; j++) {
         if (cellArray[j].hasTile()) {
-          if (cellArray[j].canMergeTile(cellArray[i])) {
+          if (cellArray[j].canMergeTileFrom(cellArray[i])) {
             cellArray[j].setMergeTileFrom(cellArray[i]);
             this.changedAfterSlide = true;
           }
@@ -236,7 +236,7 @@ export default class Grid {
   canSlide() {
     function _canSlide(cellArray) {
       for (let i = 0; i < cellArray.length - 1; i++) {
-        if (!cellArray[i].hasTile() || !cellArray[i + 1].hasTile() || cellArray[i].canMergeTile(cellArray[i + 1])) {
+        if (!cellArray[i].hasTile() || !cellArray[i + 1].hasTile() || cellArray[i].canMergeTileFrom(cellArray[i + 1])) {
           return true;
         }
       }

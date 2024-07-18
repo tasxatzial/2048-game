@@ -70,7 +70,7 @@ export default class BoardView {
     const promises = [];
     this.boardViewColorModel.updateTileColors(gridArray);
     this.gridRows = gridArray.length;
-    this.gridCols = this.gridRows? gridArray[0].length : 0;
+    this.gridCols = this.gridRows ? gridArray[0].length : 0;
     this.grid.classList.add('grid');
     this.grid.style.setProperty('--grid-rows', this.gridRows);
     this.grid.style.setProperty('--grid-columns', this.gridCols);
@@ -81,8 +81,8 @@ export default class BoardView {
         if (cellObj) {
           cell.classList.add('cell');
           const innerCell = document.createElement('div');
-          if (cellObj.tile) {
-            this._initializeTile(innerCell, cellObj.tile.value);
+          if (cellObj.tiles[0]) {
+            this._initializeTile(innerCell, cellObj.tiles[0].value);
             innerCell.classList.add('tile');
             if (cellObj.newTileAdded) {
               promises.push(this._waitForEvent(innerCell, 'animationend'));
@@ -116,38 +116,38 @@ export default class BoardView {
           continue;
         }
         let zIndex = 100;
-        const slidingTiles = [cellObj.tile, ...cellObj.mergeTiles];
-        for (let i = 0; i < slidingTiles.length; i++) {
-          const tileObj = slidingTiles[i];
-          if (tileObj) {
-            const slidingTile = cells.item(tileObj.row * gridArray[0].length + tileObj.column).children[0];
-            slidingTile.style.zIndex = zIndex--;
-            if (cellObj.column !== tileObj.column || cellObj.row !== tileObj.row) {
-              const finalOpacity = i > 0 && cellObj.mergeValue !== null ? 0 : 1;
-              const tileStyle = window.getComputedStyle(slidingTile);
-              const cellSize = Number(tileStyle.getPropertyValue('--cell-size').slice(0, -3));
-              const cellGap = Number(tileStyle.getPropertyValue('--cell-gap').slice(0, -3));
-              slidingTile.style.setProperty('--final-opacity', finalOpacity);
-              if (cellObj.column !== tileObj.column) {
-                const x = 1 - cellSize / (Math.abs(cellObj.column - tileObj.column) * (cellSize + cellGap));
-                const slideDuration = Number(tileStyle.getPropertyValue('--horizontal-slide-duration').slice(0, -2));
-                slidingTile.style.setProperty('--cell-column', cellObj.column);
-                slidingTile.style.setProperty('--tile-column', tileObj.column);
-                slidingTile.style.setProperty('--opacity-delay', slideDuration * x + 'ms');
-                slidingTile.style.setProperty('--opacity-duration', slideDuration * (1 - x) + 'ms');
-                promises.push(this._waitForEvent(slidingTile, 'transitionend'));
-                slidingTile.classList.add('horizontal-slide');
-              }
-              else if (cellObj.row !== tileObj.row) {
-                const x = 1 - cellSize / (Math.abs(cellObj.row - tileObj.row) * (cellSize + cellGap));
-                const slideDuration = Number(tileStyle.getPropertyValue('--vertical-slide-duration').slice(0, -2));
-                slidingTile.style.setProperty('--cell-row', cellObj.row);
-                slidingTile.style.setProperty('--tile-row', tileObj.row);
-                slidingTile.style.setProperty('--opacity-delay', (x * slideDuration) + 'ms');
-                slidingTile.style.setProperty('--opacity-duration', slideDuration * (1 - x) + 'ms');
-                promises.push(this._waitForEvent(slidingTile, 'transitionend'));
-                slidingTile.classList.add('vertical-slide');
-              }
+        for (let i = 0; i < cellObj.tiles.length; i++) {
+          const tileObj = cellObj.tiles[i];
+          if (!tileObj) {
+            continue;
+          }
+          const slidingTile = cells.item(tileObj.row * gridArray[0].length + tileObj.column).children[0];
+          slidingTile.style.zIndex = zIndex--;
+          if (cellObj.column !== tileObj.column || cellObj.row !== tileObj.row) {
+            const finalOpacity = i > 0 && cellObj.mergeValue !== null ? 0 : 1;
+            const tileStyle = window.getComputedStyle(slidingTile);
+            const cellSize = Number(tileStyle.getPropertyValue('--cell-size').slice(0, -3));
+            const cellGap = Number(tileStyle.getPropertyValue('--cell-gap').slice(0, -3));
+            slidingTile.style.setProperty('--final-opacity', finalOpacity);
+            if (cellObj.column !== tileObj.column) {
+              const x = 1 - cellSize / (Math.abs(cellObj.column - tileObj.column) * (cellSize + cellGap));
+              const slideDuration = Number(tileStyle.getPropertyValue('--horizontal-slide-duration').slice(0, -2));
+              slidingTile.style.setProperty('--cell-column', cellObj.column);
+              slidingTile.style.setProperty('--tile-column', tileObj.column);
+              slidingTile.style.setProperty('--opacity-delay', slideDuration * x + 'ms');
+              slidingTile.style.setProperty('--opacity-duration', slideDuration * (1 - x) + 'ms');
+              promises.push(this._waitForEvent(slidingTile, 'transitionend'));
+              slidingTile.classList.add('horizontal-slide');
+            }
+            else if (cellObj.row !== tileObj.row) {
+              const x = 1 - cellSize / (Math.abs(cellObj.row - tileObj.row) * (cellSize + cellGap));
+              const slideDuration = Number(tileStyle.getPropertyValue('--vertical-slide-duration').slice(0, -2));
+              slidingTile.style.setProperty('--cell-row', cellObj.row);
+              slidingTile.style.setProperty('--tile-row', tileObj.row);
+              slidingTile.style.setProperty('--opacity-delay', (x * slideDuration) + 'ms');
+              slidingTile.style.setProperty('--opacity-duration', slideDuration * (1 - x) + 'ms');
+              promises.push(this._waitForEvent(slidingTile, 'transitionend'));
+              slidingTile.classList.add('vertical-slide');
             }
           }
         }
@@ -172,9 +172,9 @@ export default class BoardView {
         innerCell.removeAttribute('style');
         innerCell.classList = '';
         innerCell.textContent = '';
-        if (cellObj.tile && !cellObj.newTileAdded) {
+        if (cellObj.tiles[0] && !cellObj.newTileAdded) {
           innerCell.classList.add('tile');
-          const tileValue = cellObj.mergeValue !== null ? cellObj.mergeValue : cellObj.tile.value;
+          const tileValue = cellObj.mergeValue !== null ? cellObj.mergeValue : cellObj.tiles[0].value;
           this._initializeTile(innerCell, tileValue);
           if (cellObj.mergeValue !== null && cellObj.mergeValue !== undefined) {
             promises.push(this._waitForEvent(innerCell, 'animationend'));
@@ -201,7 +201,7 @@ export default class BoardView {
         const innerCell = cell.children[0];
         if (cellObj.newTileAdded) {
           promises.push(this._waitForEvent(innerCell, 'animationend'));
-          this._initializeTile(innerCell, cellObj.tile.value);
+          this._initializeTile(innerCell, cellObj.tiles[0].value);
           innerCell.addEventListener('animationend', () => innerCell.classList.remove('zoomin'), {once: true});
           innerCell.classList.add('tile', 'zoomin');
         }
