@@ -1,8 +1,14 @@
 # 2048 game
 
+**This branch is outdated.**
+
+---
+
 [2048](https://en.wikipedia.org/wiki/2048_(video_game)) is a game created by Gabriele Cirulli. The objective is to combine tiles with the same numbers to reach the 2048 tile.
 
 This repo contains my own implementation from scratch.
+
+
 
 ## Features
 
