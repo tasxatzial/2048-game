@@ -1,11 +1,10 @@
+import Updater from './Updater.js';
 import Model from './Model.js';
 import View from './View.js';
 
-if (localStorage.getItem('game-2048-version') !== '2') {
-  localStorage.removeItem('game-2048');
-  localStorage.removeItem('game-2048-best-score');
-  localStorage.setItem('game-2048-version', '2');
-}
+
+const updater = new Updater();
+updater.update();
 
 const pageLoadingEl = document.querySelector('.js-page-loading');
 pageLoadingEl.remove();
