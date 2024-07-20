@@ -7,10 +7,12 @@ export default class GameModel extends EventEmitter {
   constructor(json = {}) {
     super();
     if (json.grid) {
-      const {grid, gameOptions, score, slideCount} = json;
+      const {grid, gameOptions, score, slideCount, isWon, isLost} = json;
       this.grid = new Grid({grid});
       this.score = score;
       this.slideCount = slideCount;
+      this.isWon = isWon;
+      this.isLost = isLost;
       this.winConditionFnName = gameOptions.winConditionFnName;
       this.winConditionFn = WinCondition[this.winConditionFnName];
       this.loseConditionFnName = gameOptions.loseConditionFnName;
@@ -46,6 +48,7 @@ export default class GameModel extends EventEmitter {
         this.grid.addTiles();
         this.grid.addTiles();
       }
+      this.updateStatus();
     }
   }
 
@@ -57,15 +60,16 @@ export default class GameModel extends EventEmitter {
         loseConditionFnName: this.loseConditionFnName,
       },
       score: this.score,
-      slideCount: this.slideCount
+      slideCount: this.slideCount,
+      isWon: this.isWon,
+      isLost: this.isLost
     };
-    if (this.winConditionFn(this.grid)) {
-      return {...json, isWon: true}
-    }
-    else if (this.loseConditionFn(this.grid) || LoseCondition.default(this.grid)) {
-      return {...json, isLost: true}
-    }
     return json;
+  }
+
+  updateStatus() {
+    this.isWon = this.winConditionFn(this.grid);
+    this.isLost = this.loseConditionFn(this.grid) || LoseCondition.default(this.grid);
   }
 
   getScore() {
@@ -107,6 +111,7 @@ export default class GameModel extends EventEmitter {
       if (mergeScore !== null) {
         this.score += mergeScore;
       }
+      this.updateStatus();
       this.raiseChange('moveEvent');
     }
     else {
