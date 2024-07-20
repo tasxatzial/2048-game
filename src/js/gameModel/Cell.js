@@ -77,7 +77,7 @@ export default class Cell {
     const cond = this.mergeAll ? this.tiles.length > 0 : this.tiles.length === 1;
     return cond
            && cell.hasTile()
-           && this.mergeConditionFn(this.tiles[0].getValue(), cell.tiles[0].getValue());
+           && this.mergeConditionFn(this.tiles[this.tiles.length - 1].getValue(), cell.tiles[0].getValue());
   }
 
   updateMergeResults() {
