@@ -79,11 +79,18 @@ export default class Cell {
     cell.tiles = [];
   }
 
-  canMergeTileFrom(cell) {
+  canAcceptTileValueFrom(cell) {
+    if (cell.tiles.length > 1) {
+      throw new Error("incoming cell has > 1 tiles");
+    }
     const cond = this.mergeAll ? this.tiles.length > 0 : this.tiles.length === 1;
     return cond
            && cell.hasTile()
            && this.mergeConditionFn(this.tiles[this.tiles.length - 1].getValue(), cell.tiles[0].getValue());
+  }
+
+  satisfiesMergeConditionWith(cell) {
+    return this.getValue() && cell.getValue() && this.mergeConditionFn(this.getValue(), cell.getValue());
   }
 
   updateMergeResults() {
