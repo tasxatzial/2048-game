@@ -22,8 +22,14 @@ export default class Cell {
     return this.tiles.length > 0;
   }
 
-  getTile() {
-    return this.tiles[0];
+  getValue() {
+    if (this.mergeValue) {
+      return this.mergeValue;
+    }
+    if (this.hasTile()) {
+      return this.tiles[0].getValue();
+    }
+    return null;
   }
 
   getMergeScore() {

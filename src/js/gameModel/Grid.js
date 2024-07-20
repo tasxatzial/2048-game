@@ -292,7 +292,7 @@ export default class Grid {
 
   hasTile(value) {
     return this.getCells().some(cell => {
-      return cell.hasTile() && cell.getTile().getValue() === value;
+      return cell.hasTile() && cell.getValue() === value;
     });
   }
 
@@ -308,7 +308,7 @@ export default class Grid {
     let maxLength = 0;
     this.getCells().forEach(cell => {
       if (cell.hasTile()) {
-        const tileLength = cell.getTile().getValue().toString().length;
+        const tileLength = cell.getValue().toString().length;
         if (tileLength > maxLength) {
           maxLength = tileLength;
         }
@@ -355,7 +355,7 @@ export default class Grid {
         if (this.gridBoolean[i][j] === 1) {
           const cell = this.cells[i * this.gridBoolean[0].length + j];
           if (cell.hasTile()) {
-            result += (pad + cell.getTile().getValue()).slice(-entryLength);
+            result += (pad + cell.getValue()).slice(-entryLength);
           } else {
             result += (pad + '.').slice(-entryLength);
           }
