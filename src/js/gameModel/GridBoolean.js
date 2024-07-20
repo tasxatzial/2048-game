@@ -1,3 +1,4 @@
+// only rectangular grids are supported
 export default class GridBoolean {
   constructor() {}
 
