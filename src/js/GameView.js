@@ -9,7 +9,7 @@ export default class GameView {
     this._onPointerMove = this._onPointerMove.bind(this);
     this._onPointerUp = this._onPointerUp.bind(this);
     this.modelMoveHandlers = null;
-    this.slidePermitted = false;
+    this.movePermitted = false;
     this.pointerDownPos = null;
     this.slideTriggerDistance = 40;
   }
@@ -77,7 +77,7 @@ export default class GameView {
   }
 
   setReady() {
-    this.slidePermitted = true;
+    this.movePermitted = true;
   }
 
   _showWinMsg() {
@@ -91,8 +91,8 @@ export default class GameView {
   _onKeydown(e) {
     if (['ArrowLeft', 'ArrowUp', 'ArrowRight', 'ArrowDown'].includes(e.code)) {
       e.preventDefault();
-      if (this.slidePermitted) {
-        this.slidePermitted = false;
+      if (this.movePermitted) {
+        this.movePermitted = false;
         switch(e.code) {
           case 'ArrowLeft':
             this.modelMoveHandlers.moveLeft();
@@ -135,7 +135,7 @@ export default class GameView {
   }
 
   _onPointerMove(e) {
-    if (!this.pointerDownPos || !this.slidePermitted) {
+    if (!this.pointerDownPos || !this.movePermitted) {
       return;
     }
     let horizontalDistance;
@@ -150,7 +150,7 @@ export default class GameView {
     }
     if (Math.abs(horizontalDistance) > this.slideTriggerDistance ||
         Math.abs(verticalDistance) > this.slideTriggerDistance) {
-      this.slidePermitted = false;
+      this.movePermitted = false;
       this.pointerDownPos = null;
       if (horizontalDistance > this.slideTriggerDistance) {
         this.modelMoveHandlers.moveRight();

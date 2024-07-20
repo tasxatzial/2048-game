@@ -278,21 +278,17 @@ export default class Grid {
     return this.mergeScore;
   }
 
-  addTiles() {
+  addDefaultTiles() {
     const newTiles = this.newTileFn(this);
-    newTiles.forEach(tile => {
-      const idx = tile.row * this.gridBoolean[0].length + tile.column;
-      this.cells[idx].setTile(tile.value);
-      this.cells[idx].setNewTileAdded(true);
-    });
+    this.addTiles(newTiles);
   }
 
-  initTiles(tiles) {
+  addTiles(tiles) {
     tiles.forEach(tile => {
       const idx = tile.row * this.gridBoolean[0].length + tile.column;
       this.cells[idx].setTile(tile.value);
       this.cells[idx].setNewTileAdded(true);
-    })
+    });
   }
 
   hasTile(value) {

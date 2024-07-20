@@ -4,7 +4,7 @@ export default class BoardView {
   constructor() {
     this.boardViewColorModel = new BoardViewColorModel();
     this.grid = document.createElement('div');
-    this.pointerHandlers = null;
+    this.pointerListeners = null;
   }
 
   _waitForEvent(element, eventType) {
@@ -53,16 +53,16 @@ export default class BoardView {
     this._showEndGameOverlay();
   }
 
-  addPointerListeners(handlers) {
-    this.grid.addEventListener('mousedown', handlers.onMouseDown);
-    this.grid.addEventListener('touchstart', handlers.onTouchStart, {passive: false});
-    this.pointerHandlers = handlers;
+  addPointerListeners(listeners) {
+    this.grid.addEventListener('mousedown', listeners.onMouseDown);
+    this.grid.addEventListener('touchstart', listeners.onTouchStart, {passive: false});
+    this.pointerListeners = listeners;
   }
 
   removePointerListeners() {
-    this.grid.removeEventListener('mousedown', this.pointerHandlers.onMouseDown);
-    this.grid.removeEventListener('touchstart', this.pointerHandlers.onTouchStart);
-    this.pointerHandlers = null;
+    this.grid.removeEventListener('mousedown', this.pointerListeners.onMouseDown);
+    this.grid.removeEventListener('touchstart', this.pointerListeners.onTouchStart);
+    this.pointerListeners = null;
   }
 
   initialize(grid) {
@@ -144,7 +144,7 @@ export default class BoardView {
               const slideDuration = Number(tileStyle.getPropertyValue('--vertical-slide-duration').slice(0, -2));
               slidingTile.style.setProperty('--cell-row', cellObj.row);
               slidingTile.style.setProperty('--tile-row', tileObj.row);
-              slidingTile.style.setProperty('--opacity-delay', (x * slideDuration) + 'ms');
+              slidingTile.style.setProperty('--opacity-delay', slideDuration * x + 'ms');
               slidingTile.style.setProperty('--opacity-duration', slideDuration * (1 - x) + 'ms');
               promises.push(this._waitForEvent(slidingTile, 'transitionend'));
               slidingTile.classList.add('vertical-slide');

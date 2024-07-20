@@ -15,13 +15,14 @@ export default class Updater {
     const gridArray = game.grid.gridArray;
     for (let i = 0; i < gridArray.length; i++) {
       for (let j = 0; j < gridArray[0].length; j++) {
-        gridArray[i][j].tiles = [];
-        if (gridArray[i][j].tile) {
-          gridArray[i][j].tiles.push(gridArray[i][j].tile);
+        const cell = gridArray[i][j];
+        cell.tiles = [];
+        if (cell.tile) {
+          cell.tiles.push(cell.tile);
         }
-        gridArray[i][j].tiles.push(...gridArray[i][j].mergeTiles);
-        delete gridArray[i][j].tile;
-        delete gridArray[i][j].mergeTiles;
+        cell.tiles.push(...cell.mergeTiles);
+        delete cell.tile;
+        delete cell.mergeTiles;
       }
     }
   }

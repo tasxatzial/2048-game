@@ -42,11 +42,11 @@ export default class GameModel extends EventEmitter {
       this.score = 0;
       this.slideCount = 0;
       if (initialTiles) {
-        this.grid.initTiles(initialTiles);
+        this.grid.addTiles(initialTiles);
       }
       else {
-        this.grid.addTiles();
-        this.grid.addTiles();
+        this.grid.addDefaultTiles();
+        this.grid.addDefaultTiles();
       }
       this.updateStatus();
     }
@@ -105,7 +105,7 @@ export default class GameModel extends EventEmitter {
     this.grid.clearNewTileFlags();
     this.grid.updateMergeScore();
     if (this.grid.hasChangedAfterSlide()) {
-      this.grid.addTiles();
+      this.grid.addDefaultTiles();
       this.slideCount++;
       const mergeScore = this.grid.getMergeScore();
       if (mergeScore !== null) {
