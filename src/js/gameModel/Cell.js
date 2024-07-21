@@ -10,6 +10,18 @@ export default class Cell {
     this.newTileAdded = false;
   }
 
+  mergeResultFn() {
+    throw new Error("Method mergeResultFn must be overridden");
+  }
+
+  mergeScoreFn() {
+    throw new Error("Method mergeScoreFn must be overridden");
+  }
+
+  mergeConditionFn() {
+    throw new Error("Method mergeConditionFn must be overridden");
+  }
+
   getRow() {
     return this.row;
   }
