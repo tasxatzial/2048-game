@@ -102,7 +102,10 @@ export default class Cell {
   }
 
   satisfiesMergeConditionWith(cell) {
-    return this.getValue() && cell.getValue() && this.mergeConditionFn(this.getValue(), cell.getValue());
+    return this.getValue()
+           && cell.getValue()
+           && this.mergeConditionFn(this.getValue(), cell.getValue())
+           && this.mergeConditionFn(cell.getValue(), this.getValue());
   }
 
   updateMergeResults() {
