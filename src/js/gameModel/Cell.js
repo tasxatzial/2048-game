@@ -18,10 +18,6 @@ export default class Cell {
     throw new Error("Method mergeScoreFn must be overridden");
   }
 
-  mergeConditionFn() {
-    throw new Error("Method mergeConditionFn must be overridden");
-  }
-
   getRow() {
     return this.row;
   }
@@ -59,56 +55,25 @@ export default class Cell {
     this.newTileAdded = bool;
   }
 
-  // this must be empty, cell must have exactly 1 tile
-  setTileFrom(cell) {
-    if (cell.tiles.length > 1) {
-      throw new Error("incoming cell has > 1 tiles");
-    }
-    if (!cell.tiles.length) {
-      throw new Error("incoming cell has no tiles");
-    }
+  setTile(value) {
     if (this.tiles.length > 0) {
-      throw new Error("target cell already has a tile");
+      throw new Error("cell already has a tile");
     }
-    this.tiles.push(cell.tiles[0]);
-    cell.tiles = [];
+    this.tiles.push(new Tile(this.row, this.col, value));
   }
 
-  // this must have at least one tile, cell must have exactly 1 tile
-  setMergeTileFrom(cell) {
+  setTileFrom(cell) {
+    if (cell === this) {
+      return;
+    }
     if (cell.tiles.length > 1) {
       throw new Error("incoming cell has > 1 tiles");
     }
     if (cell.tiles.length === 0) {
       throw new Error("incoming cell has no tiles");
     }
-    if (!this.mergeAll && this.tiles.length === 2) {
-      throw new Error("max merge tiles reached");
-    }
-    if (this.tiles.length === 0) {
-      throw new Error("target cell is empty");
-    }
-    if (this.mergeAll || this.tiles.length === 1) {
-      this.tiles.push(cell.tiles[0]);
-    }
+    this.tiles.push(cell.tiles[0]);
     cell.tiles = [];
-  }
-
-  canAcceptMergeTileValueFrom(cell) {
-    if (cell.tiles.length > 1) {
-      throw new Error("incoming cell has > 1 tiles");
-    }
-    const cond = this.mergeAll ? this.tiles.length > 0 : this.tiles.length === 1;
-    return cond
-           && cell.hasTile()
-           && this.mergeConditionFn(this.tiles[this.tiles.length - 1].getValue(), cell.tiles[0].getValue());
-  }
-
-  satisfiesMergeConditionWith(cell) {
-    return this.getValue()
-           && cell.getValue()
-           && this.mergeConditionFn(this.getValue(), cell.getValue())
-           && this.mergeConditionFn(cell.getValue(), this.getValue());
   }
 
   updateMergeResults() {

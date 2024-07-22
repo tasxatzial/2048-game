@@ -8,7 +8,7 @@ import NewTile from './NewTile.js';
 export default class Grid {
   constructor(json = {}) {
     if (json.grid) {
-      const {gridArray, newTileFnName, mergeResultFnName, mergeScoreFnName, mergeConditionFnName, gridBooleanFnName, mergeAll} = json.grid;
+      const {gridArray, newTileFnName, mergeResultFnName, mergeScoreFnName, mergeConditionFnName, gridBooleanFnName, minMergeLength, maxMergeLength, mergeStrategy} = json.grid;
       this.newTileFnName = newTileFnName;
       this.newTileFn = NewTile[newTileFnName];
       this.mergeResultFnName = mergeResultFnName;
@@ -18,7 +18,9 @@ export default class Grid {
       this.mergeConditionFnName = mergeConditionFnName;
       this.mergeConditionFn = MergeCondition[mergeConditionFnName];
       this.gridBooleanFnName = gridBooleanFnName;
-      this.mergeAll = mergeAll;
+      this.minMergeLength = minMergeLength;
+      this.maxMergeLength = maxMergeLength;
+      this.mergeStrategy = mergeStrategy;
       const {gridBoolean, cells} =  this._createCellsFromGrid(gridArray, true);
       this.cells = cells;
       this.gridBoolean = gridBoolean;
@@ -27,7 +29,7 @@ export default class Grid {
     }
     else {
       const gridOptions = json.gridOptions || {};
-      const {newTileFnName, mergeResultFnName, mergeScoreFnName, mergeConditionFnName, gridBooleanFnName, mergeAll} = gridOptions;
+      const {newTileFnName, mergeResultFnName, mergeScoreFnName, mergeConditionFnName, gridBooleanFnName, minMergeLength, maxMergeLength, mergeStrategy} = gridOptions;
       if (gridBooleanFnName) {
         this.gridBoolean = GridBoolean[gridBooleanFnName]();
         this.gridBooleanFnName = gridBooleanFnName;
@@ -68,15 +70,36 @@ export default class Grid {
         this.mergeConditionFn = MergeCondition.original2048;
         this.mergeConditionFnName = 'original2048';
       }
-      if (mergeAll === true) {
-        this.mergeAll = mergeAll;
+      if (mergeStrategy === undefined) {
+        this.mergeStrategy = 'shortest-match';
+      }
+      else if (mergeStrategy !== 'shortest-match' && mergeStrategy !== 'longest-match') {
+        throw new Error(`mergeStrategy must be 'shortest-match' or 'longest-match' (was "${mergeStrategy}")`);
       }
       else {
-        this.mergeAll = false;
+        this.mergeStrategy = mergeStrategy;
+      }
+      if (!minMergeLength) {
+        this.minMergeLength = 2;
+      }
+      else if (minMergeLength < 2) {
+        throw new Error('minMergeLength must be >= 2');
+      }
+      else {
+        this.minMergeLength = minMergeLength;
       }
       this.cells = this._createCellsFromGridBoolean(this.gridBoolean, false);
       this.rows = this._createRows(this.gridBoolean);
       this.cols = this._createColumns(this.gridBoolean);
+      if (!maxMergeLength) {
+        this.maxMergeLength = Math.max(this.rows[0].length, this.cols[0].length, this.minMergeLength);
+      }
+      else if (maxMergeLength < this.minMergeLength) {
+        throw new Error('maxMergeLength must be >= minMergeLength');
+      }
+      else {
+        this.maxMergeLength = maxMergeLength;
+      }
     }
     this.changedAfterSlide = null;
     this.mergeScore = null;
@@ -136,8 +159,6 @@ export default class Grid {
           cells[idx] = new Cell(i, j);
           cells[idx].mergeResultFn = this.mergeResultFn;
           cells[idx].mergeScoreFn = this.mergeScoreFn;
-          cells[idx].mergeConditionFn = this.mergeConditionFn;
-          cells[idx].mergeAll = this.mergeAll;
           if (initialGamePresent) {
             cells[idx].setNewTileAdded(false);
           }
@@ -159,8 +180,6 @@ export default class Grid {
           cells[idx] = Cell.fromJSON(cellObj);
           cells[idx].mergeResultFn = this.mergeResultFn;
           cells[idx].mergeScoreFn = this.mergeScoreFn;
-          cells[idx].mergeConditionFn = this.mergeConditionFn;
-          cells[idx].mergeAll = this.mergeAll;
           if (initialGamePresent) {
             cells[idx].setNewTileAdded(false);
           }
@@ -175,27 +194,41 @@ export default class Grid {
   }
 
   _slideTilesToEnd(cellArray) {
-    for (let i = cellArray.length - 1; i >= 0; i--) {
-      if (!cellArray[i].hasTile()) {
-        continue;
+    let packedCells = [];
+    for (let i = 0; i < cellArray.length; i++) {
+      if (cellArray[i].hasTile()) {
+        packedCells.push(cellArray[i]);
       }
-      for (let j = i + 1; j < cellArray.length; j++) {
-        if (cellArray[j].hasTile()) {
-          if (cellArray[j].canAcceptMergeTileValueFrom(cellArray[i])) {
-            cellArray[j].setMergeTileFrom(cellArray[i]);
-            this.changedAfterSlide = true;
-          }
-          else if (j - 1 !== i) {
-            cellArray[j - 1].setTileFrom(cellArray[i]);
-            this.changedAfterSlide = true;
-          }
-          break;
-        } else if (j === cellArray.length - 1) {
-            cellArray[j].setTileFrom(cellArray[i]);
-            this.changedAfterSlide = true;
+    }
+
+    let lastOccupiedIndex = cellArray.length - 1;
+    while(packedCells.length > 0) {
+      let mergedCells = null;
+      for (let i = packedCells.length - this.minMergeLength; i >= packedCells.length - this.maxMergeLength && i >= 0; i--) {
+        const arr = packedCells.slice(i, packedCells.length);
+        if (this.mergeConditionFn(arr.map(x => x.getValue()).reverse())) {
+          mergedCells = arr;
+          if (this.mergeStrategy === 'shortest') {
             break;
+          }
         }
       }
+      
+      if (mergedCells !== null) {
+        this.changedAfterSlide = true;
+        for (let i = 0; i < mergedCells.length; i++) {
+          cellArray[lastOccupiedIndex].setTileFrom(mergedCells[i]);
+        }
+        packedCells = packedCells.slice(0, packedCells.length - mergedCells.length);
+      }
+      else {
+        if (!cellArray[lastOccupiedIndex].hasTile()) {
+          this.changedAfterSlide = true;
+        }
+        cellArray[lastOccupiedIndex].setTileFrom(packedCells[packedCells.length - 1]);
+        packedCells = packedCells.slice(0, packedCells.length - 1);
+      }
+      lastOccupiedIndex--;
     }
   }
 
@@ -234,15 +267,18 @@ export default class Grid {
   }
 
   canSlide() {
-    function _canSlide(cellArray) {
+    const _canSlide = (cellArray) => {
       for (let i = 0; i < cellArray.length; i++) {
         if (!cellArray[i].hasTile()) {
           return true;
         }
       }
-      for (let i = 0; i < cellArray.length - 1; i++) {
-        if (cellArray[i].satisfiesMergeConditionWith(cellArray[i+1])) {
-          return true;
+      for (let i = this.minMergeLength; i <= this.maxMergeLength; i++) {
+        for (let j = 0; j <= cellArray.length - i; j++) {
+          const tilesVals = cellArray.slice(j, j + i).map(x => x.getValue());
+          if (this.mergeConditionFn(tilesVals)) {
+            return true;
+          }
         }
       }
       return false;
@@ -343,7 +379,9 @@ export default class Grid {
       mergeScoreFnName: this.mergeResultFnName,
       mergeConditionFnName: this.mergeConditionFnName,
       gridBooleanFnName: this.gridBooleanFnName,
-      mergeAll: this.mergeAll
+      mergeStrategy: this.mergeStrategy,
+      minMergeLength: this.minMergeLength,
+      maxMergeLength: this.maxMergeLength
     };
   }
 
