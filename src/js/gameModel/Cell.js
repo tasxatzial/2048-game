@@ -34,6 +34,13 @@ export default class Cell {
     return this.tiles.length > 0;
   }
 
+  setTile(value) {
+    if (this.tiles.length > 0) {
+      throw new Error("cell already has a tile");
+    }
+    this.tiles.push(new Tile(this.row, this.col, value));
+  }
+
   getValue() {
     if (this.mergeValue) {
       return this.mergeValue;
@@ -52,24 +59,22 @@ export default class Cell {
     this.newTileAdded = bool;
   }
 
+  // this must be empty, cell must have exactly 1 tile
   setTileFrom(cell) {
-    if (this.tiles.length > 0) {
-      throw new Error("target cell already has a tile");
+    if (cell.tiles.length > 1) {
+      throw new Error("incoming cell has > 1 tiles");
     }
     if (!cell.tiles.length) {
       throw new Error("incoming cell has no tiles");
+    }
+    if (this.tiles.length > 0) {
+      throw new Error("target cell already has a tile");
     }
     this.tiles.push(cell.tiles[0]);
     cell.tiles = [];
   }
 
-  setTile(value) {
-    if (this.tiles.length > 0) {
-      throw new Error("cell already has a tile");
-    }
-    this.tiles.push(new Tile(this.row, this.col, value));
-  }
-
+  // this must have at least one tile, cell must have exactly 1 tile
   setMergeTileFrom(cell) {
     if (cell.tiles.length > 1) {
       throw new Error("incoming cell has > 1 tiles");
@@ -77,21 +82,19 @@ export default class Cell {
     if (cell.tiles.length === 0) {
       throw new Error("incoming cell has no tiles");
     }
-    if (this.mergeAll) {
-      this.tiles.push(cell.tiles[0]);
+    if (!this.mergeAll && this.tiles.length === 2) {
+      throw new Error("max merge tiles reached");
     }
-    else {
-      if (this.tiles.length === 1) {
-        this.tiles.push(cell.tiles[0]);
-      }
-      else {
-        throw new Error("target cell already has a merge tile");
-      }
+    if (this.tiles.length === 0) {
+      throw new Error("target cell is empty");
+    }
+    if (this.mergeAll || this.tiles.length === 1) {
+      this.tiles.push(cell.tiles[0]);
     }
     cell.tiles = [];
   }
 
-  canAcceptTileValueFrom(cell) {
+  canAcceptMergeTileValueFrom(cell) {
     if (cell.tiles.length > 1) {
       throw new Error("incoming cell has > 1 tiles");
     }

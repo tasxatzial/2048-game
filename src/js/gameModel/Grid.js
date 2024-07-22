@@ -181,12 +181,12 @@ export default class Grid {
       }
       for (let j = i + 1; j < cellArray.length; j++) {
         if (cellArray[j].hasTile()) {
-          if (cellArray[j].canAcceptTileValueFrom(cellArray[i])) {
+          if (cellArray[j].canAcceptMergeTileValueFrom(cellArray[i])) {
             cellArray[j].setMergeTileFrom(cellArray[i]);
             this.changedAfterSlide = true;
           }
-          else if (j-1 !== i) {
-            cellArray[j-1].setTileFrom(cellArray[i]);
+          else if (j - 1 !== i) {
+            cellArray[j - 1].setTileFrom(cellArray[i]);
             this.changedAfterSlide = true;
           }
           break;
