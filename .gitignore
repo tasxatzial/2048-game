@@ -1,2 +1,5 @@
 src/.vscode/
-src/.idea/
+.vite/
+node_modules/
+dist/
+coverage/
