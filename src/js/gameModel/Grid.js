@@ -92,7 +92,9 @@ export default class Grid {
       this.rows = this._createRows(this.gridBoolean);
       this.cols = this._createColumns(this.gridBoolean);
       if (!maxMergeLength) {
-        this.maxMergeLength = Math.max(this.rows[0].length, this.cols[0].length, this.minMergeLength);
+        const rowLengths = this.rows.map(x => x.length);
+        const colLengths = this.cols.map(x => x.length);
+        this.maxMergeLength = Math.max(...rowLengths, ...colLengths, this.minMergeLength);
       }
       else if (maxMergeLength < this.minMergeLength) {
         throw new Error('maxMergeLength must be >= minMergeLength');
