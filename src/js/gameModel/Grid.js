@@ -107,21 +107,23 @@ export default class Grid {
 
   _createRows(booleanArray) {
     const rows = [];
-    let isRowNonEmpty = false;
     for (let i = 0; i < booleanArray.length; i++) {
       let row = [];
+      let rowHasCells = false;
       for (let j = 0; j < booleanArray[0].length; j++) {
         if (booleanArray[i][j] === 1) {
-          isRowNonEmpty = true;
+          rowHasCells = true;
           row.push(this.cells[i * booleanArray[0].length + j]);
         }
-        else if (isRowNonEmpty) {
-          isRowNonEmpty = false;
+        else if (rowHasCells) {
           rows.push(row);
           row = [];
+          rowHasCells = false;
         }
       }
-      rows.push(row);
+      if (rowHasCells) {
+        rows.push(row);
+      }
     }
     return rows;
   }
@@ -131,21 +133,23 @@ export default class Grid {
       return [];
     }
     const cols = [];
-    let isRowNonEmpty = false;
     for (let j = 0; j < booleanArray[0].length; j++) {
       let col = [];
+      let colHasCells = false;
       for (let i = 0; i < booleanArray.length; i++) {
         if (booleanArray[i][j] === 1) {
-          isRowNonEmpty = true;
+          colHasCells = true;
           col.push(this.cells[i * booleanArray[0].length + j]);
         }
-        else if (isRowNonEmpty) {
-          isRowNonEmpty = false;
+        else if (colHasCells) {
           cols.push(col);
           col = [];
+          colHasCells = false;
         }
       }
-      cols.push(col);
+      if (colHasCells) {
+        cols.push(col);
+      }
     }
     return cols;
   }
