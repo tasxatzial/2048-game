@@ -214,7 +214,7 @@ export default class Grid {
         const arr = packedCells.slice(i, packedCells.length);
         if (this.mergeConditionFn(arr.map(x => x.getValue()).reverse())) {
           mergedCells = arr;
-          if (this.mergeStrategy === 'shortest') {
+          if (this.mergeStrategy === 'shortest-match') {
             break;
           }
         }
