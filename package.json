@@ -1,0 +1,23 @@
+{
+  "name": "2048-game",
+  "private": true,
+  "description": "2048 game. Supports easy creation of variants.",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "serve": "vite build && vite preview",
+    "test": "vitest run",
+    "test:ui": "vitest --ui"
+  },
+  "devDependencies": {
+    "@vitest/coverage-v8": "^2.0.4",
+    "@vitest/ui": "^2.0.4",
+    "vite": "^5.3.1",
+    "vitest": "^2.0.4"
+  },
+  "author": "Anastasios Chatzialexiou",
+  "license": "MIT"
+}

@@ -117,13 +117,27 @@ view.bindStartNewGame(() => {
 })
 ```
 
-## Dependencies
-
-None. The project uses only HTML, CSS, JavaScript.
-
 ## Run locally
 
-Download the `src` folder and use a local web server to serve its contents.
+The project is written in HTML, CSS, JavaScript. Install the required dependencies via `npm install`.
+
+Run the development version:
+
+```bash
+npm run dev
+```
+
+Build the project:
+
+```bash
+npm run build
+```
+
+Build & serve the production version:
+
+```bash
+npm run serve
+```
 
 Navigate to `/colors.html` to see all possible tile colors.
 
