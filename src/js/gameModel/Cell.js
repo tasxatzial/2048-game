@@ -11,11 +11,11 @@ export default class Cell {
   }
 
   mergeResultFn() {
-    throw new Error("Method mergeResultFn must be overridden");
+    throw new Error('Method mergeResultFn must be overridden');
   }
 
   mergeScoreFn() {
-    throw new Error("Method mergeScoreFn must be overridden");
+    throw new Error('Method mergeScoreFn must be overridden');
   }
 
   getRow() {
@@ -32,7 +32,7 @@ export default class Cell {
 
   setTile(value) {
     if (this.tiles.length > 0) {
-      throw new Error("cell already has a tile");
+      throw new Error('cell already has a tile');
     }
     this.tiles.push(new Tile(this.row, this.col, value));
   }
@@ -61,7 +61,7 @@ export default class Cell {
 
   setTile(value) {
     if (this.tiles.length > 0) {
-      throw new Error("cell already has a tile");
+      throw new Error('cell already has a tile');
     }
     this.tiles.push(new Tile(this.row, this.col, value));
   }
@@ -71,10 +71,10 @@ export default class Cell {
       return;
     }
     if (cell.tiles.length > 1) {
-      throw new Error("incoming cell has > 1 tiles");
+      throw new Error('incoming cell has > 1 tiles');
     }
     if (cell.tiles.length === 0) {
-      throw new Error("incoming cell has no tiles");
+      throw new Error('incoming cell has no tiles');
     }
     this.tiles.push(cell.tiles[0]);
     cell.tiles = [];
