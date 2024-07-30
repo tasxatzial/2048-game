@@ -347,19 +347,6 @@ export default class Grid {
     this.mergeScore = null;
   }
 
-  getMaxTileLength() {
-    let maxLength = 0;
-    this.getCells().forEach(cell => {
-      if (cell.hasTile()) {
-        const tileLength = cell.getValue().toString().length;
-        if (tileLength > maxLength) {
-          maxLength = tileLength;
-        }
-      }
-    });
-    return maxLength;
-  }
-
   getCells() {
     return Object.values(this.cells);
   }
@@ -389,30 +376,5 @@ export default class Grid {
       minMergeLength: this.minMergeLength,
       maxMergeLength: this.maxMergeLength
     };
-  }
-
-  toString() {
-    let result = '';
-    const entryLength = this.getMaxTileLength();
-    const pad = ' '.repeat(entryLength);
-    for (let i = 0; i < this.gridBoolean.length; i++) {
-      for (let j = 0; j < this.gridBoolean[0].length; j++) {
-        if (this.gridBoolean[i][j] === 1) {
-          const cell = this.cells[i * this.gridBoolean[0].length + j];
-          if (cell.hasTile()) {
-            result += (pad + cell.getValue()).slice(-entryLength);
-          } else {
-            result += (pad + '.').slice(-entryLength);
-          }
-        } else {
-          result += (pad + '◼').slice(-entryLength);
-        }
-        if (j !== this.gridBoolean[0].length - 1) {
-          result += ' ';
-        }
-      }
-      result += '\n';
-    }
-    return result;
   }
 }

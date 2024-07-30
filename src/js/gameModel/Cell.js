@@ -37,6 +37,10 @@ export default class Cell {
     this.tiles.push(new Tile(this.row, this.col, value));
   }
 
+  getTileValues() {
+    return this.tiles.map(tile => tile.getValue());
+  }
+
   getValue() {
     if (this.mergeValue) {
       return this.mergeValue;
