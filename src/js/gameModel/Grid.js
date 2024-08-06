@@ -281,8 +281,8 @@ export default class Grid {
       }
       for (let i = this.minMergeLength; i <= this.maxMergeLength; i++) {
         for (let j = 0; j <= cellArray.length - i; j++) {
-          const tilesVals = cellArray.slice(j, j + i).map(x => x.getValue());
-          if (this.mergeConditionFn(tilesVals)) {
+          const tileValues = cellArray.slice(j, j + i).map(x => x.getValue());
+          if (this.mergeConditionFn(tileValues)) {
             return true;
           }
         }

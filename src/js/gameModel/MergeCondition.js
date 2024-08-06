@@ -8,4 +8,14 @@ export default class MergeCondition {
     }
     return tileValues[0] === tileValues[1];
   }
+
+  //used in tests, do not remove
+  static test1(tileValues) {
+    for (let i = 0; i < tileValues.length - 1; i++) {
+      if (tileValues[i] < tileValues[i + 1]) {
+        return false;
+      }
+    }
+    return true;
+  }
 }
