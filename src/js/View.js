@@ -16,8 +16,8 @@ export default class View {
             .addEventListener('click', callback);
   }
 
-  async initializeGame(json) {
-    const { game, modelHandlers } = json;
+  async initializeGame(obj) {
+    const { game, modelHandlers } = obj;
     if (this.gameView) {
       this.gameView.unbindModelHandlers();
       this.gameView.removeSlideListeners();
@@ -29,8 +29,8 @@ export default class View {
     this.gameView.updateStatus(game);
   }
 
-  initialize(json) {
-    const { bestScore } = json;
+  initialize(obj) {
+    const { bestScore } = obj;
     this.setBestScore(bestScore);
   }
 

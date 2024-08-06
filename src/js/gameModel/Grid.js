@@ -6,9 +6,9 @@ import MergeCondition from './MergeCondition.js';
 import NewTile from './NewTile.js';
 
 export default class Grid {
-  constructor(json = {}) {
-    if (json.grid) {
-      const {gridArray, newTileFnName, mergeResultFnName, mergeScoreFnName, mergeConditionFnName, gridBooleanFnName, minMergeLength, maxMergeLength, mergeStrategy} = json.grid;
+  constructor(obj = {}) {
+    if (obj.grid) {
+      const {gridArray, newTileFnName, mergeResultFnName, mergeScoreFnName, mergeConditionFnName, gridBooleanFnName, minMergeLength, maxMergeLength, mergeStrategy} = obj.grid;
       this.newTileFnName = newTileFnName;
       this.newTileFn = NewTile[newTileFnName];
       this.mergeResultFnName = mergeResultFnName;
@@ -28,7 +28,7 @@ export default class Grid {
       this.cols = this._createColumns(this.gridBoolean);
     }
     else {
-      const gridOptions = json.gridOptions || {};
+      const gridOptions = obj.gridOptions || {};
       const {newTileFnName, mergeResultFnName, mergeScoreFnName, mergeConditionFnName, gridBooleanFnName, minMergeLength, maxMergeLength, mergeStrategy} = gridOptions;
       if (gridBooleanFnName) {
         this.gridBoolean = GridBoolean[gridBooleanFnName]();
@@ -183,7 +183,7 @@ export default class Grid {
         const cellObj = gridArray[i][j];
         if (cellObj) {
           const idx = i * gridArray[0].length + j;
-          cells[idx] = Cell.fromJSON(cellObj);
+          cells[idx] = Cell.import(cellObj);
           cells[idx].mergeResultFn = this.mergeResultFn;
           cells[idx].mergeScoreFn = this.mergeScoreFn;
           if (initialGamePresent) {
@@ -351,14 +351,14 @@ export default class Grid {
     return Object.values(this.cells);
   }
 
-  toJSON() {
+  export() {
     const grid = [];
     for (let i = 0; i < this.gridBoolean.length; i++) {
       const row = [];
       for (let j = 0; j < this.gridBoolean[0].length; j++) {
         if (this.gridBoolean[i][j] === 1) {
           const cell = this.cells[i * this.gridBoolean[0].length + j];
-          row.push(cell.toJSON());
+          row.push(cell.export());
         } else {
           row.push(null);
         }

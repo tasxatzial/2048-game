@@ -29,7 +29,7 @@ export default class Tile {
     return this.col;
   }
 
-  toJSON() {
+  export() {
     return {
       row: this.row,
       column: this.col,
@@ -37,9 +37,9 @@ export default class Tile {
     };
   }
 
-  static fromJSON(json) {
-    if (json) {
-      const {row, column, value} = json;
+  static import(obj) {
+    if (obj) {
+      const {row, column, value} = obj;
       return new Tile(row, column, value);
     }
     else {

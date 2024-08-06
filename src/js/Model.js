@@ -9,17 +9,17 @@ export default class Model extends EventEmitter {
     this.bestScore = this.initialBestScore;
   }
 
-  initialize(json = {}) {
-    const { bestScore } = json;
+  initialize(obj = {}) {
+    const { bestScore } = obj;
     if (bestScore !== undefined && bestScore !== null) {
       this.bestScore = bestScore;
     }
     this.raiseChange('initializeModelEvent');
   }
 
-  initializeGame(json = {}) {
-    if (json.game) {
-      this.gameModel = new GameModel(json.game);
+  initializeGame(obj = {}) {
+    if (obj.game) {
+      this.gameModel = new GameModel(obj.game);
     }
     else {
       this.gameModel = new GameModel();
@@ -40,8 +40,8 @@ export default class Model extends EventEmitter {
     this.raiseChange('initializeGameModelEvent');
   }
 
-  getGameJSON() {
-    return this.gameModel.toJSON();
+  getGameObj() {
+    return this.gameModel.export();
   }
 
   getBestScore() {

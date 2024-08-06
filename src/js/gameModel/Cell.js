@@ -106,22 +106,22 @@ export default class Cell {
     }
   }
 
-  toJSON() {
+  export() {
     return {
       row: this.row,
       column: this.col,
-      tiles: this.tiles.map(tile => tile.toJSON()),
+      tiles: this.tiles.map(tile => tile.export()),
       mergeScore: this.mergeScore,
       mergeValue: this.mergeValue,
       newTileAdded: this.newTileAdded
     }
   }
 
-  static fromJSON(json) {
-    if (json) {
-      const {row, column, tiles, mergeScore, mergeValue, newTileAdded} = json;
+  static import(obj) {
+    if (obj) {
+      const {row, column, tiles, mergeScore, mergeValue, newTileAdded} = obj;
       const cell = new Cell(row, column);
-      cell.tiles = tiles.map(tile => Tile.fromJSON(tile));
+      cell.tiles = tiles.map(tile => Tile.import(tile));
       cell.mergeScore = mergeScore;
       cell.mergeValue = mergeValue;
       cell.newTileAdded = newTileAdded;

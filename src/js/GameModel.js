@@ -4,10 +4,10 @@ import LoseCondition from './gameModel/LoseCondition.js';
 import EventEmitter from './EventEmitter.js';
 
 export default class GameModel extends EventEmitter {
-  constructor(json = {}) {
+  constructor(obj = {}) {
     super();
-    if (json.grid) {
-      const {grid, gameOptions, score, slideCount, isWon, isLost} = json;
+    if (obj.grid) {
+      const {grid, gameOptions, score, slideCount, isWon, isLost} = obj;
       this.grid = new Grid({grid});
       this.score = score;
       this.slideCount = slideCount;
@@ -19,9 +19,9 @@ export default class GameModel extends EventEmitter {
       this.loseConditionFn = LoseCondition[this.loseConditionFnName];
     }
     else {
-      const {gridOptions, initialTiles} = json;
+      const {gridOptions, initialTiles} = obj;
       this.grid = new Grid({gridOptions});
-      const gameOptions = json.gameOptions || {};
+      const gameOptions = obj.gameOptions || {};
       const {winConditionFnName, loseConditionFnName} = gameOptions;
       if (winConditionFnName) {
         this.winConditionFnName = gameOptions.winConditionFnName;
@@ -52,9 +52,9 @@ export default class GameModel extends EventEmitter {
     }
   }
 
-  toJSON() {
-    const json = {
-      grid: this.grid.toJSON(),
+  export() {
+    const obj = {
+      grid: this.grid.export(),
       gameOptions: {
         winConditionFnName: this.winConditionFnName,
         loseConditionFnName: this.loseConditionFnName,
@@ -64,7 +64,7 @@ export default class GameModel extends EventEmitter {
       isWon: this.isWon,
       isLost: this.isLost
     };
-    return json;
+    return obj;
   }
 
   updateStatus() {
