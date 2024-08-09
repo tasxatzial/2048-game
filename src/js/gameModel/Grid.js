@@ -222,7 +222,7 @@ export default class Grid {
       
       if (mergedCells !== null) {
         this.changedAfterSlide = true;
-        for (let i = 0; i < mergedCells.length; i++) {
+        for (let i = mergedCells.length - 1; i >= 0; i--) {
           cellArray[lastOccupiedIndex].setTileFrom(mergedCells[i]);
         }
         packedCells = packedCells.slice(0, packedCells.length - mergedCells.length);
