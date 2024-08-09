@@ -1,9 +1,11 @@
-import GameView from './GameView.js';
-
 export default class View {
   constructor() {
-    this.gameView = null;
     this.bestScoreEl = document.querySelector('.js-best-score');
+  }
+
+  initialize(obj) {
+    const { bestScore } = obj;
+    this.setBestScore(bestScore);
   }
 
   bindResetBestScore(callback) {
@@ -16,49 +18,7 @@ export default class View {
             .addEventListener('click', callback);
   }
 
-  async initializeGame(obj) {
-    const { game, modelHandlers } = obj;
-    if (this.gameView) {
-      this.gameView.unbindModelHandlers();
-      this.gameView.removeSlideListeners();
-    }
-    this.gameView = new GameView();
-    this.gameView.bindModelHandlers(modelHandlers);
-    this.gameView.addSlideListeners();
-    await Promise.all(this.gameView.initialize(game));
-    this.gameView.updateStatus(game);
-  }
-
-  initialize(obj) {
-    const { bestScore } = obj;
-    this.setBestScore(bestScore);
-  }
-
-  slideGameTiles(game) {
-    return this.gameView.slideTiles(game);
-  }
-
-  mergeGameTiles(game) {
-    return this.gameView.mergeTiles(game);
-  }
-
-  addGameTiles(game) {
-    return this.gameView.addTiles(game);
-  }
-
   setBestScore(bestScore) {
     this.bestScoreEl.textContent = bestScore;
-  }
-
-  updateGameScore(game) {
-    this.gameView.updateScore(game);
-  }
-
-  updateGameStatus(game) {
-    this.gameView.updateStatus(game);
-  }
-
-  setGameReady() {
-    this.gameView.setReady();
   }
 }

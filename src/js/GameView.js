@@ -36,7 +36,7 @@ export default class GameView {
   }
 
   bindModelHandlers(handlers) {
-    this.modelMoveHandlers = handlers.gameMove;
+    this.modelMoveHandlers = handlers.move;
   }
 
   unbindModelHandlers() {

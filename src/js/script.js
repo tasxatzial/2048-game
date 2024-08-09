@@ -1,6 +1,7 @@
 import Updater from './Updater.js';
 import Model from './Model.js';
 import View from './View.js';
+import GameController from './GameController.js';
 
 
 const updater = new Updater();
@@ -11,55 +12,21 @@ pageLoadingEl.remove();
 
 const model = new Model();
 const view = new View();
+const gameController = new GameController();
 
-const modelHandlers = {
-  gameMove : {
-    moveUp: model.gameMoveUp.bind(model),
-    moveRight: model.gameMoveRight.bind(model),
-    moveDown: model.gameMoveDown.bind(model),
-    moveLeft: model.gameMoveLeft.bind(model)
-  }
-}
-
-/* ---------------------------------------------- */
-
-model.addChangeListener('resetBestScoreEvent', () => {
+model.addChangeListener('updateBestScoreEvent', async () => {
   const bestScore = model.getBestScore();
-  localStorage.setItem('game-2048-best-score', JSON.stringify(bestScore));
   view.setBestScore(bestScore);
+  localStorage.setItem('game-2048-best-score', JSON.stringify(bestScore));
+  await gameController.createNewTiles();
 });
 
-model.addChangeListener('initializeModelEvent', () => {
+model.addChangeListener('initializeEvent', async () => {
   const bestScore = model.getBestScore();
   localStorage.setItem('game-2048-best-score', JSON.stringify(bestScore));
   view.initialize({bestScore});
+  await gameController.initializeView();
 });
-
-model.addChangeListener('initializeGameModelEvent', async () => {
-  const game = model.getGameObj();
-  localStorage.setItem('game-2048', JSON.stringify(game));
-  await view.initializeGame({game, modelHandlers});
-});
-
-model.addChangeListener('gameMoveEvent', async () => {
-  const game = model.getGameObj();
-  const bestScore = model.getBestScore();
-  localStorage.setItem('game-2048-best-score', JSON.stringify(bestScore));
-  await Promise.all(view.slideGameTiles(game));
-  const mergePromises = view.mergeGameTiles(game);
-  view.updateGameScore(game);
-  view.setBestScore(bestScore);
-  await Promise.all([...view.addGameTiles(game), ...mergePromises]);
-  model.purgeGameModel();
-});
-
-model.addChangeListener('purgeGameModelEvent', () => {
-  const game = model.getGameObj();
-  localStorage.setItem('game-2048', JSON.stringify(game));
-  view.updateGameStatus(game);
-});
-
-model.addChangeListener('gameNoOpEvent', () => view.setGameReady());
 
 /* ---------------------------------------------- */
 
@@ -73,14 +40,23 @@ view.bindStartNewGame(() => {
 
 /* ---------------------------------------------- */
 
-model.initialize({
-  bestScore: JSON.parse(localStorage.getItem('game-2048-best-score'))
+gameController.addChangeListener('moveEvent', () => {
+  const score = gameController.getScore();
+  model.updateBestScore(score);
 });
+
+gameController.addChangeListener('initializeModelEvent', () => {
+  model.initialize({
+    bestScore: JSON.parse(localStorage.getItem('game-2048-best-score'))
+  });
+});
+
+/* ---------------------------------------------- */
 
 startGame({
   game: JSON.parse(localStorage.getItem('game-2048'))
 });
 
 function startGame(obj) {
-  model.initializeGame(obj);
+  gameController.initializeModel(obj);
 }
