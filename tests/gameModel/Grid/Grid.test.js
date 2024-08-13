@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import Grid from '../../../src/js/gameModel/Grid.js';
 import GridUtils from '../../../src/js/gameModel/GridUtils.js';
+import Model from '../../../src/js/Model.js';
 
 describe('Grid set custom options: Grid constructor called with custom options', {} , () => {
   it('should use default options if no game is provided', {}, () => {
@@ -107,20 +108,137 @@ describe('Grid set custom options: Grid constructor called with custom options',
 })
 
 describe('Grid constructor called with game from localStorage', {} , () => {
+  let grid;
+  beforeEach(() => {
+    const model = new Model();
+    model.initializeGame({game: {
+      gridOptions: {
+        gridBooleanFnName: 'test1_7x6',
+        newTileFnName: 'test1',
+        mergeResultFnName: 'test1',
+        mergeConditionFnName: 'test1',
+        mergeScore: `test1`,
+        minMergeLength: 3,
+        maxMergeLength: 4,
+        mergeStrategy: 'longest-match'
+      },
+      initialTiles: [
+        { row: 2, column: 1, value: 2 },
+        { row: 3, column: 2, value: 4 }
+      ]
+    }});
+    localStorage.setItem('game-2048', JSON.stringify(model.getGameObj()));
+    const game = JSON.parse(localStorage.getItem('game-2048'));
+    model.initializeGame({game});
+    grid = model.gameModel.grid;
+  })
+
   it('should initialize grid options', {}, () => {
-    
+    expect(grid.newTileFnName).toBe('test1');
+    expect(grid.mergeResultFnName).toBe('test1');
+    expect(grid.mergeScoreFnName).toBe('test1');
+    expect(grid.mergeConditionFnName).toBe('test1');
+    expect(grid.gridBooleanFnName).toBe('test1_7x6');
+    expect(grid.minMergeLength).toBe(3);
+    expect(grid.maxMergeLength).toBe(4);
+    expect(grid.mergeStrategy).toBe('longest-match');
   })
 
   it('should create cells', {}, () => {
-
+    const cells = grid.cells;
+    expect(Object.keys(cells)).toEqual([
+      "0", "1", "4", "5",
+      "8", "9",
+      "13", "14", "16",
+      "18", "20", "22",
+      "24", "25", "27", "28",
+      "30", "31", "32", "33", "34", "35",
+      "39", "40" ,"41"
+    ]);
+    expect(cells[0].row).toBe(0);
+    expect(cells[0].col).toBe(0);
+    expect(cells[1].row).toBe(0);
+    expect(cells[1].col).toBe(1);
+    expect(cells[4].row).toBe(0);
+    expect(cells[4].col).toBe(4);
+    expect(cells[5].row).toBe(0);
+    expect(cells[5].col).toBe(5);
+    expect(cells[8].row).toBe(1);
+    expect(cells[8].col).toBe(2);
+    expect(cells[9].row).toBe(1);
+    expect(cells[9].col).toBe(3);
+    expect(cells[13].row).toBe(2);
+    expect(cells[13].col).toBe(1);
+    expect(cells[14].row).toBe(2);
+    expect(cells[14].col).toBe(2);
+    expect(cells[16].row).toBe(2);
+    expect(cells[16].col).toBe(4);
+    expect(cells[18].row).toBe(3);
+    expect(cells[18].col).toBe(0);
+    expect(cells[20].row).toBe(3);
+    expect(cells[20].col).toBe(2);
+    expect(cells[22].row).toBe(3);
+    expect(cells[22].col).toBe(4);
+    expect(cells[24].row).toBe(4);
+    expect(cells[24].col).toBe(0);
+    expect(cells[25].row).toBe(4);
+    expect(cells[25].col).toBe(1);
+    expect(cells[27].row).toBe(4);
+    expect(cells[27].col).toBe(3);
+    expect(cells[28].row).toBe(4);
+    expect(cells[28].col).toBe(4);
+    expect(cells[30].row).toBe(5);
+    expect(cells[30].col).toBe(0);
+    expect(cells[31].row).toBe(5);
+    expect(cells[31].col).toBe(1);
+    expect(cells[32].row).toBe(5);
+    expect(cells[32].col).toBe(2);
+    expect(cells[33].row).toBe(5);
+    expect(cells[33].col).toBe(3);
+    expect(cells[34].row).toBe(5);
+    expect(cells[34].col).toBe(4);
+    expect(cells[35].row).toBe(5);
+    expect(cells[35].col).toBe(5);
+    expect(cells[39].row).toBe(6);
+    expect(cells[39].col).toBe(3);
+    expect(cells[40].row).toBe(6);
+    expect(cells[40].col).toBe(4);
+    expect(cells[41].row).toBe(6);
+    expect(cells[41].col).toBe(5);
   })
 
   it('should create grid boolean array', {}, () => {
+    expect(grid.gridBoolean).toEqual([
+      [1, 1, 0, 0, 1, 1],
+      [0, 0, 1, 1, 0, 0],
+      [0, 1, 1, 0, 1, 0],
+      [1, 0, 1, 0, 1, 0],
+      [1, 1, 0, 1, 1, 0],
+      [1, 1, 1, 1, 1, 1],
+      [0, 0, 0, 1, 1, 1]
+    ])
+  })
 
+  it('should initialize tiles', {}, () => {
+    let tileCount = 0;
+    grid.getCellValues().forEach(cell => {
+      expect(cell.tiles.length).toBeLessThanOrEqual(1);
+      if (cell.tiles.length === 0) {
+        expect(cell.tiles).toEqual([]);
+      }
+      else {
+        tileCount++;
+      }
+    });
+    expect(tileCount).toBe(2);
+    expect(grid.cells[13].tiles).toEqual([{ row: 2, col: 1, value: 2 }]);
+    expect(grid.cells[20].tiles).toEqual([{ row: 3, col: 2, value: 4 }]);
   })
 
   it('should mark existing tiles as not new', () => {
-
+    grid.getCellValues().forEach(cell => {
+      expect(cell.newTileAdded).toBe(false);
+    });
   })
 })
 
@@ -587,16 +705,16 @@ describe('Grid slide tiles: Constructor called with multiple custom options', {}
     });
     gridUtils = new GridUtils(grid);
     const tilesArray = [
-      [null, [], [],   [],   [], [], [],   [], [], []   ],
-      [[],   [], [],   [],   [], [], [],   [], [], []   ],
-      [[],   [], [],   [],   [], [], [],   [], [], null ],
-      [[],   [], [],   [],   [], [], [],   [], [], []   ],
-      [[],   [], null, [],   [], [], [],   [], [], []   ],
-      [[],   [], [],   [],   [], [], [],   [], [], []   ],
-      [[],   [], [],   [],   [], [], [],   [], [], []   ],
-      [[],   [], null, [],   [], [], null, [], [], []   ],
-      [[],   [], [],   [],   [], [], [],   [], [], []   ],
-      [[],   [], [],   null, [], [], [],   [], [], []   ]
+      [null, [],  [],   [],   [],  [],  [6],  [3], [3], []   ],
+      [[],   [2], [2],  [3],  [3], [4], [5],  [],  [],  []   ],
+      [[],   [1], [2],  [2],  [2], [4], [5],  [],  [],  null ],
+      [[4],  [],  [6],  [7],  [8], [7], [4],  [9], [9], [9]  ],
+      [[],   [1], null, [],   [],  [6], [1],  [],  [9], []   ],
+      [[9],  [8], [],   [7],  [],  [5], [],   [5], [9], []   ],
+      [[5],  [],  [6],  [],   [8], [2], [],   [5], [],  [8]  ],
+      [[5],  [1], null, [8],  [8], [1], null, [5], [],  [8]  ],
+      [[],   [],  [],   [8],  [],  [1], [],   [],  [],  [7]  ],
+      [[5],  [],  [4],  null, [],  [1], [1],  [2], [],  [1]  ]
     ];
     gridUtils.replaceTiles(tilesArray);
   })
@@ -604,81 +722,69 @@ describe('Grid slide tiles: Constructor called with multiple custom options', {}
   it('should slide tiles left', {}, () => {
     grid.slideLeft();
     const tilesArr = gridUtils.getTileValues();
-    //expect(tilesArr).toEqual();
+    expect(tilesArr).toEqual([
+      [null,      [6,3,3],   [],        [],        [],        [],        [],        [],        [],        []         ],
+      [[2],       [2],       [3],       [3],       [4],       [5],       [],        [],        [],        []         ],
+      [[1],       [2,2,2],   [4],       [5],       [],        [],        [],        [],        [],        null       ],
+      [[4],       [6],       [7],       [8,7,4],   [9,9,9],   [],        [],        [],        [],        []         ],
+      [[1],       [],        null,      [6],       [1],       [9],       [],        [],        [],        []         ],
+      [[9,8,7,5], [5],       [9],       [],        [],        [],        [],        [],        [],        []         ],
+      [[5],       [6],       [8],       [2],       [5],       [8],       [],        [],        [],        []         ],
+      [[5],       [1],       null,      [8,8,1],   [],        [],        null,      [5],       [8],       []         ],
+      [[8],       [1],       [7],       [],        [],        [],        [],        [],        [],        []         ],
+      [[5],       [4],       [],        null,      [1],       [1],       [2],       [1],       [],        []         ]
+    ]);
   })
 
   it('should slide tiles right', {}, () => {
     grid.slideRight();
     const tilesArr = gridUtils.getTileValues();
-    //expect(tilesArr).toEqual();
+    expect(tilesArr).toEqual([
+      [null,      [],        [],        [],        [],        [],        [],        [6],       [3],       [3]        ],
+      [[],        [],        [],        [],        [],        [],        [],        [2],       [2],       [5,4,3,3]  ],
+      [[],        [],        [],        [],        [],        [],        [1],       [2],       [5,4,2,2], null       ],
+      [[],        [],        [],        [],        [],        [],        [],        [8,7,6,4], [7],       [9,9,9,4]  ],
+      [[],        [1],       null,      [],        [],        [],        [],        [6],       [1],       [9]        ],
+      [[],        [],        [],        [],        [],        [],        [9],       [8],       [7],       [9,5,5]    ],
+      [[],        [],        [],        [],        [],        [],        [],        [],        [8,6,5],   [8,5,2]    ],
+      [[5],       [1],       null,      [8],       [8],       [1],       null,      [],        [5],       [8]        ],
+      [[],        [],        [],        [],        [],        [],        [],        [8],       [1],       [7]        ],
+      [[],        [5],       [4],       null,      [],        [],        [],        [],        [2,1,1],   [1]        ]
+    ]);
   })
 
   it('should slide tiles up', {}, () => {
     grid.slideUp();
     const tilesArr = gridUtils.getTileValues();
-    //expect(tilesArr).toEqual();
+    expect(tilesArr).toEqual([
+      [null,      [2,1,1],   [2],       [3],       [3],       [4],       [6,5,5,4], [3],       [3],       []         ],
+      [[4],       [8],       [2],       [2],       [2],       [4],       [1],       [9,5,5,5], [9,9,9],   []         ],
+      [[9,5,5,5], [1],       [6],       [7],       [8,8,8],   [7,6,5,2], [],        [2],       [],        null       ],
+      [[],        [],        [],        [7],       [],        [1,1,1],   [],        [],        [],        [9,8,8,7]  ],
+      [[],        [],        null,      [8],       [],        [],        [],        [],        [],        [1]        ],
+      [[],        [],        [6],       [8],       [],        [],        [],        [],        [],        []         ],
+      [[],        [],        [],        [],        [],        [],        [],        [],        [],        []         ],
+      [[],        [],        null,      [],        [],        [],        null,      [],        [],        []         ],
+      [[],        [],        [4],       [],        [],        [],        [1],       [],        [],        []         ],
+      [[],        [],        [],        null,      [],        [],        [],        [],        [],        []         ]
+    ]);
   })
 
   it('should slide tiles down', {}, () => {
     grid.slideDown();
     const tilesArr = gridUtils.getTileValues();
-    //expect(tilesArr).toEqual();
-  })
-})
-
-describe('Grid unchanged when slide: Constructor called with multiple custom options', {} , () => {
-  let grid;
-  let gridUtils;
-  beforeEach(() => {
-    grid = new Grid({
-      gridOptions: {
-        gridBooleanFnName: 'test2_10x10',
-        mergeResultFnName: 'test1',
-        mergeConditionFnName: 'test1',
-        mergeScore: 'test1',
-        minMergeLength: 3,
-        maxMergeLength: 4,
-        mergeStrategy: 'longest-match'
-      }
-    });
-    gridUtils = new GridUtils(grid);
-    const tilesArray = [
-      [null, [], [],   [],   [], [], [],   [], [], []   ],
-      [[],   [], [],   [],   [], [], [],   [], [], []   ],
-      [[],   [], [],   [],   [], [], [],   [], [], null ],
-      [[],   [], [],   [],   [], [], [],   [], [], []   ],
-      [[],   [], null, [],   [], [], [],   [], [], []   ],
-      [[],   [], [],   [],   [], [], [],   [], [], []   ],
-      [[],   [], [],   [],   [], [], [],   [], [], []   ],
-      [[],   [], null, [],   [], [], null, [], [], []   ],
-      [[],   [], [],   [],   [], [], [],   [], [], []   ],
-      [[],   [], [],   null, [], [], [],   [], [], []   ]
-    ];
-    gridUtils.replaceTiles(tilesArray);
-  })
-
-  it('should slide tiles left', {}, () => {
-    grid.slideLeft();
-    const tilesArr = gridUtils.getTileValues();
-    //expect(tilesArr).toEqual();
-  })
-
-  it('should slide tiles right', {}, () => {
-    grid.slideRight();
-    const tilesArr = gridUtils.getTileValues();
-    //expect(tilesArr).toEqual();
-  })
-
-  it('should slide tiles up', {}, () => {
-    grid.slideUp();
-    const tilesArr = gridUtils.getTileValues();
-    //expect(tilesArr).toEqual();
-  })
-
-  it('should slide tiles down', {}, () => {
-    grid.slideDown();
-    const tilesArr = gridUtils.getTileValues();
-    //expect(tilesArr).toEqual();
+    expect(tilesArr).toEqual([
+      [null,      [],        [],        [],        [],        [],        [],        [],        [],        []         ],
+      [[],        [],        [],        [],        [],        [],        [],        [],        [],        []         ],
+      [[],        [],        [],        [],        [],        [],        [6],       [],        [],        null       ],
+      [[],        [],        [6,2,2],   [],        [],        [],        [5],       [],        [],        []         ],
+      [[],        [],        null,      [],        [],        [],        [5],       [],        [],        []         ],
+      [[],        [],        [],        [],        [],        [7,4,4],   [4],       [],        [],        [9]        ],
+      [[],        [],        [6],       [3],       [],        [6],       [1],       [3],       [],        [8]        ],
+      [[4],       [2],       null,      [2],       [],        [5],       null,      [9],       [],        [8]        ],
+      [[9],       [8,1,1],   [],        [8,8,7,7], [3],       [2],       [],        [5,5,5],   [],        [7]        ],
+      [[5,5,5],   [1],       [4],       null,      [8,8,8,2], [1,1,1],   [1],       [2],       [9,9,9,3], [1]        ]
+    ]);
   })
 })
 

@@ -297,7 +297,7 @@ export default class Grid {
   }
 
   clearNewTileFlags() {
-    this.getCells().forEach(cell => {
+    this.getCellValues().forEach(cell => {
       cell.setNewTileAdded(false);
     });
   }
@@ -305,7 +305,7 @@ export default class Grid {
   updateMergeScore() {
     let hasMergedTiles = false;
     let totalScore = 0;
-    this.getCells().forEach(cell => {
+    this.getCellValues().forEach(cell => {
       cell.updateMergeResults();
       const score = cell.getMergeScore();
       if (score !== null) {
@@ -334,20 +334,20 @@ export default class Grid {
   }
 
   hasTile(value) {
-    return this.getCells().some(cell => {
+    return this.getCellValues().some(cell => {
       return cell.hasTile() && cell.getValue() === value;
     });
   }
 
   purge() {
-    this.getCells().forEach(cell => {
+    this.getCellValues().forEach(cell => {
       cell.purge();
     });
     this.changedAfterSlide = null;
     this.mergeScore = null;
   }
 
-  getCells() {
+  getCellValues() {
     return Object.values(this.cells);
   }
 

@@ -2,7 +2,7 @@ export default class NewTile {
   constructor() {}
 
   static original2048(grid) {
-    const emptyCells = grid.getCells().filter(cell => !cell.hasTile());
+    const emptyCells = grid.getCellValues().filter(cell => !cell.hasTile());
     if (emptyCells.length === 0) {
       return [];
     }
@@ -13,5 +13,9 @@ export default class NewTile {
       column: randCell.getColumn(),
       value: randValue
     }];
+  }
+
+  static test1(grid) {
+    return [];
   }
 }

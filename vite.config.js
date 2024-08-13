@@ -10,6 +10,7 @@ export default defineConfig({
     assetsInlineLimit: 0,
   },
   test: {
+    environment: 'jsdom',
     include: ['../tests/**/*.test.js'],
     coverage: {
       enabled: true,
