@@ -788,7 +788,7 @@ describe('Grid slide tiles: Constructor called with multiple custom options', {}
   })
 })
 
-describe('Grid unchanged when slide: Constructor called with with custom boolean grid', {} , () => {
+describe('Grid (non-full) unchanged when slide: Constructor called with with custom boolean grid', {} , () => {
   let grid;
   let gridUtils;
   beforeEach(() => {
@@ -800,7 +800,7 @@ describe('Grid unchanged when slide: Constructor called with with custom boolean
     gridUtils = new GridUtils(grid);
   })
 
-  it("should not change grid when attempt to slide left and slide left is not allowed", {}, () => {
+  it('should not change grid when attempt to slide left and slide left is not allowed', {}, () => {
     const tilesArray = [
       [[2],  [4],  null, []  ],
       [null, [4],  [],   []  ],
@@ -815,9 +815,10 @@ describe('Grid unchanged when slide: Constructor called with with custom boolean
       [[4],  [2],  [4],  []  ],
       [[4],  null, [4],  [2] ]
     ]);
+    expect(grid.hasChangedAfterSlide()).toBe(false);
   })
 
-  it("should not change grid when attempt to slide right and slide right is not allowed", {}, () => {
+  it('should not change grid when attempt to slide right and slide right is not allowed', {}, () => {
     const tilesArray = [
       [[2],  [4],  null, []  ],
       [null, [4],  [8],  [2] ],
@@ -832,9 +833,10 @@ describe('Grid unchanged when slide: Constructor called with with custom boolean
       [[],   [4],  [8],  [2]   ],
       [[4],  null, [],   [4]   ]
     ]);
+    expect(grid.hasChangedAfterSlide()).toBe(false);
   })
 
-  it("should not change grid when attempt to slide up and slide up is not allowed", {}, () => {
+  it('should not change grid when attempt to slide up and slide up is not allowed', {}, () => {
     const tilesArray = [
       [[2],  [2],  null, [4] ],
       [null, [4],  [4],  [2] ],
@@ -849,9 +851,10 @@ describe('Grid unchanged when slide: Constructor called with with custom boolean
       [[8],  [],   [8],  [8]   ],
       [[4],  null, [],   [4]   ]
     ]);
+    expect(grid.hasChangedAfterSlide()).toBe(false);
   })
 
-  it("should not change grid when attempt to slide down and slide down is not allowed", {}, () => {
+  it('should not change grid when attempt to slide down and slide down is not allowed', {}, () => {
     const tilesArray = [
       [[2],  [],   null, [8] ],
       [null, [2],  [],   [2] ],
@@ -866,5 +869,712 @@ describe('Grid unchanged when slide: Constructor called with with custom boolean
       [[8],  [4],  [8],  [8]   ],
       [[4],  null, [2],  [2]   ]
     ]);
+    expect(grid.hasChangedAfterSlide()).toBe(false);
+  })
+})
+
+describe('Grid (full) cannot slide', {} , () => {
+  it('should not be able to slide when slide is not allowed (1)', {}, () => {
+    const grid = new Grid({
+      gridOptions: {
+        gridBooleanFnName: 'test3_4x4'
+      }
+    });
+    const gridUtils = new GridUtils(grid);
+    const tilesArray = [
+      [[2],  [4],  null, [2] ],
+      [null, [16], [8],  [4] ],
+      [[4],  [2],  [4],  [8] ],
+      [[2],  null, [8],  [2] ]
+    ];
+    gridUtils.replaceTiles(tilesArray);
+    expect(grid.canSlide()).toBe(false);
+  })
+
+  it('should not be able to slide when slide is not allowed (2)', {}, () => {
+    const grid = new Grid();
+    const gridUtils = new GridUtils(grid);
+    const tilesArray = [
+      [[2],  [4],  [32], [2] ],
+      [[32], [16], [8],  [4] ],
+      [[4],  [2],  [4],  [8] ],
+      [[2],  [32], [8],  [2] ]
+    ];
+    gridUtils.replaceTiles(tilesArray);
+    expect(grid.canSlide()).toBe(false);
+  })
+
+  it('should not be able to slide when slide is not allowed (3)', {}, () => {
+    const grid = new Grid();
+    const gridUtils = new GridUtils(grid);
+    const tilesArray = [
+      [[2],  [4],  [32], [2] ],
+      [[32], [16], [8],  [4] ],
+      [[4],  [2],  [4],  [8] ],
+      [[2],  [32], [8],  [2] ]
+    ];
+    gridUtils.replaceTiles(tilesArray);
+    expect(grid.canSlide()).toBe(false);
+  })
+
+  it('should not be able to slide when slide is not allowed (4)', {}, () => {
+    const grid = new Grid({
+      gridOptions: {
+        gridBooleanFnName: 'test1_7x6'
+      }
+    });
+    const gridUtils = new GridUtils(grid);
+    const tilesArray = [
+      [[2],  [4],  null, null, [4],  [2]  ],
+      [null, null, [4],  [2],  null, null ],
+      [null, [4],  [16], null, [16], null ],
+      [[4],  null, [64], null, [4],  null ],
+      [[8],  [4],  null, [2],  [64], null ],
+      [[2],  [8],  [64], [8],  [16], [32] ],
+      [null, null, null, [4],  [32], [64] ]
+    ];
+    gridUtils.replaceTiles(tilesArray);
+    expect(grid.canSlide()).toBe(false);
+  })
+
+  it('should not be able to slide when slide is not allowed (5)', {}, () => {
+    const grid = new Grid({
+      gridOptions: {
+        gridBooleanFnName: 'test2_10x10',
+        mergeResultFnName: 'test1',
+        mergeConditionFnName: 'test1',
+        mergeScore: 'test1',
+        minMergeLength: 3,
+        maxMergeLength: 4,
+        mergeStrategy: 'longest-match'
+      }
+    });
+    const gridUtils = new GridUtils(grid);
+    const tilesArray = [
+      [null, [2],  [4],  [3],  [6],  [5],  [6],  [5],  [6], [4]  ],
+      [[9],  [1],  [8],  [1],  [7],  [1],  [9],  [2],  [4], [3]  ],
+      [[2],  [9],  [2],  [9],  [2],  [5],  [4],  [6],  [5], null ],
+      [[4],  [1],  [9],  [7],  [8],  [4],  [8],  [3],  [4], [1]  ],
+      [[3],  [8],  null, [9],  [1],  [5],  [4],  [8],  [5], [7]  ],
+      [[9],  [1],  [8],  [7],  [9],  [4],  [9],  [1],  [3], [2]  ],
+      [[5],  [7],  [6],  [8],  [4],  [5],  [3],  [6],  [4], [7]  ],
+      [[8],  [4],  null, [3],  [8],  [4],  null, [5],  [1], [5]  ],
+      [[2],  [5],  [1],  [5],  [2],  [6],  [1],  [6],  [2], [6]  ],
+      [[6],  [4],  [9],  null, [3],  [5],  [4],  [5],  [1], [3]  ]
+    ];
+    gridUtils.replaceTiles(tilesArray);
+    expect(grid.canSlide()).toBe(false);
+  })
+})
+
+describe('Grid (full) has not changed after slide', {} , () => {
+  it('should not be able to slide when slide is not allowed (1a)', {}, () => {
+    const grid = new Grid({
+      gridOptions: {
+        gridBooleanFnName: 'test3_4x4'
+      }
+    });
+    const gridUtils = new GridUtils(grid);
+    const tilesArray = [
+      [[2],  [4],  null, [2] ],
+      [null, [16], [8],  [4] ],
+      [[4],  [2],  [4],  [8] ],
+      [[2],  null, [8],  [2] ]
+    ];
+    gridUtils.replaceTiles(tilesArray);
+    grid.slideLeft();
+    expect(grid.hasChangedAfterSlide()).toBe(false);
+  })
+
+  it('should not be able to slide when slide is not allowed (1b)', {}, () => {
+    const grid = new Grid({
+      gridOptions: {
+        gridBooleanFnName: 'test3_4x4'
+      }
+    });
+    const gridUtils = new GridUtils(grid);
+    const tilesArray = [
+      [[2],  [4],  null, [2] ],
+      [null, [16], [8],  [4] ],
+      [[4],  [2],  [4],  [8] ],
+      [[2],  null, [8],  [2] ]
+    ];
+    gridUtils.replaceTiles(tilesArray);
+    grid.slideRight();
+    expect(grid.hasChangedAfterSlide()).toBe(false);
+  })
+
+  it('should not be able to slide when slide is not allowed (1c)', {}, () => {
+    const grid = new Grid({
+      gridOptions: {
+        gridBooleanFnName: 'test3_4x4'
+      }
+    });
+    const gridUtils = new GridUtils(grid);
+    const tilesArray = [
+      [[2],  [4],  null, [2] ],
+      [null, [16], [8],  [4] ],
+      [[4],  [2],  [4],  [8] ],
+      [[2],  null, [8],  [2] ]
+    ];
+    gridUtils.replaceTiles(tilesArray);
+    grid.slideUp();
+    expect(grid.hasChangedAfterSlide()).toBe(false);
+  })
+
+  it('should not be able to slide when slide is not allowed (1d)', {}, () => {
+    const grid = new Grid({
+      gridOptions: {
+        gridBooleanFnName: 'test3_4x4'
+      }
+    });
+    const gridUtils = new GridUtils(grid);
+    const tilesArray = [
+      [[2],  [4],  null, [2] ],
+      [null, [16], [8],  [4] ],
+      [[4],  [2],  [4],  [8] ],
+      [[2],  null, [8],  [2] ]
+    ];
+    gridUtils.replaceTiles(tilesArray);
+    grid.slideDown();
+    expect(grid.hasChangedAfterSlide()).toBe(false);
+  })
+
+  it('should not be able to slide when slide is not allowed (2a)', {}, () => {
+    const grid = new Grid();
+    const gridUtils = new GridUtils(grid);
+    const tilesArray = [
+      [[2],  [4],  [32], [2] ],
+      [[32], [16], [8],  [4] ],
+      [[4],  [2],  [4],  [8] ],
+      [[2],  [32], [8],  [2] ]
+    ];
+    gridUtils.replaceTiles(tilesArray);
+    grid.slideLeft();
+    expect(grid.hasChangedAfterSlide()).toBe(false);
+  })
+
+  it('should not be able to slide when slide is not allowed (2b)', {}, () => {
+    const grid = new Grid();
+    const gridUtils = new GridUtils(grid);
+    const tilesArray = [
+      [[2],  [4],  [32], [2] ],
+      [[32], [16], [8],  [4] ],
+      [[4],  [2],  [4],  [8] ],
+      [[2],  [32], [8],  [2] ]
+    ];
+    gridUtils.replaceTiles(tilesArray);
+    grid.slideRight();
+    expect(grid.hasChangedAfterSlide()).toBe(false);
+  })
+
+  it('should not be able to slide when slide is not allowed (2c)', {}, () => {
+    const grid = new Grid();
+    const gridUtils = new GridUtils(grid);
+    const tilesArray = [
+      [[2],  [4],  [32], [2] ],
+      [[32], [16], [8],  [4] ],
+      [[4],  [2],  [4],  [8] ],
+      [[2],  [32], [8],  [2] ]
+    ];
+    gridUtils.replaceTiles(tilesArray);
+    grid.slideUp();
+    expect(grid.hasChangedAfterSlide()).toBe(false);
+  })
+
+  it('should not be able to slide when slide is not allowed (2d)', {}, () => {
+    const grid = new Grid();
+    const gridUtils = new GridUtils(grid);
+    const tilesArray = [
+      [[2],  [4],  [32], [2] ],
+      [[32], [16], [8],  [4] ],
+      [[4],  [2],  [4],  [8] ],
+      [[2],  [32], [8],  [2] ]
+    ];
+    gridUtils.replaceTiles(tilesArray);
+    grid.slideDown();
+    expect(grid.hasChangedAfterSlide()).toBe(false);
+  })
+
+  it('should not be able to slide when slide is not allowed (3a)', {}, () => {
+    const grid = new Grid();
+    const gridUtils = new GridUtils(grid);
+    const tilesArray = [
+      [[2],  [4],  [32], [2] ],
+      [[32], [16], [8],  [4] ],
+      [[4],  [2],  [4],  [8] ],
+      [[2],  [32], [8],  [2] ]
+    ];
+    gridUtils.replaceTiles(tilesArray);
+    grid.slideLeft();
+    expect(grid.hasChangedAfterSlide()).toBe(false);
+  })
+
+  it('should not be able to slide when slide is not allowed (3b)', {}, () => {
+    const grid = new Grid();
+    const gridUtils = new GridUtils(grid);
+    const tilesArray = [
+      [[2],  [4],  [32], [2] ],
+      [[32], [16], [8],  [4] ],
+      [[4],  [2],  [4],  [8] ],
+      [[2],  [32], [8],  [2] ]
+    ];
+    gridUtils.replaceTiles(tilesArray);
+    grid.slideRight();
+    expect(grid.hasChangedAfterSlide()).toBe(false);
+  })
+
+  it('should not be able to slide when slide is not allowed (3c)', {}, () => {
+    const grid = new Grid();
+    const gridUtils = new GridUtils(grid);
+    const tilesArray = [
+      [[2],  [4],  [32], [2] ],
+      [[32], [16], [8],  [4] ],
+      [[4],  [2],  [4],  [8] ],
+      [[2],  [32], [8],  [2] ]
+    ];
+    gridUtils.replaceTiles(tilesArray);
+    grid.slideUp();
+    expect(grid.hasChangedAfterSlide()).toBe(false);
+  })
+
+  it('should not be able to slide when slide is not allowed (3d)', {}, () => {
+    const grid = new Grid();
+    const gridUtils = new GridUtils(grid);
+    const tilesArray = [
+      [[2],  [4],  [32], [2] ],
+      [[32], [16], [8],  [4] ],
+      [[4],  [2],  [4],  [8] ],
+      [[2],  [32], [8],  [2] ]
+    ];
+    gridUtils.replaceTiles(tilesArray);
+    grid.slideDown();
+    expect(grid.hasChangedAfterSlide()).toBe(false);
+  })
+
+  it('should not be able to slide when slide is not allowed (4a)', {}, () => {
+    const grid = new Grid({
+      gridOptions: {
+        gridBooleanFnName: 'test1_7x6'
+      }
+    });
+    const gridUtils = new GridUtils(grid);
+    const tilesArray = [
+      [[2],  [4],  null, null, [4],  [2]  ],
+      [null, null, [4],  [2],  null, null ],
+      [null, [4],  [16], null, [16], null ],
+      [[4],  null, [64], null, [4],  null ],
+      [[8],  [4],  null, [2],  [64], null ],
+      [[2],  [8],  [64], [8],  [16], [32] ],
+      [null, null, null, [4],  [32], [64] ]
+    ];
+    gridUtils.replaceTiles(tilesArray);
+    grid.slideLeft();
+    expect(grid.hasChangedAfterSlide()).toBe(false);
+  })
+
+  it('should not be able to slide when slide is not allowed (4b)', {}, () => {
+    const grid = new Grid({
+      gridOptions: {
+        gridBooleanFnName: 'test1_7x6'
+      }
+    });
+    const gridUtils = new GridUtils(grid);
+    const tilesArray = [
+      [[2],  [4],  null, null, [4],  [2]  ],
+      [null, null, [4],  [2],  null, null ],
+      [null, [4],  [16], null, [16], null ],
+      [[4],  null, [64], null, [4],  null ],
+      [[8],  [4],  null, [2],  [64], null ],
+      [[2],  [8],  [64], [8],  [16], [32] ],
+      [null, null, null, [4],  [32], [64] ]
+    ];
+    gridUtils.replaceTiles(tilesArray);
+    grid.slideRight();
+    expect(grid.hasChangedAfterSlide()).toBe(false);
+  })
+
+  it('should not be able to slide when slide is not allowed (4c)', {}, () => {
+    const grid = new Grid({
+      gridOptions: {
+        gridBooleanFnName: 'test1_7x6'
+      }
+    });
+    const gridUtils = new GridUtils(grid);
+    const tilesArray = [
+      [[2],  [4],  null, null, [4],  [2]  ],
+      [null, null, [4],  [2],  null, null ],
+      [null, [4],  [16], null, [16], null ],
+      [[4],  null, [64], null, [4],  null ],
+      [[8],  [4],  null, [2],  [64], null ],
+      [[2],  [8],  [64], [8],  [16], [32] ],
+      [null, null, null, [4],  [32], [64] ]
+    ];
+    gridUtils.replaceTiles(tilesArray);
+    grid.slideUp();
+    expect(grid.hasChangedAfterSlide()).toBe(false);
+  })
+
+  it('should not be able to slide when slide is not allowed (4d)', {}, () => {
+    const grid = new Grid({
+      gridOptions: {
+        gridBooleanFnName: 'test1_7x6'
+      }
+    });
+    const gridUtils = new GridUtils(grid);
+    const tilesArray = [
+      [[2],  [4],  null, null, [4],  [2]  ],
+      [null, null, [4],  [2],  null, null ],
+      [null, [4],  [16], null, [16], null ],
+      [[4],  null, [64], null, [4],  null ],
+      [[8],  [4],  null, [2],  [64], null ],
+      [[2],  [8],  [64], [8],  [16], [32] ],
+      [null, null, null, [4],  [32], [64] ]
+    ];
+    gridUtils.replaceTiles(tilesArray);
+    grid.slideDown();
+    expect(grid.hasChangedAfterSlide()).toBe(false);
+  })
+
+  it('should not be able to slide when slide is not allowed (5a)', {}, () => {
+    const grid = new Grid({
+      gridOptions: {
+        gridBooleanFnName: 'test2_10x10',
+        mergeResultFnName: 'test1',
+        mergeConditionFnName: 'test1',
+        mergeScore: 'test1',
+        minMergeLength: 3,
+        maxMergeLength: 4,
+        mergeStrategy: 'longest-match'
+      }
+    });
+    const gridUtils = new GridUtils(grid);
+    const tilesArray = [
+      [null, [2],  [4],  [3],  [6],  [5],  [6],  [5],  [6], [4]  ],
+      [[9],  [1],  [8],  [1],  [7],  [1],  [9],  [2],  [4], [3]  ],
+      [[2],  [9],  [2],  [9],  [2],  [5],  [4],  [6],  [5], null ],
+      [[4],  [1],  [9],  [7],  [8],  [4],  [8],  [3],  [4], [1]  ],
+      [[3],  [8],  null, [9],  [1],  [5],  [4],  [8],  [5], [7]  ],
+      [[9],  [1],  [8],  [7],  [9],  [4],  [9],  [1],  [3], [2]  ],
+      [[5],  [7],  [6],  [8],  [4],  [5],  [3],  [6],  [4], [7]  ],
+      [[8],  [4],  null, [3],  [8],  [4],  null, [5],  [1], [5]  ],
+      [[2],  [5],  [1],  [5],  [2],  [6],  [1],  [6],  [2], [6]  ],
+      [[6],  [4],  [9],  null, [3],  [5],  [4],  [5],  [1], [3]  ]
+    ];
+    gridUtils.replaceTiles(tilesArray);
+    grid.slideLeft();
+    expect(grid.hasChangedAfterSlide()).toBe(false);
+  })
+
+  it('should not be able to slide when slide is not allowed (5b)', {}, () => {
+    const grid = new Grid({
+      gridOptions: {
+        gridBooleanFnName: 'test2_10x10',
+        mergeResultFnName: 'test1',
+        mergeConditionFnName: 'test1',
+        mergeScore: 'test1',
+        minMergeLength: 3,
+        maxMergeLength: 4,
+        mergeStrategy: 'longest-match'
+      }
+    });
+    const gridUtils = new GridUtils(grid);
+    const tilesArray = [
+      [null, [2],  [4],  [3],  [6],  [5],  [6],  [5],  [6], [4]  ],
+      [[9],  [1],  [8],  [1],  [7],  [1],  [9],  [2],  [4], [3]  ],
+      [[2],  [9],  [2],  [9],  [2],  [5],  [4],  [6],  [5], null ],
+      [[4],  [1],  [9],  [7],  [8],  [4],  [8],  [3],  [4], [1]  ],
+      [[3],  [8],  null, [9],  [1],  [5],  [4],  [8],  [5], [7]  ],
+      [[9],  [1],  [8],  [7],  [9],  [4],  [9],  [1],  [3], [2]  ],
+      [[5],  [7],  [6],  [8],  [4],  [5],  [3],  [6],  [4], [7]  ],
+      [[8],  [4],  null, [3],  [8],  [4],  null, [5],  [1], [5]  ],
+      [[2],  [5],  [1],  [5],  [2],  [6],  [1],  [6],  [2], [6]  ],
+      [[6],  [4],  [9],  null, [3],  [5],  [4],  [5],  [1], [3]  ]
+    ];
+    gridUtils.replaceTiles(tilesArray);
+    grid.slideRight();
+    expect(grid.hasChangedAfterSlide()).toBe(false);
+  })
+
+  it('should not be able to slide when slide is not allowed (5c)', {}, () => {
+    const grid = new Grid({
+      gridOptions: {
+        gridBooleanFnName: 'test2_10x10',
+        mergeResultFnName: 'test1',
+        mergeConditionFnName: 'test1',
+        mergeScore: 'test1',
+        minMergeLength: 3,
+        maxMergeLength: 4,
+        mergeStrategy: 'longest-match'
+      }
+    });
+    const gridUtils = new GridUtils(grid);
+    const tilesArray = [
+      [null, [2],  [4],  [3],  [6],  [5],  [6],  [5],  [6], [4]  ],
+      [[9],  [1],  [8],  [1],  [7],  [1],  [9],  [2],  [4], [3]  ],
+      [[2],  [9],  [2],  [9],  [2],  [5],  [4],  [6],  [5], null ],
+      [[4],  [1],  [9],  [7],  [8],  [4],  [8],  [3],  [4], [1]  ],
+      [[3],  [8],  null, [9],  [1],  [5],  [4],  [8],  [5], [7]  ],
+      [[9],  [1],  [8],  [7],  [9],  [4],  [9],  [1],  [3], [2]  ],
+      [[5],  [7],  [6],  [8],  [4],  [5],  [3],  [6],  [4], [7]  ],
+      [[8],  [4],  null, [3],  [8],  [4],  null, [5],  [1], [5]  ],
+      [[2],  [5],  [1],  [5],  [2],  [6],  [1],  [6],  [2], [6]  ],
+      [[6],  [4],  [9],  null, [3],  [5],  [4],  [5],  [1], [3]  ]
+    ];
+    gridUtils.replaceTiles(tilesArray);
+    grid.slideUp();
+    expect(grid.hasChangedAfterSlide()).toBe(false);
+  })
+
+  it('should not be able to slide when slide is not allowed (5d)', {}, () => {
+    const grid = new Grid({
+      gridOptions: {
+        gridBooleanFnName: 'test2_10x10',
+        mergeResultFnName: 'test1',
+        mergeConditionFnName: 'test1',
+        mergeScore: 'test1',
+        minMergeLength: 3,
+        maxMergeLength: 4,
+        mergeStrategy: 'longest-match'
+      }
+    });
+    const gridUtils = new GridUtils(grid);
+    const tilesArray = [
+      [null, [2],  [4],  [3],  [6],  [5],  [6],  [5],  [6], [4]  ],
+      [[9],  [1],  [8],  [1],  [7],  [1],  [9],  [2],  [4], [3]  ],
+      [[2],  [9],  [2],  [9],  [2],  [5],  [4],  [6],  [5], null ],
+      [[4],  [1],  [9],  [7],  [8],  [4],  [8],  [3],  [4], [1]  ],
+      [[3],  [8],  null, [9],  [1],  [5],  [4],  [8],  [5], [7]  ],
+      [[9],  [1],  [8],  [7],  [9],  [4],  [9],  [1],  [3], [2]  ],
+      [[5],  [7],  [6],  [8],  [4],  [5],  [3],  [6],  [4], [7]  ],
+      [[8],  [4],  null, [3],  [8],  [4],  null, [5],  [1], [5]  ],
+      [[2],  [5],  [1],  [5],  [2],  [6],  [1],  [6],  [2], [6]  ],
+      [[6],  [4],  [9],  null, [3],  [5],  [4],  [5],  [1], [3]  ]
+    ];
+    gridUtils.replaceTiles(tilesArray);
+    grid.slideDown();
+    expect(grid.hasChangedAfterSlide()).toBe(false);
+  })
+})
+
+describe('Grid calculate merge score', {} , () => {
+  it('should set merge score to null when grid has changed after slide but no merge happened', {}, () => {
+    const grid = new Grid({
+      gridOptions: {
+        gridBooleanFnName: 'test3_4x4'
+      }
+    });
+    const gridUtils = new GridUtils(grid);
+    const tilesArray = [
+      [[],   [4],  null, [2] ],
+      [null, [16], [8],  [4] ],
+      [[],   [2],  [],   [8] ],
+      [[2],  null, [8],  []  ]
+    ];
+    gridUtils.replaceTiles(tilesArray);
+    grid.slideLeft();
+    grid.updateMergeScore();
+    expect(grid.getMergeScore()).toBe(null);
+  })
+
+  it('should set merge score to null when grid has not changed after slide', {}, () => {
+    const grid = new Grid({
+      gridOptions: {
+        gridBooleanFnName: 'test3_4x4'
+      }
+    });
+    const gridUtils = new GridUtils(grid);
+    const tilesArray = [
+      [[2],  [4],  null, [2] ],
+      [null, [16], [8],  [4] ],
+      [[4],  [2],  [4],  [8] ],
+      [[2],  null, [8],  [2] ]
+    ];
+    gridUtils.replaceTiles(tilesArray);
+    grid.slideLeft();
+    grid.updateMergeScore();
+    expect(grid.getMergeScore()).toBe(null);
+  })
+
+  it('should calculate merge score when merge happened after slide (1)', {}, () => {
+    const grid = new Grid({
+      gridOptions: {
+        gridBooleanFnName: 'test2_10x10'
+      }
+    });
+    const gridUtils = new GridUtils(grid);
+    const tilesArray = [
+      [null, [2], [],   [2],  [],  [2], [],   [2], [2], [4]  ],
+      [[2],  [],  [2],  [2],  [],  [],  [],   [],  [2], []   ],
+      [[],   [2], [4],  [2],  [],  [2], [],   [],  [],  null ],
+      [[],   [2], [2],  [4],  [2], [],  [2],  [],  [2], []   ],
+      [[],   [2], null, [2],  [4], [4], [4],  [],  [2], []   ],
+      [[4],  [2], [2],  [2],  [4], [4], [2],  [2], [],  [2]  ],
+      [[],   [2], [2],  [4],  [4], [2], [],   [2], [],  []   ],
+      [[2],  [2], null, [2],  [4], [],  null, [4], [],  [4]  ],
+      [[],   [2], [4],  [4],  [8], [4], [4],  [4], [4], []   ],
+      [[8],  [2], [2],  null, [4], [],  [4],  [8], [8], []   ]
+    ];
+    gridUtils.replaceTiles(tilesArray);
+    grid.slideLeft();
+    grid.updateMergeScore();
+    expect(grid.getMergeScore()).toBe(132);
+  })
+
+  it('should calculate merge score when merge happened after slide (2)', {}, () => {
+    const grid = new Grid({
+      gridOptions: {
+        gridBooleanFnName: 'test2_10x10',
+        mergeResultFnName: 'test1',
+        mergeConditionFnName: 'test1',
+        mergeScoreFnName: 'test1',
+        minMergeLength: 3,
+        maxMergeLength: 4,
+        mergeStrategy: 'longest-match'
+      }
+    });
+    const gridUtils = new GridUtils(grid);
+    const tilesArray = [
+      [null, [],  [],   [],   [],  [],  [6],  [3], [3], []   ],
+      [[],   [2], [2],  [3],  [3], [4], [5],  [],  [],  []   ],
+      [[],   [1], [2],  [2],  [2], [4], [5],  [],  [],  null ],
+      [[4],  [],  [6],  [7],  [8], [7], [4],  [9], [9], [9]  ],
+      [[],   [1], null, [],   [],  [6], [1],  [],  [9], []   ],
+      [[9],  [8], [],   [7],  [],  [5], [],   [5], [9], []   ],
+      [[5],  [],  [6],  [],   [8], [2], [],   [5], [],  [8]  ],
+      [[5],  [1], null, [8],  [8], [1], null, [5], [],  [8]  ],
+      [[],   [],  [],   [8],  [],  [1], [],   [],  [],  [7]  ],
+      [[5],  [],  [4],  null, [],  [1], [1],  [2], [],  [1]  ]
+    ];
+    gridUtils.replaceTiles(tilesArray);
+    grid.slideLeft();
+    grid.updateMergeScore();
+    expect(grid.getMergeScore()).toBe(152);
+  })
+
+  describe('Grid calculate merge values for each cell', {} , () => {
+    it('should set merge values to null when grid has changed after slide but no merge happened', {}, () => {
+      const grid = new Grid({
+        gridOptions: {
+          gridBooleanFnName: 'test3_4x4'
+        }
+      });
+      const gridUtils = new GridUtils(grid);
+      const tilesArray = [
+        [[],   [4],  null, [2] ],
+        [null, [16], [8],  [4] ],
+        [[],   [2],  [],   [8] ],
+        [[2],  null, [8],  []  ]
+      ];
+      gridUtils.replaceTiles(tilesArray);
+      grid.slideLeft();
+      grid.updateMergeScore();
+      grid.getCellValues().forEach(cell => {
+        expect(cell.mergeValue).toBe(null);
+      });
+    })
+  
+    it('should set merge values to null when grid has not changed after slide', {}, () => {
+      const grid = new Grid({
+        gridOptions: {
+          gridBooleanFnName: 'test3_4x4'
+        }
+      });
+      const gridUtils = new GridUtils(grid);
+      const tilesArray = [
+        [[2],  [4],  null, [2] ],
+        [null, [16], [8],  [4] ],
+        [[4],  [2],  [4],  [8] ],
+        [[2],  null, [8],  [2] ]
+      ];
+      gridUtils.replaceTiles(tilesArray);
+      grid.slideLeft();
+      grid.updateMergeScore();
+      grid.getCellValues().forEach(cell => {
+        expect(cell.mergeValue).toBe(null);
+      });
+    })
+  
+    it('should set merge values when merge happened after slide (1)', {}, () => {
+      const grid = new Grid({
+        gridOptions: {
+          gridBooleanFnName: 'test2_10x10'
+        }
+      });
+      const gridUtils = new GridUtils(grid);
+      const tilesArray = [
+        [null, [2], [],   [2],  [],  [2], [],   [2], [2], [4]  ],
+        [[2],  [],  [2],  [2],  [],  [],  [],   [],  [2], []   ],
+        [[],   [2], [4],  [2],  [],  [2], [],   [],  [],  null ],
+        [[],   [2], [2],  [4],  [2], [],  [2],  [],  [2], []   ],
+        [[],   [2], null, [2],  [4], [4], [4],  [],  [2], []   ],
+        [[4],  [2], [2],  [2],  [4], [4], [2],  [2], [],  [2]  ],
+        [[],   [2], [2],  [4],  [4], [2], [],   [2], [],  []   ],
+        [[2],  [2], null, [2],  [4], [],  null, [4], [],  [4]  ],
+        [[],   [2], [4],  [4],  [8], [4], [4],  [4], [4], []   ],
+        [[8],  [2], [2],  null, [4], [],  [4],  [8], [8], []   ]
+      ];
+      gridUtils.replaceTiles(tilesArray);
+      grid.slideLeft();
+      grid.updateMergeScore();
+      expect(grid.cells[1].mergeValue).toBe(4);
+      expect(grid.cells[2].mergeValue).toBe(4);
+      expect(grid.cells[10].mergeValue).toBe(4);
+      expect(grid.cells[11].mergeValue).toBe(4);
+      expect(grid.cells[22].mergeValue).toBe(4);
+      expect(grid.cells[30].mergeValue).toBe(4);
+      expect(grid.cells[32].mergeValue).toBe(4);
+      expect(grid.cells[44].mergeValue).toBe(8);
+      expect(grid.cells[51].mergeValue).toBe(4);
+      expect(grid.cells[53].mergeValue).toBe(8);
+      expect(grid.cells[54].mergeValue).toBe(4);
+      expect(grid.cells[60].mergeValue).toBe(4);
+      expect(grid.cells[61].mergeValue).toBe(8);
+      expect(grid.cells[62].mergeValue).toBe(4);
+      expect(grid.cells[70].mergeValue).toBe(4);
+      expect(grid.cells[77].mergeValue).toBe(8);
+      expect(grid.cells[81].mergeValue).toBe(8);
+      expect(grid.cells[83].mergeValue).toBe(8);
+      expect(grid.cells[84].mergeValue).toBe(8);
+      expect(grid.cells[91].mergeValue).toBe(4);
+      expect(grid.cells[94].mergeValue).toBe(8);
+      expect(grid.cells[95].mergeValue).toBe(16);
+    })
+  
+    it('should calculate merge score when merge happened after slide (2)', {}, () => {
+      const grid = new Grid({
+        gridOptions: {
+          gridBooleanFnName: 'test2_10x10',
+          mergeResultFnName: 'test1',
+          mergeConditionFnName: 'test1',
+          mergeScoreFnName: 'test1',
+          minMergeLength: 3,
+          maxMergeLength: 4,
+          mergeStrategy: 'longest-match'
+        }
+      });
+      const gridUtils = new GridUtils(grid);
+      const tilesArray = [
+        [null, [],  [],   [],   [],  [],  [6],  [3], [3], []   ],
+        [[],   [2], [2],  [3],  [3], [4], [5],  [],  [],  []   ],
+        [[],   [1], [2],  [2],  [2], [4], [5],  [],  [],  null ],
+        [[4],  [],  [6],  [7],  [8], [7], [4],  [9], [9], [9]  ],
+        [[],   [1], null, [],   [],  [6], [1],  [],  [9], []   ],
+        [[9],  [8], [],   [7],  [],  [5], [],   [5], [9], []   ],
+        [[5],  [],  [6],  [],   [8], [2], [],   [5], [],  [8]  ],
+        [[5],  [1], null, [8],  [8], [1], null, [5], [],  [8]  ],
+        [[],   [],  [],   [8],  [],  [1], [],   [],  [],  [7]  ],
+        [[5],  [],  [4],  null, [],  [1], [1],  [2], [],  [1]  ]
+      ];
+      gridUtils.replaceTiles(tilesArray);
+      grid.slideLeft();
+      grid.updateMergeScore();
+      expect(grid.cells[1].mergeValue).toBe(12);
+      expect(grid.cells[21].mergeValue).toBe(2);
+      expect(grid.cells[33].mergeValue).toBe(13);
+      expect(grid.cells[34].mergeValue).toBe(9);
+      expect(grid.cells[50].mergeValue).toBe(7);
+      expect(grid.cells[73].mergeValue).toBe(15);
+    })
   })
 })

@@ -282,7 +282,7 @@ export default class Grid {
       for (let i = this.minMergeLength; i <= this.maxMergeLength; i++) {
         for (let j = 0; j <= cellArray.length - i; j++) {
           const tileValues = cellArray.slice(j, j + i).map(x => x.getValue());
-          if (this.mergeConditionFn(tileValues)) {
+          if (this.mergeConditionFn(tileValues) || this.mergeConditionFn(tileValues.reverse())) {
             return true;
           }
         }
