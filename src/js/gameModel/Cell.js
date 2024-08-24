@@ -90,6 +90,7 @@ export default class Cell {
       this.mergeScore = null;
       this.mergeValue = null;
     }
+    
   }
 
   purge() {
