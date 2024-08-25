@@ -52,6 +52,7 @@ We can customize the appearance and behavior of the board by defining the follow
 
 * `--cell-size`: Size of each cell. Default is `4.5rem`.
 * `--cell-gap`: Gap size between cells. Default is `0.25rem`.
+* `--tile-font-scale-factor`: Adjust this to control the font size of all tiles. Default is `0.39`.
 * `--cell-border-radius`: Border radius of cells and board. Default is `0.25rem`.
 * `--horizontal-slide-duration`: Duration of a slide across the horizontal axis: Default is `125ms`.
 * `--vertical-slide-duration`: Duration of a slide across the vertical axis: Default is `125ms`.
@@ -140,6 +141,24 @@ npm run serve
 ```
 
 Navigate to `/colors.html` to see all possible tile colors.
+
+## Tests
+
+Vitest is used for testing.
+
+The current tests cover most of the core functionality of the game model.
+
+Run the tests:
+
+```bash
+npm run test
+```
+
+or, if you prefer access to the browser UI:
+
+```bash
+npm run test:ui
+```
 
 ## Screenshots
 
