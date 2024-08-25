@@ -1242,7 +1242,7 @@ describe('Grid (full) has not changed after slide', {} , () => {
         gridBooleanFnName: 'test2_10x10',
         mergeResultFnName: 'test1',
         mergeConditionFnName: 'test1',
-        mergeScore: 'test1',
+        mergeScoreFnName: 'test1',
         minMergeLength: 3,
         maxMergeLength: 4,
         mergeStrategy: 'longest-match'
@@ -1272,7 +1272,7 @@ describe('Grid (full) has not changed after slide', {} , () => {
         gridBooleanFnName: 'test2_10x10',
         mergeResultFnName: 'test1',
         mergeConditionFnName: 'test1',
-        mergeScore: 'test1',
+        mergeScoreFnName: 'test1',
         minMergeLength: 3,
         maxMergeLength: 4,
         mergeStrategy: 'longest-match'
@@ -1302,7 +1302,7 @@ describe('Grid (full) has not changed after slide', {} , () => {
         gridBooleanFnName: 'test2_10x10',
         mergeResultFnName: 'test1',
         mergeConditionFnName: 'test1',
-        mergeScore: 'test1',
+        mergeScoreFnName: 'test1',
         minMergeLength: 3,
         maxMergeLength: 4,
         mergeStrategy: 'longest-match'
@@ -1332,7 +1332,7 @@ describe('Grid (full) has not changed after slide', {} , () => {
         gridBooleanFnName: 'test2_10x10',
         mergeResultFnName: 'test1',
         mergeConditionFnName: 'test1',
-        mergeScore: 'test1',
+        mergeScoreFnName: 'test1',
         minMergeLength: 3,
         maxMergeLength: 4,
         mergeStrategy: 'longest-match'
