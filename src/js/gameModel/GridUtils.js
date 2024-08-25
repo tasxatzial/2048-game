@@ -80,7 +80,7 @@ export default class GridUtils {
 
   getCellLongestTileArray() {
     let maxLength = 0;
-    this.grid.getCells().forEach(cell => {
+    this.grid.getCellValues().forEach(cell => {
       if (cell.hasTile()) {
         const tilesStr = '[' + cell.getTileValues().toString() + ']';
         const tileLength = tilesStr.length + 2;
