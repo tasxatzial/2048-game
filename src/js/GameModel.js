@@ -104,6 +104,7 @@ export default class GameModel extends EventEmitter {
   _postMove() {
     this.grid.clearNewTileFlags();
     this.grid.updateMergeScore();
+    this.grid.updateCellMergeValues();
     if (this.grid.hasChangedAfterSlide()) {
       this.grid.addDefaultTiles();
       this.slideCount++;

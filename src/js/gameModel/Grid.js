@@ -223,7 +223,7 @@ export default class Grid {
       if (mergedCells !== null) {
         this.changedAfterSlide = true;
         for (let i = mergedCells.length - 1; i >= 0; i--) {
-          cellArray[lastOccupiedIndex].setTileFrom(mergedCells[i]);
+          cellArray[lastOccupiedIndex].addTileFrom(mergedCells[i]);
         }
         packedCells = packedCells.slice(0, packedCells.length - mergedCells.length);
       }
@@ -231,7 +231,7 @@ export default class Grid {
         if (!cellArray[lastOccupiedIndex].hasTile()) {
           this.changedAfterSlide = true;
         }
-        cellArray[lastOccupiedIndex].setTileFrom(packedCells[packedCells.length - 1]);
+        cellArray[lastOccupiedIndex].addTileFrom(packedCells[packedCells.length - 1]);
         packedCells = packedCells.slice(0, packedCells.length - 1);
       }
       lastOccupiedIndex--;
@@ -306,7 +306,7 @@ export default class Grid {
     let hasMergedTiles = false;
     let totalScore = 0;
     this.getCellValues().forEach(cell => {
-      cell.updateMergeResults();
+      cell.updateMergeScore();
       const score = cell.getMergeScore();
       if (score !== null) {
         hasMergedTiles = true;
@@ -314,6 +314,12 @@ export default class Grid {
       }
     });
     this.mergeScore = hasMergedTiles ? totalScore : null;
+  }
+
+  updateCellMergeValues() {
+    this.getCellValues().forEach(cell => {
+      cell.updateMergeValue();
+    });
   }
 
   getMergeScore() {

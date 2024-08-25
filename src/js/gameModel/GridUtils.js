@@ -3,7 +3,7 @@ export default class GridUtils {
     this.grid = grid;
   }
 
-    getCellLongestValue() {
+    _getMaxCellValueLength() {
     let maxLength = 0;
     this.getCells().forEach(cell => {
       if (cell.hasTile()) {
@@ -16,9 +16,11 @@ export default class GridUtils {
     return maxLength;
   }
 
-  toCellValues() {
+  /* returns a string representation of the cell values. Each value
+  is either a merged value from multiple tiles, or a single tile value. */
+  cellValuesToString() {
     let result = '';
-    const entryLength = this.getCellLongestValue();
+    const entryLength = this._getMaxCellValueLength();
     const pad = ' '.repeat(entryLength);
     for (let i = 0; i < this.grid.gridBoolean.length; i++) {
       for (let j = 0; j < this.grid.gridBoolean[0].length; j++) {
@@ -44,7 +46,7 @@ export default class GridUtils {
   replaceTiles(tileValues) {
     if (tileValues.length !== this.grid.gridBoolean.length &&
         tileValues[0].length !== this.grid.gridBoolean[0].length) {
-      throw new Error('tileArr must be the same size as the grid');
+      throw new Error('array is not the same size as the grid');
     }
     for (let i = 0; i < tileValues.length; i++) {
       for (let j = 0; j < tileValues[0].length; j++) {
@@ -78,7 +80,7 @@ export default class GridUtils {
     return tileArr;
   }
 
-  getCellLongestTileArray() {
+  _getMaxTileArrayLength() {
     let maxLength = 0;
     this.grid.getCellValues().forEach(cell => {
       if (cell.hasTile()) {
@@ -95,24 +97,25 @@ export default class GridUtils {
     return maxLength;
   }
 
-  printTileValues() {
-    const entryLength = this.getCellLongestTileArray();
-    const pad = ' '.repeat(entryLength);
+  /* returns a string representation of the tile values of each cell */
+  tileValuesToString() {
+    const longestTileArrayLength = this._getMaxTileArrayLength();
+    const pad = ' '.repeat(longestTileArrayLength);
     let result = '[\n';
     for (let i = 0; i < this.grid.gridBoolean.length; i++) {
       result += '[';
       for (let j = 0; j < this.grid.gridBoolean[0].length; j++) {
-        let tmp;
+        let cellResult;
         if (this.grid.gridBoolean[i][j] === 1) {
           const cell = this.grid.cells[i * this.grid.gridBoolean[0].length + j];
-          tmp = '[' + cell.getTileValues().toString() + ']';
+          cellResult = '[' + cell.getTileValues().toString() + ']';
         } else {
-          tmp = 'null';
+          cellResult = 'null';
         }
         if (j !== this.grid.gridBoolean[0].length - 1) {
-          tmp += ',';
+          cellResult += ',';
         }
-        result += (tmp + pad).slice(0, entryLength);
+        result += (cellResult + pad).slice(0, longestTileArrayLength);
       }
       result += ']';
       if (i !== this.grid.gridBoolean.length - 1) {

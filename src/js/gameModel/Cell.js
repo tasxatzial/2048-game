@@ -30,17 +30,12 @@ export default class Cell {
     return this.tiles.length > 0;
   }
 
-  setTile(value) {
-    if (this.tiles.length > 0) {
-      throw new Error('cell already has a tile');
-    }
-    this.tiles.push(new Tile(this.row, this.col, value));
-  }
-
   getTileValues() {
     return this.tiles.map(tile => tile.getValue());
   }
 
+  /* returns the value of the cell. It can be either a merged value
+  from multiple tiles, or a single tile value. */
   getValue() {
     if (this.mergeValue) {
       return this.mergeValue;
@@ -66,7 +61,7 @@ export default class Cell {
     this.tiles.push(new Tile(this.row, this.col, value));
   }
 
-  setTileFrom(cell) {
+  addTileFrom(cell) {
     if (cell === this) {
       return;
     }
@@ -80,14 +75,22 @@ export default class Cell {
     cell.tiles = [];
   }
 
-  updateMergeResults() {
+  updateMergeScore() {
     if (this.tiles.length > 1) {
-      const tilesVals = this.tiles.map(tile => tile.getValue());
-      this.mergeScore = this.mergeScoreFn(tilesVals);
-      this.mergeValue = this.mergeResultFn(tilesVals);
+      const tileValues = this.tiles.map(tile => tile.getValue());
+      this.mergeScore = this.mergeScoreFn(tileValues);
     }
     else {
       this.mergeScore = null;
+    }
+  }
+
+  updateMergeValue() {
+    if (this.tiles.length > 1) {
+      const tileValues = this.tiles.map(tile => tile.getValue());
+      this.mergeValue = this.mergeResultFn(tileValues);
+    }
+    else {
       this.mergeValue = null;
     }
   }

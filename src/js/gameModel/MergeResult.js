@@ -1,6 +1,7 @@
 export default class MergeResult {
   constructor() {}
 
+  //first element of tileValues corresponds to the tile closest to the edge in the slide direction
   static original2048(tileValues) {
     return tileValues.reduce((x, y) => x + y, 0);
   }
