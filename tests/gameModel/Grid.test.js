@@ -1468,7 +1468,7 @@ describe('Grid calculate merge score', {} , () => {
       ];
       gridUtils.replaceTiles(tilesArray);
       grid.slideLeft();
-      grid.updateMergeScore();
+      grid.updateCellMergeValues();
       grid.getCellValues().forEach(cell => {
         expect(cell.mergeValue).toBe(null);
       });
@@ -1489,7 +1489,7 @@ describe('Grid calculate merge score', {} , () => {
       ];
       gridUtils.replaceTiles(tilesArray);
       grid.slideLeft();
-      grid.updateMergeScore();
+      grid.updateCellMergeValues();
       grid.getCellValues().forEach(cell => {
         expect(cell.mergeValue).toBe(null);
       });
@@ -1516,7 +1516,7 @@ describe('Grid calculate merge score', {} , () => {
       ];
       gridUtils.replaceTiles(tilesArray);
       grid.slideLeft();
-      grid.updateMergeScore();
+      grid.updateCellMergeValues();
       expect(grid.cells[1].mergeValue).toBe(4);
       expect(grid.cells[2].mergeValue).toBe(4);
       expect(grid.cells[10].mergeValue).toBe(4);
@@ -1568,7 +1568,7 @@ describe('Grid calculate merge score', {} , () => {
       ];
       gridUtils.replaceTiles(tilesArray);
       grid.slideLeft();
-      grid.updateMergeScore();
+      grid.updateCellMergeValues();
       expect(grid.cells[1].mergeValue).toBe(12);
       expect(grid.cells[21].mergeValue).toBe(2);
       expect(grid.cells[33].mergeValue).toBe(13);

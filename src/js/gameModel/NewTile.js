@@ -15,6 +15,7 @@ export default class NewTile {
     }];
   }
 
+  //used in tests, do not remove
   static test1(grid) {
     return [];
   }
