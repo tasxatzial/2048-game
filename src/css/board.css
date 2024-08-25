@@ -1,6 +1,7 @@
 :root {
   --cell-size: 4.5rem;
   --cell-gap: 0.25rem;
+  --tile-font-scale-factor: 0.39;
   --cell-border-radius: 0.25rem;
   --horizontal-slide-duration: 125ms;
   --vertical-slide-duration: 125ms;
@@ -30,11 +31,11 @@
 }
 
 .tile {
-  --_font-scale-factor: 1;
+  --_relative-font-scale-factor: 1;
   align-items: center;
   display: flex;
   font-family: Verdana, Geneva, sans-serif;
-  font-size: calc(var(--cell-size) / 2.6 / var(--_font-scale-factor));
+  font-size: calc(var(--cell-size) * var(--tile-font-scale-factor) * var(--_relative-font-scale-factor));
   font-weight: bold;
   height: var(--cell-size);
   justify-content: center;
@@ -78,43 +79,43 @@
 }
 
 .tile-font-size-1 {
-  --_font-scale-factor: 1;
+  --_relative-font-scale-factor: 1;
 }
 
 .tile-font-size-2 {
-  --_font-scale-factor: 1;
+  --_relative-font-scale-factor: 1;
 }
 
 .tile-font-size-3 {
-  --_font-scale-factor: 1;
+  --_relative-font-scale-factor: 1;
 }
 
 .tile-font-size-4 {
-  --_font-scale-factor: 1.25;
+  --_relative-font-scale-factor: 0.8;
 }
 
 .tile-font-size-5 {
-  --_font-scale-factor: 1.55;
+  --_relative-font-scale-factor: 0.64;
 }
 
 .tile-font-size-6 {
-  --_font-scale-factor: 1.85;
+  --_relative-font-scale-factor: 0.54;
 }
 
 .tile-font-size-7 {
-  --_font-scale-factor: 2.2;
+  --_relative-font-scale-factor: 0.46;
 }
 
 .tile-font-size-8 {
-  --_font-scale-factor: 2.55;
+  --_relative-font-scale-factor: 0.4;
 }
 
 .tile-font-size-9 {
-  --_font-scale-factor: 2.9;
+  --_relative-font-scale-factor: 0.36;
 }
 
 .tile-font-size-10 {
-  --_font-scale-factor: 3.2;
+  --_relative-font-scale-factor: 0.33;
 }
 
 /*------------------------------------*\
