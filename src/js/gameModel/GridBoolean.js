@@ -18,7 +18,7 @@ export default class GridBoolean {
     return rows;
   }
 
-  //do not remove
+  //used in tests, do not remove
   static test1_7x6() {
     return [
       [1, 1, 0, 0, 1, 1],
@@ -31,7 +31,7 @@ export default class GridBoolean {
     ];
   }
 
-  //do not remove
+  //used in tests, do not remove
   static test2_10x10() {
     return [
       [0, 1, 1, 1, 1, 1, 1, 1, 1, 1],
@@ -47,7 +47,7 @@ export default class GridBoolean {
     ];
   }
 
-  //do not remove
+  //used in tests, do not remove
   static test3_4x4() {
     return [
       [1, 1, 0, 1],
