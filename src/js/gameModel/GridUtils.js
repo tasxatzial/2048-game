@@ -5,7 +5,7 @@ export default class GridUtils {
 
     _getMaxCellValueLength() {
     let maxLength = 0;
-    this.getCells().forEach(cell => {
+    this.grid.getCellValues().forEach(cell => {
       if (cell.hasTile()) {
         const tileLength = cell.getValue().toString().length;
         if (tileLength > maxLength) {
@@ -17,7 +17,8 @@ export default class GridUtils {
   }
 
   /* returns a string representation of the cell values. Each value
-  is either a merged value from multiple tiles, or a single tile value. */
+  is either a merged value from multiple tiles, or a single tile value.
+  Disabled cells are represented by the entity ◼ */
   cellValuesToString() {
     let result = '';
     const entryLength = this._getMaxCellValueLength();
