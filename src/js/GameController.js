@@ -1,5 +1,5 @@
-import GameView from './GameView.js';
-import GameModel from './GameModel.js';
+import GameView from './gameView/GameView.js';
+import GameModel from './gameModel/GameModel.js';
 import EventEmitter from './EventEmitter.js';
 
 export default class GameController extends EventEmitter {
