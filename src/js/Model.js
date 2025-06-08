@@ -1,5 +1,5 @@
 import EventEmitter from './EventEmitter.js';
-import GameModel from './GameModel.js';
+import GameModel from './gameModel/GameModel.js';
 
 export default class Model extends EventEmitter {
   constructor() {

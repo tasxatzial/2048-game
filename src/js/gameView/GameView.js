@@ -1,4 +1,4 @@
-import BoardView from './gameView/BoardView.js';
+import BoardView from './BoardView.js';
 
 export default class GameView {
   constructor() {

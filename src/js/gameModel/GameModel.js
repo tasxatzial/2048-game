@@ -1,7 +1,7 @@
-import Grid from './gameModel/Grid.js';
-import WinCondition from './gameModel/WinCondition.js';
-import LoseCondition from './gameModel/LoseCondition.js';
-import EventEmitter from './EventEmitter.js';
+import Grid from './Grid.js';
+import WinCondition from './WinCondition.js';
+import LoseCondition from './LoseCondition.js';
+import EventEmitter from '../EventEmitter.js';
 
 export default class GameModel extends EventEmitter {
   constructor(obj = {}) {
