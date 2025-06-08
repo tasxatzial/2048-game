@@ -19,9 +19,7 @@ This repo contains my own implementation from scratch.
 
 ## Customization
 
-Although the current UI features the classic 2048 game, we can easily edit the code to create a custom game or even add some of the options below directly to the UI.
-
-Read more [here](custom-game.md).
+Although the current UI features the classic 2048 game, the code can easily be modified to create a [custom game](custom-game.md) or even to add some of the options below directly to the UI.
 
 ## Run locally
 

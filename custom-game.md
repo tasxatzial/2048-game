@@ -55,7 +55,7 @@ We would like to create a game with the following options:
 * The board size is 3 x 3, with the center cell missing.
 * The top left corner has a tile with a value of 2.
 
-To accomplish this, we define in [WinCondition.js](src/js/gameModel/WinCondition.js):
+To accomplish this, define in [WinCondition.js](src/js/gameModel/WinCondition.js):
 
 ```js
 static hasTile32(grid) {
@@ -73,7 +73,7 @@ static threeByThreeNoCenter() {
 }
 ```
 
-We can now define the custom game as:
+Now define the custom game as:
 
 ```js
 game = {
